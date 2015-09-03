@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package>
+  <name>loki_robot</name>
+  <version>0.1.0</version>
+  <description>Robot Configurations</description>
+
+  <maintainer email="wayne@gramlich.net">Wayne Gramlich</maintainer>
+
+  <license>BSD</license>
+
+  <author email="wayne@gramlich.net">Wayne Gramlich</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+</package>
