@@ -1,0 +1,72 @@
+# For a direct USB cable connection, the port name is typically
+# /dev/ttyACM# where is # is a number such as 0, 1, 2, etc
+# For a wireless connection like XBee, the port is typically
+# /dev/ttyUSB# where # is a number such as 0, 1, 2, etc.
+
+# Ubuntu on RaspPi 2.  This is normal serial port
+# Default ArduinoBridge is 57600 baud but Ubiquity uses 115200
+port: /dev/ttyAMA0
+#port: /dev/ttyUSB0
+baud: 115200
+timeout: 0.1
+
+rate: 20
+sensorstate_rate: 4 
+
+use_base_controller: True
+base_controller_rate: 10
+
+# For a robot that uses base_footprint, change base_frame to base_footprint
+base_frame: base_link
+
+# === Robot drivetrain parameters
+wheel_diameter: 0.060
+wheel_track: 0.132
+encoder_resolution: 3560
+gear_reduction: 1.0
+motors_reversed: False
+left_motor_reversed: False
+right_motor_reversed: False
+
+# === PID parameters
+# 7-9-2015:  Tuned for Pololu 298:1 motors with 3600 pulse per wheel encoders
+Kp: 20
+Kd: 3
+Ki: 86
+Ko: 300
+Ci: 100
+#Kp: 0
+#Kd: 0
+#Ki: 0
+#Ko: 0
+accel_limit: 1.0
+
+# === Sensor definitions.  Examples only - edit for your robot.
+#     Sensor type can be one of the follow (case sensitive!):
+#	  * Ping
+#	  * GP2D12
+#	  * Analog
+#	  * Digital
+#	  * PololuMotorCurrent
+#	  * PhidgetsVoltage
+#	  * PhidgetsCurrent (20 Amp, DC)
+
+
+sensors: {
+  sonar_0:  {pin: 0,  type: Ping, rate: 2, frame_id: sonar_0,  field_of_view: .43632347}, # FOV=25 degrees
+  sonar_1:  {pin: 1,  type: Ping, rate: 2, frame_id: sonar_1,  field_of_view: .43632347},
+  sonar_2:  {pin: 2,  type: Ping, rate: 2, frame_id: sonar_2,  field_of_view: .43632347},
+  sonar_3:  {pin: 3,  type: Ping, rate: 2, frame_id: sonar_3,  field_of_view: .43632347},
+  sonar_4:  {pin: 4,  type: Ping, rate: 2, frame_id: sonar_4,  field_of_view: .43632347},
+  sonar_5:  {pin: 5,  type: Ping, rate: 2, frame_id: sonar_5,  field_of_view: .43632347},
+  sonar_6:  {pin: 6,  type: Ping, rate: 2, frame_id: sonar_6,  field_of_view: .43632347},
+  sonar_7:  {pin: 7,  type: Ping, rate: 2, frame_id: sonar_7,  field_of_view: .43632347},
+  sonar_8:  {pin: 8,  type: Ping, rate: 2, frame_id: sonar_8,  field_of_view: .43632347},
+  sonar_9:  {pin: 9,  type: Ping, rate: 2, frame_id: sonar_9,  field_of_view: .43632347},
+  sonar_10: {pin: 10, type: Ping, rate: 2, frame_id: sonar_10, field_of_view: .43632347},
+  sonar_11: {pin: 11, type: Ping, rate: 2, frame_id: sonar_11, field_of_view: .43632347},
+  sonar_12: {pin: 12, type: Ping, rate: 2, frame_id: sonar_12, field_of_view: .43632347},
+  sonar_13: {pin: 13, type: Ping, rate: 2, frame_id: sonar_13, field_of_view: .43632347},
+  sonar_14: {pin: 14, type: Ping, rate: 2, frame_id: sonar_14, field_of_view: .43632347},
+  sonar_15: {pin: 15, type: Ping, rate: 2, frame_id: sonar_15, field_of_view: .43632347}
+}
