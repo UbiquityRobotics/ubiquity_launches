@@ -1,0 +1,4 @@
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz"
+   args="-d $(find loki_robot)/loki_description/rviz/description.rviz"/>
+</launch>
