@@ -4,4 +4,7 @@
    <node name="arduino" pkg="ros_arduino_python" type="arduino_node.py" output="screen">
       <rosparam file="$(find loki_robot)/config/my_arduino_params.yaml" command="load" />
    </node>
+  <param name="robot_description"
+   textfile="$(find loki_robot)/config/loki.urdf" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 </launch>
