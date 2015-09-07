@@ -1,5 +1,0 @@
-<launch>
-   <node name="loki_base" pkg="bus_server" type="base.py" output="screen">
-      <rosparam file="$(find loki_robot)/experimental/wayne/wayne.yaml" command="load" />
-   </node>
-</launch>
