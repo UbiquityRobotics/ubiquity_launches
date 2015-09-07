@@ -29,16 +29,14 @@ left_motor_reversed: False
 right_motor_reversed: False
 
 # === PID parameters
-# 7-9-2015:  Tuned for Pololu 298:1 motors with 3600 pulse per wheel encoders
-Kp: 20
-Kd: 3
-Ki: 86
-Ko: 300
-Ci: 100
-#Kp: 0
-#Kd: 0
-#Ki: 0
-#Ko: 0
+# Tuned for Pololu 298:1 motors with 3600 pulse encoders
+# 7-9-2015:  Kp 20  Kd 3 Ki 86 Ko 300 Ci 100
+# 9-7-2015:  Kp 30  Kd 7 Ki 25 Ko 600 Ci 400
+Kp: 30
+Kd: 7
+Ki: 25
+Ko: 600
+Ci: 400
 accel_limit: 1.0
 
 # === Sensor definitions.  Examples only - edit for your robot.
