@@ -1,0 +1,6 @@
+<launch>
+  <node name="loki_base" pkg="bus_server" type="bus_server.py" output="screen">
+    <rosparam file="$(find loki_robot)/exprimental/wayne/params/wayne.yaml"
+     command="load" />
+   </node>
+</launch>
