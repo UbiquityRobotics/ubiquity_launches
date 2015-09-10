@@ -25,7 +25,7 @@
   </include>
 
   <!-- Fiducial slam -->
-  <include file="$(find fiducial_slam)/launch/fiducial_slam.launch">
+  <include file="$(find loki_robot)/loki_fiducial_slam/launch/fiducial_slam.launch">
     <arg name="mapping_mode" value="$(arg mapping_mode)"/>
     <arg name="camera_frame" value="raspi_camera_frame"/>
     <arg name="map_frame" value="map"/>
