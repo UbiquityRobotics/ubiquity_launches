@@ -46,4 +46,22 @@ On the desktop/laptop:
 
 will bring rviz with sonar sensor visualization turned on.
 
+## local_costmap
+
+The `local_costmap` launch files bring up Loki platform with
+the sonars turned on *and* the rviz visualization is showing
+the local costmap.
+
+On the robot:
+
+        roslaunch loki_robot local_costmap.launch
+
+get the platform runnng with the sonars turned on.
+
+On the desktop/laptop:
+
+        roslaunch loki_robot rviz_local_costmap.launch
+
+will bring up rviz with the local costmap visualiation turnd on.
+
 
