@@ -8,11 +8,8 @@
   <include file="$(find fiducial_detect)/launch/raspi_pose.launch"/>
   
   <!-- Robot State Publisher -->
-  <param name="robot_description"
-   textfile="$(find robot_configurations)/$(env ROS_HOSTNAME)/loki.urdf" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher"
-   type="state_publisher">
-  </node>
+  <include
+   file="$(find loki_robot)/loki_description/launch/description.launch" />
 
   <!-- ROS Arduino Bridge -->
   <include file="$(find ros_arduino_python)/launch/ubiquity_arduino.launch"/>
