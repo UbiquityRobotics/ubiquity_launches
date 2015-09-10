@@ -3,6 +3,15 @@
   <link name="base_link">
   </link>
 
+  <link name="camera_pose">
+  </link>
+
+  <joint name="base_camera_pose" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_pose"/>
+    <origin rpy="0 0 -1.57" xyz="-0.140 0 0"/>
+  </joint>
+
   <link name="sonar_0">
   </link>
 
