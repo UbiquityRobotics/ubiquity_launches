@@ -2,7 +2,8 @@
   <arg name="mapping_mode" default="false"/>
 
   <!-- Camera -->
-  <include file="$(find fiducial_detect)/launch/ubiquity_camera.launch"/>
+  <include
+    file="$(find loki_robot)/loki_camera/launch/camera.launch"/>
   
   <!-- Robot State Publisher -->
   <include
