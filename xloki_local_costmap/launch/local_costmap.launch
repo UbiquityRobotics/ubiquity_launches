@@ -41,19 +41,27 @@
 
     <remap from="/cmd_vel" to="/cmd_vel_mux/input/navigation"/>
 
-    <rosparam file="$(find robot_configurations)/$(env ROS_HOSTNAME)/dagny_nav.yaml" command="load"/>
-    <rosparam file="$(find robot_configurations)/$(env ROS_HOSTNAME)/local_planner.yaml" command="load"/>
+    <rosparam
+      file="$(find loki_robot)/xloki_local_costmap/params/dagny_nav.yaml"
+      command="load"/>
+    <rosparam
+      file="$(find loki_robot)/xloki_local_costmap/params/local_planner.yaml"
+      command="load"/>
   
     <!-- local costmap parameters. Small laser scanner on /scan -->
-    <rosparam file="$(find robot_configurations)/$(env ROS_HOSTNAME)/common_costmap.yaml"
-              command="load" ns="local_costmap"/>
-    <rosparam file="$(find robot_configurations)/$(env ROS_HOSTNAME)/local_costmap.yaml"
-              command="load" ns="local_costmap"/>
+    <rosparam
+      file="$(find loki_robot)/xloki_local_costmap/params/common_costmap.yaml"
+      command="load" ns="local_costmap"/>
+    <rosparam
+      file="$(find loki_robot)/xloki_local_costmap/params/local_costmap.yaml"
+      command="load" ns="local_costmap"/>
   
     <!-- global costmap parameters. Should just be a static map. -->
-    <rosparam file="$(find robot_configurations)/$(env ROS_HOSTNAME)/common_costmap.yaml"
-              command="load" ns="global_costmap"/>
-    <rosparam file="$(find robot_configurations)/$(env ROS_HOSTNAME)/global_costmap.yaml"
-              command="load" ns="global_costmap"/>
+    <rosparam
+      file="$(find loki_robot)/xloki_local_costmap/params/common_costmap.yaml"
+      command="load" ns="global_costmap"/>
+    <rosparam
+      file="$(find loki_robot)/xloki_local_costmap/params/global_costmap.yaml"
+      command="load" ns="global_costmap"/>
   </node>
 </launch>
