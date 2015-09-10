@@ -4,17 +4,16 @@
 # /dev/ttyUSB# where # is a number such as 0, 1, 2, etc.
 
 # Ubuntu on RaspPi 2.  This is normal serial port
-# Default ArduinoBridge is 57600 baud but Ubiquity uses 115200
 port: /dev/ttyAMA0
 #port: /dev/ttyUSB0
 baud: 115200
 timeout: 0.1
 
-poll_rate: 20
-sensorstate_rate: 4 
+poll_rate: 50
 
-use_base_controller: True
-base_controller_rate: 10
+#sensorstate_rate: 4 
+#use_base_controller: True
+#base_controller_rate: 10
 
 # For a robot that uses base_footprint, change base_frame to base_footprint
 base_frame: base_link
@@ -24,38 +23,51 @@ wheel_diameter: 0.060
 wheel_track: 0.132
 encoder_resolution: 3560
 gear_reduction: 1.0
-motors_reversed: False
-left_motor_reversed: False
-right_motor_reversed: False
+
+#motors_reversed: False
+#left_motor_reversed: False
+#right_motor_reversed: False
 
 # === PID parameters
-# 7-9-2015:  Tuned for Pololu 298:1 motors with 3600 pulse per wheel encoders
-Kp: 20
-Kd: 3
-Ki: 86
-Ko: 300
-Ci: 100
-#Kp: 0
-#Kd: 0
-#Ki: 0
-#Ko: 0
+Kp: 30
+Kd: 7
+Ki: 25
+Ko: 600
+Ci: 400
+pid_rate: 50
 accel_limit: 1.0
 
 sensors: {
-  sonar_0:  {id: 2,  type: Sonar, frame_id: sonar_0,  field_of_view: .43632347},
-  sonar_1:  {id: 3,  type: Sonar, frame_id: sonar_1,  field_of_view: .43632347},
-  sonar_2:  {id: 4,  type: Sonar, frame_id: sonar_2,  field_of_view: .43632347},
-  sonar_3:  {id: 5,  type: Sonar, frame_id: sonar_3,  field_of_view: .43632347},
-  sonar_4:  {id: 6,  type: Sonar, frame_id: sonar_4,  field_of_view: .43632347},
-  sonar_5:  {id: 7,  type: Sonar, frame_id: sonar_5,  field_of_view: .43632347},
-  sonar_6:  {id: 8,  type: Sonar, frame_id: sonar_6,  field_of_view: .43632347},
-  sonar_7:  {id: 9,  type: Sonar, frame_id: sonar_7,  field_of_view: .43632347},
-  sonar_8:  {id: 10, type: Sonar, frame_id: sonar_8,  field_of_view: .43632347},
-  sonar_9:  {id: 11, type: Sonar, frame_id: sonar_9,  field_of_view: .43632347},
-  sonar_10: {id: 12, type: Sonar, frame_id: sonar_10, field_of_view: .43632347},
-  sonar_11: {id: 13, type: Sonar, frame_id: sonar_11, field_of_view: .43632347},
-  sonar_12: {id: 14, type: Sonar, frame_id: sonar_12, field_of_view: .43632347},
-  sonar_13: {id: 15, type: Sonar, frame_id: sonar_13, field_of_view: .43632347},
-  sonar_14: {id: 16, type: Sonar, frame_id: sonar_14, field_of_view: .43632347},
-  sonar_15: {id: 17, type: Sonar, frame_id: sonar_15, field_of_view: .43632347}
+  sonar_0:  {id: 2,  type: Sonar, frame_id: sonar_0,
+    field_of_view: .43632347, class: "Side",  left_id: 3,  right_id: 17},
+  sonar_1:  {id: 3,  type: Sonar, frame_id: sonar_1,
+    field_of_view: .43632347, class: "Side",  left_id: 4,  right_id: 2},
+  sonar_2:  {id: 4,  type: Sonar, frame_id: sonar_2,
+    field_of_view: .43632347, class: "Front", left_id: 5,  right_id: 3},
+  sonar_3:  {id: 5,  type: Sonar, frame_id: sonar_3,
+    field_of_view: .43632347, class: "Front", left_id: 6,  right_id: 4},
+  sonar_4:  {id: 6,  type: Sonar, frame_id: sonar_4,
+    field_of_view: .43632347, class: "Front", left_id: 7,  right_id: 5},
+  sonar_5:  {id: 7,  type: Sonar, frame_id: sonar_5,
+    field_of_view: .43632347, class: "Front", left_id: 8,  right_id: 6},
+  sonar_6:  {id: 8,  type: Sonar, frame_id: sonar_6,
+    field_of_view: .43632347, class: "Front", left_id: 9,  right_id: 7},
+  sonar_7:  {id: 9,  type: Sonar, frame_id: sonar_7,
+    field_of_view: .43632347, class: "Side",  left_id: 10, right_id: 8},
+  sonar_8:  {id: 10, type: Sonar, frame_id: sonar_8,
+    field_of_view: .43632347, class: "Side",  left_id: 11, right_id: 9},
+  sonar_9:  {id: 11, type: Sonar, frame_id: sonar_9,
+    field_of_view: .43632347, class: "Side",  left_id: 12, right_id: 10},
+  sonar_10: {id: 12, type: Sonar, frame_id: sonar_10,
+    field_of_view: .43632347, class: "Back",  left_id: 13, right_id: 11},
+  sonar_11: {id: 13, type: Sonar, frame_id: sonar_11,
+    field_of_view: .43632347, class: "Back",  left_id: 14, right_id: 12},
+  sonar_12: {id: 14, type: Sonar, frame_id: sonar_12,
+    field_of_view: .43632347, class: "Back",  left_id: 15, right_id: 13},
+  sonar_13: {id: 15, type: Sonar, frame_id: sonar_13,
+    field_of_view: .43632347, class: "Back",  left_id: 16, right_id: 14},
+  sonar_14: {id: 16, type: Sonar, frame_id: sonar_14,
+    field_of_view: .43632347, class: "Back",  left_id: 17, right_id: 15},
+  sonar_15: {id: 17, type: Sonar, frame_id: sonar_15,
+    field_of_view: .43632347, class: "Side",  left_id: 2,  right_id: 16}
 }
