@@ -10,7 +10,10 @@
    file="$(find loki_robot)/loki_description/launch/description.launch" />
 
   <!-- ROS Arduino Bridge -->
-  <include file="$(find loki_robot)/loki_bringup/launch/bringup.launch" />
+  <node name="arduino" pkg="bus_server" type="bus_server.py" output="screen">
+    <rosparam file="$(find loki_robot)/exprimental/wayne/params/wayne.yaml"
+     command="load" />
+  </node>
 
   <!-- Joystick Input -->
   <include file="$(find loki_robot)/loki_joystick/launch/joystick.launch"/>
