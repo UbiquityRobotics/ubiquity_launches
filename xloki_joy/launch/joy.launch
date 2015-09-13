@@ -1,0 +1,16 @@
+<launch>
+
+  <include file="$(find loki_robot)/loki_bringup/launch/bringup.launch" />
+
+  <include
+   file="$(find loki_robot)/loki_description/launch/description.launch" />
+
+  <node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy">
+   <param name="~enable_button" value="11" />
+   <param name="~scale_linear" value=".05" />
+   <param name="~enable_turbo_button" value="9" />
+  </node>
+
+  <node pkg="joy" type="joy_node" name="joystick" />
+
+</launch>
