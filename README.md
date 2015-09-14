@@ -18,8 +18,7 @@ The following top level launch files exist:
 
 * `roslaunch ubiquity_launches xxx`:
 
-
-This package provides a bunch of launch files for using the Loki robot.
+## Older stuff
 
 ## bringup
 
