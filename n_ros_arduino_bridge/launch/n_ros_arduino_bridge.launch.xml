@@ -1,0 +1,10 @@
+<launch>
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="base" value="$(env ROBOT_BASE)" />
+  <arg name="rab"  value="ros_arduino_bridge" />
+  <node pkg="ros_arduino_python" type="arduino_node.py"
+   name="arduino"  output="screen">
+    <rosparam command="load"
+    file="$(arg root)/n_$(arg rab)/params/$(arg base).yaml" />
+  </node>
+</launch>

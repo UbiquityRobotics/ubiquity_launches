@@ -1,0 +1,8 @@
+<launch>
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="base" value="$(env ROBOT_BASE)" />
+  <arg name="rsp"  value="robot_state_publisher" />
+  <param name="robot_description"
+   textfile="$(arg root)/n_$(arg rsp)/urdf/$(arg base).urdf" />
+  <node name="$(arg rsp)" pkg="$(arg rsp)" type="state_publisher" />
+</launch>

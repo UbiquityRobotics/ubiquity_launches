@@ -1,5 +1,24 @@
 # loki_robot
 
+This repository contains a launch/parameters for a Loki robot platform.
+It adheres to the
+[Roboe Launch Repository Standdard](https://github.com/UbiquityRobotics/ubiquity-misc/blob/master/robot_launch_repositories.md).
+
+## Binary Programs:
+
+The following binary programs exist:
+
+* `loki_joystick_teleop`: This program fires up a Loki such that it can be
+  driven by a PS3 (or XBox) game controller.  The left joystick provides
+  speed (forward/backward) and turning (side to side).
+
+## Top Level Launch files:
+
+The following top level launch files exist:
+
+* `roslaunch ubiquity_launches xxx`:
+
+
 This package provides a bunch of launch files for using the Loki robot.
 
 ## bringup
