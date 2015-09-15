@@ -3,24 +3,24 @@
 
   <!-- Camera -->
   <include
-    file="$(find loki_robot)/loki_camera/launch/camera.launch"/>
+    file="$(find ubiquity_launches)/loki_camera/launch/camera.launch"/>
   
   <!-- Robot State Publisher -->
   <include
-   file="$(find loki_robot)/loki_description/launch/description.launch" />
+   file="$(find ubiquity_launches)/loki_description/launch/description.launch" />
 
   <!-- ROS Arduino Bridge -->
   <node name="arduino" pkg="bus_server" type="bus_server.py" output="screen">
-    <rosparam file="$(find loki_robot)/exprimental/wayne/params/wayne.yaml"
+    <rosparam file="$(find ubiquity_launches)/exprimental/wayne/params/wayne.yaml"
      command="load" />
   </node>
 
   <!-- Joystick Input -->
-  <include file="$(find loki_robot)/loki_joystick/launch/joystick.launch"/>
+  <include file="$(find ubiquity_launches)/loki_joystick/launch/joystick.launch"/>
 
   <!-- Fiducial detection -->
   <include
-    file="$(find loki_robot)/loki_fiducial_detect/launch/fiducial_detect.launch">
+    file="$(find ubiquity_launches)/loki_fiducial_detect/launch/fiducial_detect.launch">
     <arg name="camera" value="/camera"/>
     <arg name="image" value="image_raw"/>
     <arg name="fiducial_len" value="0.200"/>     <!-- default 0.145 mjWall 0.09  mjGar 0.135 wayne .200 -->
@@ -28,7 +28,7 @@
   </include>
 
   <!-- Fiducial slam -->
-  <include file="$(find loki_robot)/loki_fiducial_slam/launch/fiducial_slam.launch">
+  <include file="$(find ubiquity_launches)/loki_fiducial_slam/launch/fiducial_slam.launch">
     <arg name="mapping_mode" value="$(arg mapping_mode)"/>
     <arg name="camera_frame" value="raspi_camera_frame"/>
     <arg name="map_frame" value="map"/>
@@ -38,7 +38,7 @@
 
   <!-- map node -->
   <node pkg="map_server" type="map_server" name="map_server" output="screen"
-    args="$(find loki_robot)/xloki_local_costmap/params/map.yaml" />
+    args="$(find ubiquity_launches)/xloki_local_costmap/params/map.yaml" />
 
   <!-- move_base node -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base"
@@ -47,26 +47,26 @@
     <remap from="/cmd_vel" to="/cmd_vel_mux/input/navigation"/>
 
     <rosparam
-      file="$(find loki_robot)/xloki_local_costmap/params/dagny_nav.yaml"
+      file="$(find ubiquity_launches)/xloki_local_costmap/params/dagny_nav.yaml"
       command="load"/>
     <rosparam
-      file="$(find loki_robot)/xloki_local_costmap/params/local_planner.yaml"
+      file="$(find ubiquity_launches)/xloki_local_costmap/params/local_planner.yaml"
       command="load"/>
   
     <!-- local costmap parameters. Small laser scanner on /scan -->
     <rosparam
-      file="$(find loki_robot)/xloki_local_costmap/params/common_costmap.yaml"
+      file="$(find ubiquity_launches)/xloki_local_costmap/params/common_costmap.yaml"
       command="load" ns="local_costmap"/>
     <rosparam
-      file="$(find loki_robot)/xloki_local_costmap/params/local_costmap.yaml"
+      file="$(find ubiquity_launches)/xloki_local_costmap/params/local_costmap.yaml"
       command="load" ns="local_costmap"/>
   
     <!-- global costmap parameters. Should just be a static map. -->
     <rosparam
-      file="$(find loki_robot)/xloki_local_costmap/params/common_costmap.yaml"
+      file="$(find ubiquity_launches)/xloki_local_costmap/params/common_costmap.yaml"
       command="load" ns="global_costmap"/>
     <rosparam
-      file="$(find loki_robot)/xloki_local_costmap/params/global_costmap.yaml"
+      file="$(find ubiquity_launches)/xloki_local_costmap/params/global_costmap.yaml"
       command="load" ns="global_costmap"/>
   </node>
 </launch>

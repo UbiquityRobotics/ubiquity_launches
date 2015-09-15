@@ -40,7 +40,7 @@ accel_limit: 1.0
 
 sensors: {
   sonar_0:  {id: 2,  type: Sonar, frame_id: sonar_0,
-    field_of_view: .43632347, class: "Side",  left_id: 3,  right_id: 17},
+    field_of_view: .43632347, class: "Off",  left_id: 3,  right_id: 17},
   sonar_1:  {id: 3,  type: Sonar, frame_id: sonar_1,
     field_of_view: .43632347, class: "Side",  left_id: 4,  right_id: 2},
   sonar_2:  {id: 4,  type: Sonar, frame_id: sonar_2,

@@ -2,6 +2,6 @@
 
 <launch>
    <node name="arduino" pkg="ros_arduino_python" type="arduino_node.py" output="screen">
-      <rosparam file="$(find loki_robot)/loki_bringup/params/my_arduino_params.yaml" command="load" />
+      <rosparam file="$(find ubiquity_launches)/loki_bringup/params/my_arduino_params.yaml" command="load" />
    </node>
 </launch>

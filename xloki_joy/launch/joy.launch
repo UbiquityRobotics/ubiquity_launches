@@ -1,9 +1,9 @@
 <launch>
 
-  <include file="$(find loki_robot)/loki_bringup/launch/bringup.launch" />
+  <include file="$(find ubiquity_launches)/loki_bringup/launch/bringup.launch" />
 
   <include
-   file="$(find loki_robot)/loki_description/launch/description.launch" />
+   file="$(find ubiquity_launches)/loki_description/launch/description.launch" />
 
   <node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy">
    <param name="~enable_button" value="11" />

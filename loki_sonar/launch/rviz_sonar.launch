@@ -1,4 +1,4 @@
 <launch>
   <node name="rviz" pkg="rviz" type="rviz"
-   args="-d $(find loki_robot)/loki_sonar/rviz/sonar.rviz"/>
+   args="-d $(find ubiquity_launches)/loki_sonar/rviz/sonar.rviz"/>
 </launch>

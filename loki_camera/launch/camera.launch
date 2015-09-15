@@ -18,7 +18,7 @@
        output="screen">
     <param name="camera_name" value="loki2"/>
     <param name="camera_info_url"
-      value="file://$(find loki_robot)/loki_camera/params/$(arg calibration_file)"/>
+      value="file://$(find ubiquity_launches)/loki_camera/params/$(arg calibration_file)"/>
     <param name="gscam_config"
       value="v4l2src device=$(arg DEVICE) ! video/x-raw-rgb,width=$(arg WIDTH),height=$(arg HEIGHT),framerate=$(arg FPS) ! ffmpegcolorspace"/>
     <param name="frame_id" value="/raspi_camera_frame"/>
