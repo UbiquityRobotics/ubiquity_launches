@@ -1,6 +1,9 @@
 <launch>
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="rab"  value="ros_arduino_bridge" />
+  <arg name="bs"   value="bus_server" />
+  <!-- include
+   file="$(arg root)/n_$(arg rab)/launch/n_$(arg rab).launch.xml" / -->
   <include
-   file="$(arg root)/n_$(arg rab)/launch/n_$(arg rab).launch.xml" />
+   file="$(arg root)/n_$(arg bs)/launch/n_$(arg bs).launch.xml" />
 </launch>
