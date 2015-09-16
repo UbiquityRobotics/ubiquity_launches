@@ -5,6 +5,7 @@
   <arg name="cam" value="camera" />
   <arg name="ms"  value="map_server" />
   <arg name="mb"  value="move_base" />
+  <arg name="fd"  value="fiducial_detect" />
 
   <!-- Basic joystick teleop enabled base -->
   <include
@@ -20,10 +21,11 @@
 
   <!-- Fiducial detection -->
   <include
-    file="$(arg root)/loki_fiducial_detect/launch/fiducial_detect.launch">
+   file="$(arg root)/n_$(arg fd)/launch/n_$(arg fd).launch.xml">
     <arg name="camera" value="/camera"/>
     <arg name="image" value="image_raw"/>
-    <arg name="fiducial_len" value="0.200"/>     <!-- default 0.145 mjWall 0.09  mjGar 0.135 wayne .200 -->
+    <!-- default fiducal_len = 0.145 mjWall 0.09  mjGar 0.135 wayne .200 -->
+    <arg name="fiducial_len" value="0.200"/>
     <arg name="undistort_points" value="true"/>
   </include>
 
