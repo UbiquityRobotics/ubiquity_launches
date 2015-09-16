@@ -1,8 +1,11 @@
 <launch>
+  <!-- Required arguments: -->
+  <arg name="robot_base" />
+
+  <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
-  <arg name="base" value="$(env ROBOT_BASE)" />
   <arg name="camera_node" default="camera_node" />
-  <arg name="calibration_file" default="$(arg base).yaml" />
+  <arg name="calibration_file" default="$(arg robot_base).yaml" />
   <arg name="respawn" default="false" />
   <arg name="DEVICE" default="/dev/video0"/>
 

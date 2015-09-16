@@ -1,4 +1,8 @@
 <launch>
+  <!-- Required arguments: -->
+  <arg name="robot_base" />
+
+  <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="mapping_mode" default="false" />
   <arg name="jst" value="joystick_teleop" />
@@ -10,11 +14,15 @@
 
   <!-- Basic joystick teleop enabled base -->
   <include
-   file="$(arg root)/m_$(arg jst)/launch/m_$(arg jst).launch" />
+   file="$(arg root)/m_$(arg jst)/launch/m_$(arg jst).launch" >
+    <arg name="robot_base" value="$(arg robot_base)" />
+  </include>
 
   <!-- Camera -->
   <include
-   file="$(arg root)/n_$(arg cam)/launch/n_$(arg cam).launch" />
+   file="$(arg root)/n_$(arg cam)/launch/n_$(arg cam).launch" >
+    <arg name="robot_base" value="$(arg robot_base)"/>
+  </include>
 
   <!-- map node -->
   <include

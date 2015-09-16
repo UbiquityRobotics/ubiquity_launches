@@ -1,1 +1,2 @@
-../loki_local_costmap/bin/loki_local_costmap.sh
+#!/usr/bin/env bash
+roslaunch ubiquity_launches m_fiducial_slam.launch.xml robot_base:=loki

@@ -1,7 +1,12 @@
 <launch>
+  <!-- Required arguments: -->
+  <arg name="robot_base" />
+
+  <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
-  <arg name="base" value="$(env ROBOT_BASE)" />
   <arg name="node" value="rviz_loki_sonar" />
+
+  <!-- Fire off Rviz: -->
   <node pkg="rviz" type="rviz" name="rviz"
-   args="-d $(arg root)/$(arg node)/rviz/$(arg base).rviz" />
+   args="-d $(arg root)/$(arg node)/rviz/$(arg robot_base).rviz" />
 </launch>

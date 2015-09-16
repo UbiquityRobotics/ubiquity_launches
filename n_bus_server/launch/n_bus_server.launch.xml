@@ -1,9 +1,15 @@
 <launch>
+  <!-- Required arguments: -->
+  <arg name="robot_base" />
+
+  <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
-  <arg name="base" value="$(env ROBOT_BASE)" />
   <arg name="node" value="bus_server" />
-  <node name="arduino" pkg="$(arg node)" type="$(arg node).py" output="screen">
+
+  <!-- Run bus server node: -->
+  <node pkg="$(arg node)" type="$(arg node).py"
+   name="arduino" output="screen">
     <rosparam command="load"
-     file="$(arg root)/n_$(arg node)/params/$(arg base).yaml" />
+     file="$(arg root)/n_$(arg node)/params/$(arg robot_base).yaml" />
   </node>
 </launch>
