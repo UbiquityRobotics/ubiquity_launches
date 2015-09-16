@@ -1,1 +1,2 @@
-../loki_rviz_local_costmap/bin/loki_rviz_local_costmap.sh
+#!/usr/bin/env bash
+roslaunch ubiquity_launches rviz_local_costmap.launch robot_base:=loki

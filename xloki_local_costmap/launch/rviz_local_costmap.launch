@@ -1,4 +1,0 @@
-<launch>
-  <node name="rviz" pkg="rviz" type="rviz"
-   args="-d $(find ubiquity_launches)/xloki_local_costmap/rviz/local_costmap.rviz"/>
-</launch>
