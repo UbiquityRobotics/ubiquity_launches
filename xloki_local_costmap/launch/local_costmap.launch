@@ -6,6 +6,7 @@
   <arg name="ms"  value="map_server" />
   <arg name="mb"  value="move_base" />
   <arg name="fd"  value="fiducial_detect" />
+  <arg name="fs"  value="fiducial_slam" />
 
   <!-- Basic joystick teleop enabled base -->
   <include
@@ -30,7 +31,8 @@
   </include>
 
   <!-- Fiducial slam -->
-  <include file="$(arg root)/loki_fiducial_slam/launch/fiducial_slam.launch">
+  <include
+   file="$(arg root)/n_$(arg fs)/launch/n_$(arg fs).launch.xml">
     <arg name="mapping_mode" value="$(arg mapping_mode)"/>
     <arg name="camera_frame" value="raspi_camera_frame"/>
     <arg name="map_frame" value="map"/>
