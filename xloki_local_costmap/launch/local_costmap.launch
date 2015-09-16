@@ -1,23 +1,11 @@
 <launch>
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="mapping_mode" default="false" />
+  <arg name="jst" value="joystick_teleop" />
 
-  <!-- Camera -->
+  <!-- Basic joystick teleop enabled base -->
   <include
-    file="$(arg root)/loki_camera/launch/camera.launch"/>
-  
-  <!-- Robot State Publisher -->
-  <include
-   file="$(arg root)/loki_description/launch/description.launch" />
-
-  <!-- ROS Arduino Bridge -->
-  <node name="arduino" pkg="bus_server" type="bus_server.py" output="screen">
-    <rosparam file="$(arg root)/exprimental/wayne/params/wayne.yaml"
-     command="load" />
-  </node>
-
-  <!-- Joystick Input -->
-  <include file="$(arg root)/loki_joystick/launch/joystick.launch"/>
+   file="$(arg root)/m_$(arg jst)/launch/m_$(arg jst).launch" />
 
   <!-- Fiducial detection -->
   <include
