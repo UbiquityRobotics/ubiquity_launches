@@ -1,0 +1,7 @@
+<launch>
+  <arg name="root" value="$(find ubiquity_luanches)" />
+  <arg node="lrlcm" value="loki_rviz_local_costmap" />
+
+  <node name="rviz" pkg="rviz" type="rviz"
+   args="-d $(arg root)/$(arg lrlcm)/rviz/$(arg lrlcm).rviz"/>
+</launch>

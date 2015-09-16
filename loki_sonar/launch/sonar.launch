@@ -1,5 +1,0 @@
-<launch>
-  <include file="$(find ubiquity_launches)/loki_bringup/launch/bringup.launch" />
-  <include
-   file="$(find ubiquity_launches)/loki_description/launch/description.launch" />
-</launch>
