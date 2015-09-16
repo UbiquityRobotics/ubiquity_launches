@@ -2,10 +2,21 @@
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="mapping_mode" default="false" />
   <arg name="jst" value="joystick_teleop" />
+  <arg name="cam" value="camera" />
+  <arg name="ms"  value="map_server" />
+  <arg name="mb"  value="move_base" />
 
   <!-- Basic joystick teleop enabled base -->
   <include
    file="$(arg root)/m_$(arg jst)/launch/m_$(arg jst).launch" />
+
+  <!-- Camera -->
+  <include
+   file="$(arg root)/n_$(arg cam)/launch/n_$(arg cam).launch" />
+
+  <!-- map node -->
+  <include
+   file="$(arg root)/n_$(arg ms)/launch/n_$(arg ms).launch.xml" />
 
   <!-- Fiducial detection -->
   <include
@@ -25,37 +36,8 @@
     <arg name="pose_frame" value="base_link"/>
   </include>
 
-  <!-- map node -->
-  <node pkg="map_server" type="map_server" name="map_server" output="screen"
-    args="$(arg root)/xloki_local_costmap/params/map.yaml" />
-
   <!-- move_base node -->
-  <node pkg="move_base" type="move_base" respawn="false" name="move_base"
-        output="screen">
+  <include
+   file="$(arg root)/n_$(arg mb)/launch/n_$(arg mb).launch.xml" />
 
-    <remap from="/cmd_vel" to="/cmd_vel_mux/input/navigation"/>
-
-    <rosparam
-      file="$(arg root)/xloki_local_costmap/params/dagny_nav.yaml"
-      command="load"/>
-    <rosparam
-      file="$(arg root)/xloki_local_costmap/params/local_planner.yaml"
-      command="load"/>
-  
-    <!-- local costmap parameters. Small laser scanner on /scan -->
-    <rosparam
-      file="$(arg root)/xloki_local_costmap/params/common_costmap.yaml"
-      command="load" ns="local_costmap"/>
-    <rosparam
-      file="$(arg root)/xloki_local_costmap/params/local_costmap.yaml"
-      command="load" ns="local_costmap"/>
-  
-    <!-- global costmap parameters. Should just be a static map. -->
-    <rosparam
-      file="$(arg root)/xloki_local_costmap/params/common_costmap.yaml"
-      command="load" ns="global_costmap"/>
-    <rosparam
-      file="$(arg root)/xloki_local_costmap/params/global_costmap.yaml"
-      command="load" ns="global_costmap"/>
-  </node>
 </launch>

@@ -1,0 +1,9 @@
+<launch>
+  <!-- Map Server Node -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="node" value="map_server" />
+
+  <node pkg="$(arg node)" type="$(arg node)"
+   name="$(arg node)" output="screen"
+   args="$(arg root)/xloki_local_costmap/params/map.yaml" />
+</launch>
