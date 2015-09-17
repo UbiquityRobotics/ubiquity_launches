@@ -1,1 +1,2 @@
-../loki_joystick_teleop/bin/loki_joystick_teleop.sh
+#!/usr/bin/env bash
+roslaunch ubiquity_launches m_joystick_teleop.launch robot_base:=loki
