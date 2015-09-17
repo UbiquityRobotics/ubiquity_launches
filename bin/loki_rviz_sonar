@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+roslaunch ubiquity_launches rviz_sonar.launch robot_base:=loki
