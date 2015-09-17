@@ -1,85 +1,148 @@
-# loki_robot
+# ubiquity_launches.
 
-This repository contains a launch/parameters for a Loki robot platform.
+This repository contains a ROS launch and configuration files
+for the Ubiquity Robots platforms.
+
 It adheres to the
-[Roboe Launch Repository Standdard](https://github.com/UbiquityRobotics/ubiquity-misc/blob/master/robot_launch_repositories.md).
+[Robot Launch Repository Standard](https://github.com/UbiquityRobotics/ubiquity-misc/blob/master/robot_launch_repositories.md) document.
 
-## Binary Programs:
+This repository is broken into some categories:
 
-The following binary programs exist:
+* `bin`: The `bin` directory contains a bunch of executables shell
+  scripts that fire off a launch file.
 
-* `loki_joystick_teleop`: This program fires up a Loki such that it can be
-  driven by a PS3 (or XBox) game controller.  The left joystick provides
-  speed (forward/backward) and turning (side to side).
+* `n_*`: The `n_*` directories contain the launch files and
+  configuration files needed to launch a single ROS Node.
 
-## Top Level Launch files:
+* `m_*`: The `m_*` directories will launch Multiple ROS nodes.
 
-The following top level launch files exist:
+* `rviz_*: The `rviz_*` directories are used to launch the RViz
+  program configured to view a corresponding robot program.
 
-* `roslaunch ubiquity_launches xxx`:
+* others: Other directories contain miscellaneous launch files.
 
-## Older stuff
+## The `bin` Directory
 
-## bringup
+The executables in the `bin` directory are listed alphabetically
+below:
 
-The `bringup` launch file is started as:
+* `loki_joystick_teleop`:
+  This program is run on the robot and starts up a Loki platform
+  with a PS3/XBox game controller to control robot motion.
 
-        roslaunch loki_robot bringup.launch
+* `loki_local_costmap`:
+  This program is run on the robot and starts up a Loki platform
+  that starts up robot that is running the both the PS3/XBox
+  joystick nodes and the fiducial detection and slam nodes.
+  The file is focused on generating a local cost map for viewing
+  using the `loki_rviz_local_costmap` program.
 
-This just starts the ROS arduino node for now.
+* `loki_rviz_local_costmap`:
+  This program is run on the laptop/desktop and brings up RViz
+  in a mode that shows the robot, sonar sensors and local cost
+  map.
 
+* `loki_rviz_sonar`:
+  This program is run on the laptop/desktop and brings up RViz
+  in a mode that shows the robot sonar sensors.
 
-## description
+## `m_*` Directories
 
-The `description` launch files bring up the URD information.
+The following `m_*` directories are listed in alphabetical
+order below:
 
-On the robot:
+* `m_fiducal_slam`:
+  The launch file for this directory fires off the fiducial
+  slam subsystem.  This causes the `move_base` node to be
+  loaded so that local cost maps can be generated.
+  This launch file requires a `robot_base` argument to specify
+  which robot base is being used (e.g `loki`, `magni`, etc.)
 
-        roslaunch loki_robot description.launch
+* `m_joystick_teleop`:
+  The launch file for this directory fires off the joystick
+  nodes to support the wireless PS2/XBox game controller for
+  driving the robot around.
+  This launch file requires a `robot_base` argument to specify
+  which robot base is being used (e.g `loki`, `magni`, etc.)
 
-will start the `ros_state_publisher` node with the `loki.urdf` file.
-This will cause a bunch senor frames to be added to the base_link
-frame in TF.
+## `n_*` Directories
 
-On the desktop/laptop:
+The following `n_*` directories are used to fire up a single
+ROS node.  They are listed alphabetically below:
 
-        roslaunch loki_robot rviz_description.launch
+* `n_bus_server`:
+  The launch file for this directory starts the Ubiquity Robots
+  [`bus_server`](https://github.com/UbiquityRobotics/bus_server)
+  package that interfaces to the robot serial port.
+  This launch file has the following arguments:
+  * `robot_base`: (Required)
 
-will start rviz with TF visualiztion turned on.
+* `n_camera`:
+  The launch file for this directory starts the camera node
+  using the ROS [`gscam`](http://wiki.ros.org/gscam) package.
+  This launch file has the following arguments:
+  * `robot_base`: (Required)
 
-## sonar
+* `n_fiducial_detect`:
+  The launch file for this directory starts the fiducial detection
+  portion of the Ubiquty Robots
+  [fiducial](https://github.com/UbiquityRobotics/fiducials)
+  that is used to detect ceiling fiducials for localization.
+  This launch file has the following arguments:
+  * `camera_frame`: (Default: `/camera/`)
+  * `image`: (Default: `image_rect`)
+  * `fiducial_len`: (Default: `0.146`)
+  * `undistort_points`: (Default: `false`)
 
-The `sonar` launch files bring up the Loki platform with the
-sonars turned on.
+* `n_fiducial_slam`:
+  The launch file for this directory starts the fiducial SLAM
+  (Simultaneous Localization and Mapping) ROS node.
+  This launch file has the following arguments:
+  * `mapping_node`: (Default `false`)
+  * `camera_frame`: (Required)
+  * `map_frame`: (Required)
+  * `odom_frame`: (Required)
+  * `pose_frame`: (Required)
 
-On the robot:
+* `n_joy`:
+  The launch file for this directory starts the ROS
+  [joy](http://wiki.ros.org/joy) node.
 
-        roslaunch loki_robot sonar.launch
+* `n_loki_serial_master`:
+  The launch file for this directory starts the `n_bus_server`
+  node configured for the Loki platform.
 
-get the platform started.
+* `n_map_server`:
+  The launch file for this directory starts the ROS
+  [`map_server`](http://wiki.ros.org/map_server) node.
 
-On the desktop/laptop:
+* `n_move_base`:
+  The launch file for this directory starts the ROS
+  [`move_base`](http://wiki.ros.org/move_base) node.
 
-        roslaunch loki_robot rviz_sonar.launch
+* `n_robot_state_publisher`:
+  The launch file for this directory starts the ROS
+  [`robot_state_publisher`](http://wiki.ros.org/robot_state_publisher) node.
+  This launch file has the following arguments:
+  * `robot_base`: (Required)
 
-will bring rviz with sonar sensor visualization turned on.
+* `n_teleop_twist_joy`:
+  The launch file for this directory starts the ROS
+  [`teleop_twist_joy`](http://wiki.ros.org/teleop_twist_joy) node.
+  This launch file has the following arguments:
+  * `robot_base`: (Required)
 
-## local_costmap
+## `rviz_*` Directories
 
-The `local_costmap` launch files bring up Loki platform with
-the sonars turned on *and* the rviz visualization is showing
-the local costmap.
+* `rviz_local_costmap`:
+  The launch file for this directory starts the ROS RViz
+  in a mode that shows a local costmap.
+  This launch file has the following arguments:
+  * `robot_base`: (Required)
 
-On the robot:
-
-        roslaunch loki_robot local_costmap.launch
-
-get the platform runnng with the sonars turned on.
-
-On the desktop/laptop:
-
-        roslaunch loki_robot rviz_local_costmap.launch
-
-will bring up rviz with the local costmap visualiation turnd on.
-
+* `rviz_sonar`
+  The launch file for this directory starts the ROS RViz
+  in a mode that shows the sonar sensors.
+  This launch file has the following arguments:
+  * `robot_base`: (Required)
 
