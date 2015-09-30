@@ -5,5 +5,5 @@
 
   <node pkg="$(arg node)" type="$(arg node)"
    name="$(arg node)" output="screen"
-   args="$(arg root)/xloki_local_costmap/params/map.yaml" />
+   args="$(arg root)/n_$(arg node)/params/map.yaml" />
 </launch>
