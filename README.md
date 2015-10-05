@@ -26,6 +26,10 @@ This repository is broken into some categories:
 The executables in the `bin` directory are listed alphabetically
 below:
 
+* `loki_camera`:
+  This program will start the camera on a Loki with the appropriat
+  Loki camera calibration information.
+
 * `loki_joystick_teleop`:
   This program is run on the robot and starts up a Loki platform
   with a PS3/XBox game controller to control robot motion.
@@ -45,6 +49,9 @@ below:
 * `loki_rviz_sonar`:
   This program is run on the laptop/desktop and brings up RViz
   in a mode that shows the robot sonar sensors.
+
+* `loki_view_camera`:
+  This program will view the camera topic.
 
 ## `m_*` Directories
 
