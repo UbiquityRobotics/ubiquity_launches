@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Start the node:
+roslaunch ubiquity_launches n_raspicam.launch \
+  robot_base:=loki frame_rate:=30 quality:=100 &
+
+# Give the node a chance to start:
+sleep 5
+
+# Now start capturing images:
+rosservice call /raspicam/camera/start_capture
+
+# Wait until somebody stops us:
+sleep 999999999
+

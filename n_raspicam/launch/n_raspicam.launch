@@ -1,0 +1,15 @@
+<launch>
+  <!-- Required arguments: -->
+  <arg name="robot_base" />
+  <arg name="frame_rate" />
+  <arg name="quality" />
+
+  <!-- Convenience arguments: -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="node" value="raspicam" />
+  <arg name="respawn" default="false" />
+
+  <node pkg="raspicam" type="raspicam_node" name="$(arg node)"
+   args="_framerate=$(arg frame_rate) _quality:=$(arg quality)"
+   output="screen" />
+</launch>
