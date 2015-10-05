@@ -42,6 +42,12 @@ below:
   The file is focused on generating a local cost map for viewing
   using the `loki_rviz_local_costmap` program.
 
+* `loki_raspicam`:
+  This program will start the raspicam node at 30 frames per second.
+
+* `loki_raspicam90`:
+  This program will start the raspicam node at 90 frames per second.
+
 * `loki_rviz_local_costmap`:
   This program is run on the laptop/desktop and brings up RViz
   in a mode that shows the robot, sonar sensors and local cost
@@ -52,7 +58,10 @@ below:
   in a mode that shows the robot sonar sensors.
 
 * `loki_view_camera`:
-  This program will view the camera topic.
+  This program will view the regular (gscam) camera topic.
+
+* `loki_view_raspicam`:
+  This program will view the new `raspicam` camera topic.
 
 ## `m_*` Directories
 
@@ -128,6 +137,13 @@ ROS node.  They are listed alphabetically below:
   The launch file for this directory starts the ROS
   [`move_base`](http://wiki.ros.org/move_base) node.
 
+* `n_raspicam`:
+  The launch file for this directory starts up the `raspicam` node.
+  This launch file has the following argumnets:
+  * `robot_base`: (Required)
+  * `frame_rate`: (Required) (15 <= frame_rate <= 90)
+  * `quality`: (Required) (1 <= quality <= 100)
+  
 * `n_robot_state_publisher`:
   The launch file for this directory starts the ROS
   [`robot_state_publisher`](http://wiki.ros.org/robot_state_publisher) node.

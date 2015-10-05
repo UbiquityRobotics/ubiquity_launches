@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+rqt_image_view image:=/raspicam/camera/image/compressed
