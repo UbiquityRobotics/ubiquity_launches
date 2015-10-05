@@ -4,7 +4,9 @@
 # /dev/ttyUSB# where # is a number such as 0, 1, 2, etc.
 
 # Ubuntu on RaspPi 2.  This is normal serial port
-port: /dev/ttyAMA0
+# If `port` is not set, the code will try `/dev/ttyAMA0` first followed
+# by `/dev/ttyUSB0`:
+#port: /dev/ttyAMA0
 #port: /dev/ttyUSB0
 baud: 115200
 timeout: 0.1
