@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+roslaunch ubiquity_launches n_camera.launch robot_base:=loki
+
