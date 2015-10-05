@@ -4,7 +4,7 @@ This repository contains a ROS launch and configuration files
 for the Ubiquity Robots platforms.
 
 It adheres to the
-[Robot Launch Repository Standard](https://github.com/UbiquityRobotics/ubiquity-misc/blob/master/robot_launch_repositories.md) document.
+[Robot Launch Repository Standard](https://github.com/UbiquityRobotics/ubiquity_main/blob/master/robot_launch_repositories.md) document.
 
 This repository is broken into some categories:
 
