@@ -1,0 +1,19 @@
+<launch>
+  <!-- Required arguments: -->
+  <arg name="robot_base" />
+
+  <!-- Convenience arguments: -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="node" value="raspicam" />
+
+  <!-- Start n_raspicam node: -->
+  <include file="$(arg root)/n_$(arg node)/launch/n_$(arg node).launch">
+    <arg name="robot_base" value="$(arg robot_base)" />
+  </include>
+  
+  <!-- Start n_image_uncompress node: -->
+  <include file="$(arg root)/n_image_uncompress/launch/n_image_uncompress.launch.xml">
+     <arg name="camera_name" value="$(arg node)/camera" />
+  </include>
+
+</launch>

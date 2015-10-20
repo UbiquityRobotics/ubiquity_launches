@@ -1,0 +1,11 @@
+<launch>
+  <!-- Required arguments: -->
+  <arg name="camera_name" />
+
+  <!-- Start republish node: -->
+  <node name="n_image_uncompress"
+   pkg="image_transport" type="republish" 
+   args="compressed in:=$(arg camera_name)/image raw out:=$(arg camera_name)/image_raw"
+   output="screen" />
+
+</launch>

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 # Start the node:
-roslaunch ubiquity_launches n_raspicam.launch \
-  robot_base:=loki frame_rate:=30 quality:=100 &
+roslaunch ubiquity_launches m_raspicam_raw.launch.xml \
+  robot_base:=loki framerate:=30 quality:=100 \
+  camera_name:=/raspicam &
 
 # Give the node a chance to start:
 sleep 5
