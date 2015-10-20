@@ -1,15 +1,32 @@
 <launch>
   <!-- Required arguments: -->
   <arg name="robot_base" />
-  <arg name="frame_rate" />
-  <arg name="quality" />
+
+  <!-- Optional arguments: -->
+  <arg name="width" default="640" />
+  <arg name="height" default="480" />
+  <arg name="framerate" default="30"/>
+  <arg name="quality" default="20" />
+  <arg name="tf_prefix" default="" />
+  <arg name="camera_frame_id" default="" />
+  <arg name="srrc_publishing_mode" default="0" />
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="node" value="raspicam" />
   <arg name="respawn" default="false" />
 
+  <!-- Start raspicam_node: -->
   <node pkg="raspicam" type="raspicam_node" name="$(arg node)"
    args="_framerate=$(arg frame_rate) _quality:=$(arg quality)"
-   output="screen" />
+   output="screen">
+    <param name="width" value="$(arg width)" />
+    <param name="height" value="$(arg height)" />
+    <param name="framerate" value="$(arg framerate)" />
+    <param name="quality" value="$(arg quality)" />
+    <param name="tf_prefex" value="$(arg tf_prefix)" />
+    <param name="camera_frame_id" value="$(arg camera_frame_id)" />
+    <param name="srrc_publishing_mode" value="$(arg srrc_publishing_mode)" />
+  </node>
+
 </launch>
