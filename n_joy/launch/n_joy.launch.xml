@@ -1,3 +1,9 @@
 <launch>
+  <!--Summary: Connect to a joystick node. -->
+  <!--Overview: This library launch directory will launch a node that
+      starts the ROS [joy](http://wiki.ros.org/joy) node.  This node
+      interfaces to a joystick device (e.g. XBox360 controller, PS3
+      controller, etc.) -->
+
   <node pkg="joy" type="joy_node" name="joy" />
 </launch>

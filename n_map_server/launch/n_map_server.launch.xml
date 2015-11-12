@@ -1,5 +1,10 @@
+<!-- Map Server Node -->
 <launch>
-  <!-- Map Server Node -->
+  <!--Summary: Start a ROS map_server node. -->
+  <!--Overview: The launch file for this directory starts the ROS
+      [`map_server`](http://wiki.ros.org/map_server) node. -->
+
+  <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="node" value="map_server" />
 

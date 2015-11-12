@@ -1,12 +1,18 @@
 <launch>
+  <!--Summary: Launch the ROS `robot_state_publisher` node. -->
+  <!--Overview: The launch file for this directory starts the ROS
+      [`robot_state_publisher`](http://wiki.ros.org/robot_state_publisher)
+      node. -->
+
   <!-- Required arguments: -->
   <arg name="robot_base" />
+    <!--robot_base: The name of the robot base (e.g. "magni", "loki", etc." -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="rsp"  value="robot_state_publisher" />
 
-  <!-- Launche the robot state publisher:  -->
+  <!-- Launch the robot state publisher:  -->
   <param name="robot_description"
    textfile="$(arg root)/n_$(arg rsp)/urdf/$(arg robot_base).urdf" />
   <node name="$(arg rsp)" pkg="$(arg rsp)" type="state_publisher" />

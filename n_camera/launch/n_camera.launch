@@ -1,18 +1,33 @@
 <launch>
+  <!--Summary: Bring up a Raspberry Pi camera via GStreamer. -->
+  <!--Overview:   The launch file for this directory starts the camera node
+      using the ROS [`gscam`](http://wiki.ros.org/gscam) package.
+      This launch file is **depricated**.  You should use `n_raspicam`
+      launch file directory instead. -->
+
   <!-- Required arguments: -->
   <arg name="robot_base" />
+    <!--robot_base: The robot base to use (e.g. "Magni" and "Loki".) -->
+
+  <!-- Optional arguments: -->
+  <arg name="WIDTH" default="1280"/>  <!--  Default 640 -->
+     <!--WIDTH: The width of the image in pixels. -->
+  <arg name="HEIGHT" default="960"/>  <!--  Default 480 -->
+     <!--HEIGHT: The height of the image in pixels. -->
+  <arg name="FPS" default="30/1"/>
+     <!--FPS: Frame rate in frames per second. (must be an integer.) -->
+  <arg name="camera_node" default="camera_node" />
+     <!--camera_node:  The name of the camera node. -->
+  <arg name="calibration_file" default="$(arg robot_base).yaml" />
+     <!--calibration_file: The `.yaml` for camera calibration. -->
+  <arg name="respawn" default="false" />
+     <!--respawn: If `true` automatically respawn the node if it fails;
+         otherwise just let it fail. -->
+  <arg name="DEVICE" default="/dev/video0"/>
+     <!--DEVICE: The device file to access for the camera. -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
-  <arg name="camera_node" default="camera_node" />
-  <arg name="calibration_file" default="$(arg robot_base).yaml" />
-  <arg name="respawn" default="false" />
-  <arg name="DEVICE" default="/dev/video0"/>
-
-  <!-- The GStreamer framerate needs to be an integral fraction -->
-  <arg name="WIDTH" default="1280"/>  <!--  Default 640 -->
-  <arg name="HEIGHT" default="960"/>  <!--  Default 480 -->
-  <arg name="FPS" default="30/1"/>
 
   <node pkg="nodelet" type="nodelet"
    name="standalone_nodelet" args="manager" output="screen" />

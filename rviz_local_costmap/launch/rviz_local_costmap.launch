@@ -1,6 +1,11 @@
 <launch>
+  <!--Summary: Show local costmap in RViz. -->
+  <!--Overview: The launch file for this directory starts the ROS RViz
+      in a mode that shows a local costmap.  -->
+
   <!-- Required arguments: -->
   <arg name="robot_base" />
+    <!--robot_base: The name of the robot base (e.g. "magni", "loki", etc.) -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />

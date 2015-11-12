@@ -1,6 +1,11 @@
 <launch>
+  <!--Summary: Start a node to read the Raspberry Pi camera. -->
+  <!--Overview: This launch file directory is responsible for
+      launching a node to read images from the Raspberry Pi camera.-->
+
   <!-- Required arguments: -->
   <arg name="robot_base" />
+    <!--robot_base: The robot base being used (e.g. "magni", "loki", etc. ) -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
@@ -8,15 +13,25 @@
 
   <!-- Optional arguments: -->
   <arg name="camera_frame_id" default="" />
+    <!--camera_frame: The name of the ROS TF camera frame. -->
   <arg name="camera_info_url"
    default="file://$(arg root)/n_$(arg node)/params/$(arg robot_base).yaml" />
+    <!--camara_info_url: The URL for the camera `.yaml` file. -->
   <arg name="camera_name" default="raspicam" />
+    <!--camera_name: The name of the camera topic. -->
   <arg name="framerate" default="30"/>
+    <!--frame_rate: The frame rate between 15 and 90 as an integer. -->
   <arg name="height" default="480" />
+    <!--height: The image height in pixels.-->
   <arg name="quality" default="20" />
+    <!--quality: The image quality after compression wher 1 is low
+        quality and 100 is high quality. -->
   <arg name="srrc_publishing_mode" default="0" />
+    <!--srrc_publishing_node: (Not a clue.)-->
   <arg name="tf_prefix" default="" />
+    <!--tf_prefix: A prefix for the various ROS TF frame identifiers. -->
   <arg name="width" default="640" />
+    <!--width: The image width in pixels. -->
 
   <!-- Start raspicam_node: -->
   <node pkg="raspicam" type="raspicam_node" name="$(arg node)"

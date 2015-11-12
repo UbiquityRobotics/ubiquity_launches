@@ -1,8 +1,13 @@
 <launch>
+  <!--Summary: Launch the ROS `teleop_twist_joy` node. -->
+  <!--Overview: The launch file for this directory starts the ROS
+      [`teleop_twist_joy`](http://wiki.ros.org/teleop_twist_joy) node. -->
+
   <!-- Required arguments: -->
   <arg name="robot_base" />
+    <!--robot_base: The name of the robot base (e.g. "magin", "loki", etc. -->
 
-  <!-- Conveniecne arguments: -->
+  <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="ttj"  value="teleop_twist_joy" />
 

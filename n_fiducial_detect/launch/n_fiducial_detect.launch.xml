@@ -1,10 +1,24 @@
 <!-- Fiducial_Detect Node -->
 <launch>
+  <!--Summary: Node that detects fiducial markers in images. -->
+  <!--Overview:
+      The launch file for this directory starts the fiducial detection
+      portion of the Ubiquty Robots
+      [fiducial](https://github.com/UbiquityRobotics/fiducials)
+      that is used to detect ceiling fiducials for localization.
+      It will in images from an image topic and genarate a topic
+      that contains information about each fiducial in the image. -->
+
   <!-- namespace for camera input -->
   <arg name="camera" default="/camera"/>
+    <!--camera: The ROS topic to subscribe for for camera images. -->
   <arg name="image" default="image_rect"/>
+    <!--image: The ROS sub-topic to fetch the rectangular image from. -->
   <arg name="fiducial_len" default="0.146"/>
+    <!--fiducial_len: The length of one fiducial edge in meters. -->
   <arg name="undistort_points" default="false"/>
+    <!--undistort_points: If `true`, the points will be undistorted
+        otherwise they will be left distorted. -->
 
   <node pkg="fiducial_detect" name="fiducial_detect"
     type="fiducial_detect" output="screen" respawn="true">

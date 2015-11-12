@@ -1,6 +1,12 @@
 <launch>
+  <!--Summary: Launch a node to control the serial port. -->
+  <!--Overview: The launch file for this directory starts the Ubiquity Robots
+  [`bus_server`](https://github.com/UbiquityRobotics/bus_server)
+  package that interfaces to the robot serial port. -->
+
   <!-- Required arguments: -->
   <arg name="robot_base" />
+     <!--robot_base: The robot base name (e.g. "magni", "loki", etc.) -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />

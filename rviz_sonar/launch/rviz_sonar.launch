@@ -1,6 +1,11 @@
 <launch>
+  <!--Summary: Show sonars in RViz.-->
+  <!--Overview: This launch file directory will launch RViz so that it
+      is showing the results of the sonars. -->
+
   <!-- Required arguments: -->
   <arg name="robot_base" />
+    <!--robot_base: The name of the robot base (e.g. "magni", "loki", etc.) -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />

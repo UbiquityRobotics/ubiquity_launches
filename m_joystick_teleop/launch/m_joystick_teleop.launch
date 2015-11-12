@@ -1,6 +1,14 @@
 <launch>
+  <!--Summary: Start joystick remote control nodes. -->
+  <!--Overview: The launch file for this directory fires off the joystick
+  nodes to support the wireless PS2/XBox game controller for
+  driving the robot around.  This launch file requires a
+  `robot_base` argument to specify which robot base is being
+  used (e.g `loki`, `magni`, etc.) -->
+
   <!-- Required arguments: -->
   <arg name="robot_base" />
+    <!--robot_base: The robot base being used (e.g. "magni", "loki", etc.) -->
 
   <!-- Convenience arguments -->
   <arg name="root" value="$(find ubiquity_launches)" />
