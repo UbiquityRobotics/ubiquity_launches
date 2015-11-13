@@ -1,0 +1,34 @@
+<launch>
+  <!--Summary: Relay messages from one topic to another. -->
+  <!--Overview: This launch file directory will start a node that
+      runs the ROS [relay](http://wiki.ros.org/topic_tools/relay) node
+      that forwards messages from one topic to another one. -->
+
+  <!-- Required arguments: -->
+  <arg name="in_topic" />
+    <!--in_topic: The input topic name. -->
+  <arg name="out_topic" />
+    <!--out_topic: The output topic name. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="node" value="relay" />
+
+  <!-- Optional arguments: -->
+  <arg name="node_name" default="n_$(arg node)" />
+    <!--node_name: The name to assign to the node. -->
+  <arg name="unreliable" default="False" />
+    <!--unreliable: Set to `True` to negociate an unreliable connection
+        for inbound data; other set to `False` for a reliable connection.  -->
+  <arg name="lazy" default="False" />
+    <!--laxy: Set to `True` defer subscribint to the input topic until
+        after there is at least one output topic; otherwise set to `False`
+	to always subscribe to both topics. -->
+
+  <!-- Start relay node: -->
+  <node name="$(arg node_name)" pkg="topic_tools" type="relay"
+   args="$(arg in_topic) $(arg out_topic)" output="screen" >
+    <param name="unreliable" value="$(arg unreliable) "/>
+    <param name="lazy"       value="$(arg lazy) "/>
+  </node>
+
+</launch>

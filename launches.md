@@ -20,6 +20,8 @@ The following executables are available in `bin`:
 
 * `loki_view_raspicam`: Show the Loki camera.
 
+* `magni_base`: Run Magni base software.
+
 The following launch file directories are available:
 
 * `m_fiducial_slam`:
@@ -27,6 +29,9 @@ The following launch file directories are available:
 
 * `m_joystick_teleop`:
   Start joystick remote control nodes.
+
+* `m_magni_base`:
+  Start the Magni base nodes.
 
 * `m_raspicam_raw`:
   Start nodes needed to support the Raspberry Pi camera.
@@ -55,14 +60,23 @@ The following launch file directories are available:
 * `n_map_server`:
   Start a ROS map_server node.
 
+* `n_motor_node`:
+  Start Magni motor controller software node.
+
 * `n_move_base`:
   Run the ROS move_base node.
 
 * `n_raspicam`:
   Start a node to read the Raspberry Pi camera.
 
+* `n_relay`:
+  Relay messages from one topic to another.
+
 * `n_robot_state_publisher`:
   Launch the ROS `robot_state_publisher` node.
+
+* `n_spawner`:
+  Runs the ROS spawn node.
 
 * `n_teleop_twist_joy`:
   Launch the ROS `teleop_twist_joy` node.
@@ -119,6 +133,10 @@ This program will view the regular (gscam) camera topic.
 
 This program will view the new `raspicam` camera topic.
 
+### `magni_base` Executable:
+
+This program starts up the Magni base nodes.
+
 ## Launch File Directories
 
 ### `m_fiducial_slam` Launch File Directory
@@ -150,6 +168,16 @@ This launch file has the following argument:
 
 * robot_base (Required):
   The robot base being used (e.g. "magni", "loki", etc.)
+
+### `m_magni_base` Launch File Directory
+
+This node fires up the various nodes to operate the
+Magni robot base.
+
+This launch file has the following argument:
+
+* robot_base (Required):
+  The robot base (e.g. "magni", "loki", etc.) to use.
 
 ### `m_raspicam_raw` Launch File Directory
 
@@ -292,6 +320,16 @@ The launch file for this directory starts the ROS
 
 This launch file has no arguments.
 
+### `n_motor_node` Launch File Directory
+
+This library launch file starts the Magni motor controller
+node that controls the robot base via a serial port.
+
+This launch file has the following argument:
+
+* node_name (Optional, default: 'n_$(arg node)'):
+  The name to assign to the node.
+
 ### `n_move_base` Launch File Directory
 
 The launch file for this directory starts the ROS
@@ -333,6 +371,29 @@ This launch file has the following arguments:
 * width (Optional, default: '640'):
   The image width in pixels.
 
+### `n_relay` Launch File Directory
+
+This launch file directory will start a node that
+runs the ROS [relay](http://wiki.ros.org/topic_tools/relay) node
+that forwards messages from one topic to another one.
+
+This launch file has the following arguments:
+
+* in_topic (Required):
+  The input topic name.
+
+* out_topic (Required):
+  The output topic name.
+
+* node_name (Optional, default: 'n_$(arg node)'):
+  The name to assign to the node.
+
+* unreliable (Optional, default: 'False'):
+  Set to `True` to negociate an unreliable connection
+  for inbound data; other set to `False` for a reliable connection.
+
+* lazy (Optional, default: 'False'):
+
 ### `n_robot_state_publisher` Launch File Directory
 
 The launch file for this directory starts the ROS
@@ -343,6 +404,20 @@ This launch file has the following argument:
 
 * robot_base (Required):
   The name of the robot base (e.g. "magni", "loki", etc."
+
+### `n_spawner` Launch File Directory
+
+This launch file directory will start a node that
+runs the ROS [spawner](http://wiki.ros.org/controller_manager) node
+provides a hard realtime loop to control a robot mechanism.
+
+This launch file has the following arguments:
+
+* arguments (Required):
+  The arguments to pass into the spawner.
+
+* node_name (Optional, default: 'n_$(arg node)'):
+  The name to assign to the node.
 
 ### `n_teleop_twist_joy` Launch File Directory
 

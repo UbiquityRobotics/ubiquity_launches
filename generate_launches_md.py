@@ -236,6 +236,7 @@ class Launch_File:
 		    #print("    comment4: '{0}'".format(comment))
 
 	# Parse the XML:
+	#print("{0}:".format(full_file_name))
 	tree = ET.fromstring(xml_text)
 	requireds = []
 	optionals = []
