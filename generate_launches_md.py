@@ -10,41 +10,152 @@ import xml.etree.ElementTree as ET
 def main():
     """ main program """
 
-    full_file_names = []
+    # Search for launch file names:
+    launch_file_names = []
     for root, directory_names, file_names in os.walk("."):
 	#print("root={0}, directory_names={1}, file_names={2}".
 	#  format(root, directory_names, file_names))
 
 	for file_name in file_names:
+	    full_file_name = os.path.join(root, file_name)
 	    if file_name.endswith(".launch.xml") or \
 	      file_name.endswith(".launch"):
-		full_file_name = os.path.join(root, file_name)
-		full_file_names.append(full_file_name)
-		#print("full_file_name={0}".format(full_file_name))
+		launch_file_names.append(full_file_name)
+		#print("launch_file_name={0}".format(launch_file_name))
+
+    # Search for executable files in `bin` directory:
+    executable_file_names = []
+    for root, directory_names, file_names in os.walk("./bin"):
+	for file_name in file_names:
+	    full_file_name = os.path.join(root, file_name)
+	    if os.access(full_file_name, os.X_OK) and \
+	      os.path.isfile(full_file_name) and \
+	      not full_file_name.endswith("~"):
+		executable_file_names.append(full_file_name)
+		#print("executable: {0}".format(full_file_name))
 
     # Make sure we do everything in sorted order:
-    full_file_names.sort()
+    launch_file_names.sort()
+    executable_file_names.sort()
 
-    # Now process each 
+    # Now process each *execubale_file_name*:
+    executable_files = []
+    for executable_file_name in executable_file_names:
+	executable_file = Executable_File.file_parse(executable_file_name)
+	executable_files.append(executable_file)
+
+    # Now process each *launch_file_name*:
     launch_files = []
-    for full_file_name in full_file_names:
-	launch_files.append(Launch_File.file_parse(full_file_name))
+    for launch_file_name in launch_file_names:
+	launch_files.append(Launch_File.file_parse(launch_file_name))
 
     # Open the markdown file:
     md_file = open("launches.md", "wa")
     md_file.write("# Ubiquity Launches\n\n")
 
-    # Write out each section:
+    # Write out each executable file summary:
+    md_file.write("The following executables are available in `bin`:\n\n")
+    for executable_file in executable_files:
+	executable_file.summary_write(md_file)
+
+    # Write out each launch file summary:
     md_file.write("The following launch file directories are available:\n\n")
     for launch_file in launch_files:
 	launch_file.summary_write(md_file)
 
-    # Write out each section:
+    # Write out each executable file section:
+    md_file.write("## Executables\n\n")
+    for executable_file in executable_files:
+	executable_file.section_write(md_file)
+
+    # Write out each launch file section:
+    md_file.write("## Launch File Directories\n\n")
     for launch_file in launch_files:
 	launch_file.section_write(md_file)
 
     # Close the markdown file:
     md_file.close()
+
+class Executable_File:
+    """ *Executable_File* is a class that represents a executable file.
+    """
+
+    def __init__(self, name, summary, overview_lines):
+	""" *Executable_File*: ...
+	"""
+
+	# Verify argument types:
+	assert isinstance(name, str)
+	assert isinstance(summary, str)
+	assert isinstance(overview_lines, list)
+
+	# Load up *self*:
+	self.name = name
+	self.summary = summary
+	self.overview_lines = overview_lines
+
+    @staticmethod
+    def file_parse(full_file_name):
+	""" *Executable_File*: Parse *full_file_name* and scrape out
+	    the usable documentation.
+	"""
+
+	# Verify argument types:
+	assert isinstance(full_file_name, str)
+	splits = full_file_name.split('/')
+	executable_name = splits[2]
+	
+	in_file = open(full_file_name, "ra")
+	lines = in_file.readlines()
+	in_file.close()
+
+	summary = ""
+	overview_lines = []
+	for line in lines:
+	    if line.startswith("##"):
+		comment_line = line[2:].strip()
+		if comment_line.startswith("Summary:"):
+		    # We have a summary:
+		    summary = comment_line[8:].strip()
+		elif comment_line.startswith("Overview:"):
+		    pass
+		else:
+		    overview_lines.append(comment_line)
+
+	return Executable_File(executable_name, summary, overview_lines)
+
+    def section_write(self, md_file):
+	""" *Executable_File*: Write the secton for the *Executable_File*
+	    object (i.e. *self*) out to *md_file*.
+	"""
+
+	# Verify argument types:
+	assert isinstance(md_file, file)
+
+	# Grab some values from *self*:
+	name = self.name
+	overview_lines = self.overview_lines
+
+	# Write out the executable section:
+	md_file.write("### `{0}` Executable:\n\n".format(name))
+	for overview_line in overview_lines:
+	    md_file.write("{0}\n".format(overview_line))
+	md_file.write("\n")
+
+    def summary_write(self, md_file):
+	""" *Executable_File*: Write the summary for the *Executable_File*
+	    object (i.e. *self*) out to *md_file*.
+	"""
+
+	# Verify argument types:
+	assert isinstance(md_file, file)
+
+	# Grab some values from *self*:
+	name = self.name
+	summary = self.summary
+
+	# Write out the *summary*:
+	md_file.write("* `{0}`: {1}\n\n".format(name, summary))
 
 class Launch_File:
     def __init__(self, name, argument_comments, requireds, optionals, macros):
@@ -164,7 +275,7 @@ class Launch_File:
 
 	# Write out an item:
 	if "Summary" in argument_comments:
-	    md_file.write("* {0}:\n{1}\n".
+	    md_file.write("* `{0}`:\n{1}\n".
 	      format(name, argument_comments["Summary"]))
 	else:
 	    md_file.write("* {0}: (No Summary Available)\n".format(name))
@@ -186,7 +297,7 @@ class Launch_File:
 	macros = self.macros
 
 	# Output the section heading:
-	md_file.write("## {0} Launch File Directory\n\n".format(name))
+	md_file.write("### `{0}` Launch File Directory\n\n".format(name))
 
 	# Output the overview comment:
 	if "Overview" in argument_comments:

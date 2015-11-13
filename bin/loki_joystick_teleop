@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
+## Summary: Run Loki with a joystick.
+##Overview:
+##  This program is run on the robot and starts up a Loki platform
+##  with a PS3/XBox game controller to control robot motion.
 roslaunch ubiquity_launches m_joystick_teleop.launch robot_base:=loki

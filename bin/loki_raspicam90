@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+##Summary: Run Loki camera at 90 frames per second.
+##Overview:
+##  This program will start the raspicam node at 90 frames per second.
+
 # Start the node:
 roslaunch ubiquity_launches n_raspicam.launch \
   robot_base:=loki frame_rate:=90 quality:=10 &
