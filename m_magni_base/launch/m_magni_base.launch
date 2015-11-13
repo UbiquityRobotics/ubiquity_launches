@@ -8,14 +8,14 @@
     <!--robot_base: The robot base (e.g. "magni", "loki", etc.) to use. -->
 
   <!-- Convenience arguments: -->
-  <arg name="pkg" value="$(find ubiqutity_launches)" />
+  <arg name="pkg" value="$(find ubiquity_launches)" />
   <arg name="node" value="magni_base" />
   <arg name="rsp" value="robot_state_publisher" />
   <arg name="uvc" value="ubiquity_velocity_controller" />
   <arg name="ujp" value="ubiquity_joint_publisher" />
 
   <!-- Load up the base parameters. -->
-  <rosparam command="load" file="$(arg pkg)/n_$(arg node)/params/base.yaml" />
+  <rosparam command="load" file="$(arg pkg)/m_$(arg node)/params/base.yaml" />
 
   <!-- Fire up the robot_state_publisher. -->
   <include file="$(arg pkg)/n_$(arg rsp)/launch/n_$(arg rsp).launch.xml">
@@ -36,7 +36,7 @@
   </include>
 
   <!-- Fire up the motor node. -->
-  <include file="">
+  <include file="$(arg pkg)/n_motor_node/launch/n_motor_node.launch.xml">
     <arg name="node_name" value="motor_node" />
   </include>
 

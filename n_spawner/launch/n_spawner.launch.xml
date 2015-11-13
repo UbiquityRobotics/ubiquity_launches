@@ -16,7 +16,7 @@
     <!--node_name: The name to assign to the node. -->
 
   <!-- Start the spawner node: -->
-  <node name="$(arg node_name)" pkg="controller_manager" type="spawn"
+  <node name="$(arg node_name)" pkg="controller_manager" type="spawner"
    args="$(arg arguments)" output="screen" />
 
 </launch>
