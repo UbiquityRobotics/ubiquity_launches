@@ -1,6 +1,19 @@
 #!/usr/bin/env python
 # Copyright (c) 2015 by Wayne C. Gramlich.  All rights reserved.
 
+# This program sweeps through the `ubiquity_launches` directory
+# and scans executables in the `bin` sub-directory and any launch
+# file anywhere under `ubiquity_launches`.
+#
+# Two operations are performed:
+#
+# * It scrapes executables and launch files to write documentation
+#   into the `launches.md` file.
+#
+# * Using the binary executables, it recursively visits all used
+#   launch files.  If a launch file is not used, it is flagged as
+#   unused and it should be deleted from the repository.
+
 # Import some libraries:
 import glob
 import os
@@ -8,7 +21,10 @@ import re
 import xml.etree.ElementTree as ET
 
 def main():
-    """ main program """
+    """ This is the main program. """
+
+    # List each supported robot base in *robot_bases*:
+    robot_bases = ["loki", "magni"]
 
     # Search for launch file names:
     launch_file_names = []
@@ -47,7 +63,8 @@ def main():
     # Now process each *launch_file_name*:
     launch_files = []
     for launch_file_name in launch_file_names:
-	launch_files.append(Launch_File.file_parse(launch_file_name))
+	launch_file = Launch_File.file_parse(launch_file_name, robot_bases)
+	launch_files.append(launch_file)
 
     # Open the markdown file:
     md_file = open("launches.md", "wa")
@@ -91,7 +108,7 @@ def main():
 	    print("Launch File: '{0}' is unused".format(launch_file.name))
 
 def macro_replace(match, macros):
-    """ Replace "$(arg VALUE)", with the value from *macros* and return it.
+    """ Replace "$(arg VALUE)" with the value from *macros* and return it.
     """
 
     # Verify arguments:
@@ -118,11 +135,13 @@ def macro_replace(match, macros):
     return result
 
 class Executable_File:
-    """ *Executable_File* is a class that represents a executable file.
+    """ *Executable_File* is a class that represents an executable file.
     """
 
     def __init__(self, name, summary, overview_lines, launch_base_name):
-	""" *Executable_File*: ...
+	""" *Executable_File*: Initialize the *Executable_File* object
+	    (i.e. *self*) with *name*, *summary*, *overview_lines*, and
+	    *launch_base_name*.
 	"""
 
 	# Verify argument types:
@@ -132,10 +151,10 @@ class Executable_File:
 	assert launch_base_name == None or isinstance(launch_base_name, str)
 
 	# Load up *self*:
-	self.name = name
-	self.summary = summary
-	self.overview_lines = overview_lines
-	self.launch_base_name = launch_base_name
+	self.name = name			# Executable base name
+	self.summary = summary			# One line summary
+	self.overview_lines = overview_lines	# Multi-line overview
+	self.launch_base_name = launch_base_name # Root launch file that is used
 
     @staticmethod
     def file_parse(full_file_name):
@@ -148,35 +167,51 @@ class Executable_File:
 	splits = full_file_name.split('/')
 	executable_name = splits[2]
 	
+	# Open *full_file_name* and slurp it into *lines*:
 	in_file = open(full_file_name, "ra")
 	lines = in_file.readlines()
 	in_file.close()
 
+	# Sweep whtourh *lines* and extract *summary*, *overview_lines*,
+	# and *launch_base_name*.  Leave *launch_base_name* as *None*
+	# if we do not find a `roslaunch ...` comman in the executable:
 	launch_base_name = None
 	summary = ""
 	overview_lines = []
 	for line in lines:
+	    # Comments that we scan start with `##`:
 	    if line.startswith("##"):
+		# Strip off the `##`:
 		comment_line = line[2:].strip()
+
+		# `##Sumarry: ...` is the one line *summary*:
 		if comment_line.startswith("Summary:"):
-		    # We have a summary:
+		    # We have a one line *summary*:
 		    summary = comment_line[8:].strip()
 		elif comment_line.startswith("Overview:"):
+		    # Ignore the `##Overview:` line:
 		    pass
 		else:
+		    # Everything else that starts with `##` is an overview line:
 		    overview_lines.append(comment_line)
+
+	    # Deal with `roslaunch ...` command:
 	    if line.startswith("roslaunch"):
+		# Grab *launch_file_name*:
 		splits = line.split(' ')
 		launch_file_name = splits[2]
 		#print("lauch_file_name={0}".format(launch_file_name))
+
+		# Grab the *launch_base_name*:
 		splits = launch_file_name.split('.')
 		launch_base_name = splits[0]
 
+	# Construct and return the *Executable_File* object:
 	return Executable_File(
 	  executable_name, summary, overview_lines, launch_base_name)
 
     def section_write(self, md_file):
-	""" *Executable_File*: Write the secton for the *Executable_File*
+	""" *Executable_File*: Write the section for the *Executable_File*
 	    object (i.e. *self*) out to *md_file*.
 	"""
 
@@ -216,11 +251,19 @@ class Executable_File:
 	# Verify argument types:
 	assert isinstance(launch_files_table, dict)
 
+	# Grab *launch_base_name* which can be either *None* or a string:
 	launch_base_name = self.launch_base_name
-	if launch_base_name in launch_files_table:
+
+	# Dispatch on *launch_base_name*:
+	if launch_base_name == None:
+	    # Ignore executable that do not have `roslaunch ...`:
+	    pass
+	elif launch_base_name in launch_files_table:
+	    # *launch_base_name* exists and should be recursivly visited:
 	    launch_file = launch_files_table[launch_base_name]
 	    launch_file.visit(launch_files_table)
-	elif launch_base_name != None:
+	else:
+	    # Print out an error message:
 	    print("Executable '{0}' can not find launch file directory '{1}'".
 	      format(self.name, launch_base_name))
 
@@ -242,22 +285,23 @@ class Launch_File:
 	assert isinstance(conditionals, list)
 
 	# Load up *self*:
-	self.name = name
-	self.argument_comments = argument_comments
-	self.requireds = requireds
-	self.optionals = optionals
-	self.macros = macros
-	self.includes = includes
-	self.conditionals = conditionals
-	self.visited = False
+	self.name = name		# Launch file base name
+	self.argument_comments = argument_comments # All `<!-- ... -->` comments
+	self.requireds = requireds	# Required arguments
+	self.optionals = optionals	# Option arguments
+	self.macros = macros		# Convenience arguments (i.e. macros)
+	self.includes = includes	# Included launch files
+	self.conditionals = conditionals # Launch files that use robot_base arg.
+	self.visited = False		# Flag for mark/sweep recursive visit
 
     @staticmethod
-    def file_parse(full_file_name):
+    def file_parse(full_file_name, robot_bases):
 	""" *Launch_File*: Process one launch file.
 	"""
 
 	# Verify argument types:
 	assert isinstance(full_file_name, str)
+	assert isinstance(robot_bases, list)
 
 	# Do some file/directory stuff:
 	root_path = full_file_name.split('/')
@@ -314,7 +358,8 @@ class Launch_File:
 	requireds = []
 	optionals = []
 
-	# Create an empty *macros* mapping table:
+	# Create *includes* and *conditionals* list, in addition to,
+	# the *macros* table:
 	macros = {}
 	includes = []
 	conditionals = []
@@ -359,7 +404,7 @@ class Launch_File:
 			#  format(file_after))
 
 			# Search for each *robot_base*:
-			for robot_base in ["loki", "magni"]:
+			for robot_base in robot_bases:
 			    # Subsitute in *robot_base*:
 			    #print("robot_base='{0}'".format(robot_base))
 			    #print("file_name before='{0}'".format(file_name))
@@ -451,7 +496,7 @@ class Launch_File:
 	    md_file.write("\n")
 
     def show(self):
-	""" *Launch_File*: Show contents of the *Launch_File* object
+	""" *Launch_File*: Print short contents of the *Launch_File* object
 	    (i.e. *self*).
 	"""
 
@@ -488,9 +533,11 @@ class Launch_File:
 	# Verify argument types:
 	assert isinstance(launch_files_table, dict)
 
+	# Only work on launch files that have not been *visited*:
 	if not self.visited:
 	    self.visited = True
 
+	    # Recursively visit each mandatory *include* launch file:
 	    for include in self.includes:
 		if include in launch_files_table:
 		    child = launch_files_table[include]
@@ -499,6 +546,8 @@ class Launch_File:
 		    print("Launch file '{0}' references non-existant '{1}'".
 		      format(self.name, include))
 
+	    # Also visit each *conditional* launch file (i.e. it has
+	    # `robot_base` argument in the name):
 	    for conditional in self.conditionals:
 		#print("conditional:{0}".format(conditional))
 		if conditional in launch_files_table:
