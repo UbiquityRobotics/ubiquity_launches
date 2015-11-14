@@ -225,11 +225,11 @@ class Executable_File:
 	      format(self.name, launch_base_name))
 
 class Launch_File:
-    def __init__(self,
-      name, argument_comments, requireds, optionals, macros, includes):
+    def __init__(self, name,
+      argument_comments, requireds, optionals, macros, includes, conditionals):
 	""" *Launch_File*: Initialize the *Launch_File* object (i.e. *self*)
 	    with *name*, *argument_comments*, *requireds*, *optionals*,
-	    *macros*, and *includes*.
+	    *macros*, *includes*, and *conditionals*.
 	"""
 
 	# Verify argument types:
@@ -239,6 +239,7 @@ class Launch_File:
 	assert isinstance(optionals, list)
 	assert isinstance(macros, dict)
 	assert isinstance(includes, list)
+	assert isinstance(conditionals, list)
 
 	# Load up *self*:
 	self.name = name
@@ -247,6 +248,7 @@ class Launch_File:
 	self.optionals = optionals
 	self.macros = macros
 	self.includes = includes
+	self.conditionals = conditionals
 	self.visited = False
 
     @staticmethod
@@ -315,6 +317,7 @@ class Launch_File:
 	# Create an empty *macros* mapping table:
 	macros = {}
 	includes = []
+	conditionals = []
 
 	# Visit all of the tags under the <Launch> tag:
 	for child in tree:
@@ -338,27 +341,60 @@ class Launch_File:
 	    elif child_tag == "include":
 		# We have <include ...>:
 		if "file" in attributes:
-		    file_before = attributes["file"]
+		    # Repeatably perform macro substitution on *file_name*:
+		    file_name = attributes["file"]
+		    file_name_previous = ""
+		    while file_name_previous != file_name:
+			file_name_previous = file_name
+			file_name = re.sub(r"\$\(arg .*?\)",
+			  lambda match: macro_replace(match, macros), file_name)
+			#print("'{0}'=>'{1}'".
+			#  format(file_name_previous, file_name))
 
-		    # This does a macro substitution on the *file_before*:
-		    file_middle = re.sub(r"\$\(arg .*?\)",
-		      lambda match: macro_replace(match, macros), file_before)
-		    # print("'{0}'=>'{1}'".format(file_before, file_after))
+		    # Determine if we have a `robot_base` argument to deal with:
+		    if file_name.find("[arg:robot_base]") >= 0:
+			# We have a `robot_base` argument:
 
-		    # This kludge does it again:
-		    file_after = re.sub(r"\$\(arg .*?\)",
-		      lambda match: macro_replace(match, macros), file_middle)
+			#print("robot_base <include...>: {0}".
+			#  format(file_after))
 
-		    # Now grab the include file base name;
-		    splits = file_after.split('/')
-		    include_xml_name = format(splits[-1])
-		    splits = include_xml_name.split('.')
-		    include_base_name = splits[0]
-		    #print("include_name='{0}'".format(include_name))
-		    includes.append(include_base_name)
+			# Search for each *robot_base*:
+			for robot_base in ["loki", "magni"]:
+			    # Subsitute in *robot_base*:
+			    #print("robot_base='{0}'".format(robot_base))
+			    #print("file_name before='{0}'".format(file_name))
+			    conditional_file_name = \
+			      re.sub(r"(\[arg:robot_base\])",
+			      robot_base, file_name)
+			    #print("file_name after='{0}'".
+			    #  format(conditional_file_name))
 
-	launch_file = Launch_File(launch_file_name,
-	   argument_comments, requireds, optionals, macros, includes)
+                            # Extract the *conditional_base_name*:
+			    splits = conditional_file_name.split('/')
+			    include_xml_name = splits[-1]
+			    splits = include_xml_name.split('.')
+			    conditional_base_name = splits[0]
+			    #print("condtional_base_name='{0}:{1}'\n".
+			    #  format(conditional_base_name, robot_base))
+
+			    # Keep track of *conditional_base_name*
+			    # in *conditionals* list:
+			    conditionals.append(conditional_base_name)
+                    else:
+			# Now grab the *include_base_name*:
+			splits = file_name.split('/')
+			include_xml_name = splits[-1]
+			splits = include_xml_name.split('.')
+			include_base_name = splits[0]
+			#print("include_base_name='{0}'".
+			#  format(include_base_name))
+
+			# Collect *include_base_name* in *includes* list:
+			includes.append(include_base_name)
+
+	# Construct and return *launch_file*:
+	launch_file = Launch_File(launch_file_name, argument_comments,
+	  requireds, optionals, macros, includes, conditionals)
 	return launch_file
  
     def section_write(self, md_file):
@@ -462,6 +498,15 @@ class Launch_File:
 		else:
 		    print("Launch file '{0}' references non-existant '{1}'".
 		      format(self.name, include))
+
+	    for conditional in self.conditionals:
+		#print("conditional:{0}".format(conditional))
+		if conditional in launch_files_table:
+		    child = launch_files_table[conditional]
+		    child.visit(launch_files_table)
+		else:
+		    print("Launch file '{0}' uses non-existant base file '{1}'".
+		      format(self.name, conditional))
 	
 if __name__ == "__main__":
     main()
