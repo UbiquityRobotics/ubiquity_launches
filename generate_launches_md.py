@@ -76,11 +76,52 @@ def main():
     # Close the markdown file:
     md_file.close()
 
+    # Create *launch_files_table*:
+    launch_files_table = {}
+    for launch_file in launch_files:
+	launch_files_table[launch_file.name] = launch_file
+
+    # Recursively visit each *executable_file*:
+    for executable_file in executable_files:
+	executable_file.visit(launch_files_table)
+
+    # Print out each *launch_file* that was not visited:
+    for launch_file in launch_files:
+	if not launch_file.visited:
+	    print("Launch File: '{0}' is unused".format(launch_file.name))
+
+def macro_replace(match, macros):
+    """ Replace "$(arg VALUE)", with the value from *macros* and return it.
+    """
+
+    # Verify arguments:
+    #assert isinstance(match, re.MatchObject)
+    assert isinstance(macros, dict)
+
+    # We ASSUME that the format of the string is "$(COMMAND VALUE)".
+    # First split the match string at the space:
+    splits = match.group().split()
+
+    # Grabe the *command* and *value*:
+    command = splits[0][2:]
+    value = splits[1][:-1]
+
+    # Now only substitute argument values:
+    result = ""
+    #print("macros=", macros)
+    if command == "arg" and value in macros:
+	# We have an argument value:
+	result = macros[value]
+    else:
+	# Leave everything else more or less alone:
+	result = "[{0}:{1}]".format(command, value)
+    return result
+
 class Executable_File:
     """ *Executable_File* is a class that represents a executable file.
     """
 
-    def __init__(self, name, summary, overview_lines):
+    def __init__(self, name, summary, overview_lines, launch_base_name):
 	""" *Executable_File*: ...
 	"""
 
@@ -88,11 +129,13 @@ class Executable_File:
 	assert isinstance(name, str)
 	assert isinstance(summary, str)
 	assert isinstance(overview_lines, list)
+	assert launch_base_name == None or isinstance(launch_base_name, str)
 
 	# Load up *self*:
 	self.name = name
 	self.summary = summary
 	self.overview_lines = overview_lines
+	self.launch_base_name = launch_base_name
 
     @staticmethod
     def file_parse(full_file_name):
@@ -109,6 +152,7 @@ class Executable_File:
 	lines = in_file.readlines()
 	in_file.close()
 
+	launch_base_name = None
 	summary = ""
 	overview_lines = []
 	for line in lines:
@@ -121,8 +165,15 @@ class Executable_File:
 		    pass
 		else:
 		    overview_lines.append(comment_line)
+	    if line.startswith("roslaunch"):
+		splits = line.split(' ')
+		launch_file_name = splits[2]
+		#print("lauch_file_name={0}".format(launch_file_name))
+		splits = launch_file_name.split('.')
+		launch_base_name = splits[0]
 
-	return Executable_File(executable_name, summary, overview_lines)
+	return Executable_File(
+	  executable_name, summary, overview_lines, launch_base_name)
 
     def section_write(self, md_file):
 	""" *Executable_File*: Write the secton for the *Executable_File*
@@ -157,11 +208,28 @@ class Executable_File:
 	# Write out the *summary*:
 	md_file.write("* `{0}`: {1}\n\n".format(name, summary))
 
+    def visit(self, launch_files_table):
+	""" *Executable_File*: Recursively visit the *Launch_File* object
+	    referenced by the *Executable_File* object (i.e. *self*).
+	"""
+
+	# Verify argument types:
+	assert isinstance(launch_files_table, dict)
+
+	launch_base_name = self.launch_base_name
+	if launch_base_name in launch_files_table:
+	    launch_file = launch_files_table[launch_base_name]
+	    launch_file.visit(launch_files_table)
+	elif launch_base_name != None:
+	    print("Executable '{0}' can not find launch file directory '{1}'".
+	      format(self.name, launch_base_name))
+
 class Launch_File:
-    def __init__(self, name, argument_comments, requireds, optionals, macros):
+    def __init__(self,
+      name, argument_comments, requireds, optionals, macros, includes):
 	""" *Launch_File*: Initialize the *Launch_File* object (i.e. *self*)
-	    with *name*, *argument_comments*, *requireds*, *optionals*, and
-	    *macros*.
+	    with *name*, *argument_comments*, *requireds*, *optionals*,
+	    *macros*, and *includes*.
 	"""
 
 	# Verify argument types:
@@ -170,6 +238,7 @@ class Launch_File:
 	assert isinstance(requireds, list)
 	assert isinstance(optionals, list)
 	assert isinstance(macros, dict)
+	assert isinstance(includes, list)
 
 	# Load up *self*:
 	self.name = name
@@ -177,6 +246,8 @@ class Launch_File:
 	self.requireds = requireds
 	self.optionals = optionals
 	self.macros = macros
+	self.includes = includes
+	self.visited = False
 
     @staticmethod
     def file_parse(full_file_name):
@@ -240,48 +311,56 @@ class Launch_File:
 	tree = ET.fromstring(xml_text)
 	requireds = []
 	optionals = []
+
+	# Create an empty *macros* mapping table:
 	macros = {}
+	includes = []
 
 	# Visit all of the tags under the <Launch> tag:
 	for child in tree:
 	    # We only care about <Arg ...> tags:
-	    if child.tag == "arg":
-		attributes = child.attrib
+	    child_tag = child.tag
+            attributes = child.attrib
+	    if child_tag == "arg":
+		# We have <arg ...>:
 		name = attributes["name"]
 		if "default" in attributes:
 		    # We have an optional argument:
 		    optionals.append(child)
 		elif "value" in attributes:
 		    # We have a convenience argument (i.e. macro):
-		    macros[name] = attributes["value"]
+		    value = attributes["value"]
+		    macros[name] = value
+		    #print("macros['{0}'] = '{1}'".format(name, value))
 		else:
 		    # We have a required argument:
 		    requireds.append(child)
- 
+	    elif child_tag == "include":
+		# We have <include ...>:
+		if "file" in attributes:
+		    file_before = attributes["file"]
+
+		    # This does a macro substitution on the *file_before*:
+		    file_middle = re.sub(r"\$\(arg .*?\)",
+		      lambda match: macro_replace(match, macros), file_before)
+		    # print("'{0}'=>'{1}'".format(file_before, file_after))
+
+		    # This kludge does it again:
+		    file_after = re.sub(r"\$\(arg .*?\)",
+		      lambda match: macro_replace(match, macros), file_middle)
+
+		    # Now grab the include file base name;
+		    splits = file_after.split('/')
+		    include_xml_name = format(splits[-1])
+		    splits = include_xml_name.split('.')
+		    include_base_name = splits[0]
+		    #print("include_name='{0}'".format(include_name))
+		    includes.append(include_base_name)
+
 	launch_file = Launch_File(launch_file_name,
-	   argument_comments, requireds, optionals, macros)
+	   argument_comments, requireds, optionals, macros, includes)
 	return launch_file
  
-    def summary_write(self, md_file):
-	""" *Launch_File*: Write out the summary item for the *Launch_File*
-	    object (i.e. *self*) to *md_file*:
-	"""
-
-	# Verify argument types:
-	assert isinstance(md_file, file)
-
-	# Grab some values from *self*:
-	name = self.name
-	argument_comments = self.argument_comments
-
-	# Write out an item:
-	if "Summary" in argument_comments:
-	    md_file.write("* `{0}`:\n{1}\n".
-	      format(name, argument_comments["Summary"]))
-	else:
-	    md_file.write("* {0}: (No Summary Available)\n".format(name))
-	md_file.write("\n")
-
     def section_write(self, md_file):
 	""" *Launch_File*: Write out the section for the *Launch_File* object
 	    (i.e. *self*) to *md_file*.
@@ -335,6 +414,55 @@ class Launch_File:
 		md_file.write("{0}\n".format(argument_comments[name]))
 	    md_file.write("\n")
 
+    def show(self):
+	""" *Launch_File*: Show contents of the *Launch_File* object
+	    (i.e. *self*).
+	"""
+
+	# Show *self*:
+        print("Name: {0}".format(self.name))
+	for include in self.includes:
+	    print("  Include: {0}".format(include))
+
+    def summary_write(self, md_file):
+	""" *Launch_File*: Write out the summary item for the *Launch_File*
+	    object (i.e. *self*) to *md_file*:
+	"""
+
+	# Verify argument types:
+	assert isinstance(md_file, file)
+
+	# Grab some values from *self*:
+	name = self.name
+	argument_comments = self.argument_comments
+
+	# Write out an item:
+	if "Summary" in argument_comments:
+	    md_file.write("* `{0}`:\n{1}\n".
+	      format(name, argument_comments["Summary"]))
+	else:
+	    md_file.write("* {0}: (No Summary Available)\n".format(name))
+	md_file.write("\n")
+
+    def visit(self, launch_files_table):
+	""" *Launch_File*: Recursively visit the *Launch_File* object
+	    (i.e. *self*) using *launch_files_table*.
+	"""
+	
+	# Verify argument types:
+	assert isinstance(launch_files_table, dict)
+
+	if not self.visited:
+	    self.visited = True
+
+	    for include in self.includes:
+		if include in launch_files_table:
+		    child = launch_files_table[include]
+                    child.visit(launch_files_table)
+		else:
+		    print("Launch file '{0}' references non-existant '{1}'".
+		      format(self.name, include))
+	
 if __name__ == "__main__":
     main()
 
