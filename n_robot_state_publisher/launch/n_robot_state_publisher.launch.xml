@@ -2,7 +2,9 @@
   <!--Summary: Launch the ROS `robot_state_publisher` node. -->
   <!--Overview: The launch file for this directory starts the ROS
       [`robot_state_publisher`](http://wiki.ros.org/robot_state_publisher)
-      node. -->
+      node.  This launch file selects the `.urdf` file based upon
+      the `robot_base` argument.  The URDF files are stored in
+      `...n_robot_state_publisher/urdf/{robot_base}.urf`. -->
 
   <!-- Required arguments: -->
   <arg name="robot_base" />
@@ -10,10 +12,14 @@
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
-  <arg name="rsp"  value="robot_state_publisher" />
+  <arg name="node"  value="robot_state_publisher" />
+
+  <!-- Optional arguments: -->
+  <arg name="node_name" default="n_$(arg node)" />
+    <!--node_name: The name of the ROS node. -->
 
   <!-- Launch the robot state publisher:  -->
   <param name="robot_description"
-   textfile="$(arg root)/n_$(arg rsp)/urdf/$(arg robot_base).urdf" />
-  <node name="$(arg rsp)" pkg="$(arg rsp)" type="state_publisher" />
+   textfile="$(arg root)/n_$(arg node)/urdf/$(arg robot_base).urdf" />
+  <node name="$(arg node_name)" pkg="$(arg node)" type="state_publisher" />
 </launch>
