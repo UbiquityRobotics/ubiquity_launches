@@ -14,7 +14,7 @@
     <!--camera: The ROS topic to subscribe for for camera images. -->
   <arg name="image" default="image_rect"/>
     <!--image: The ROS sub-topic to fetch the rectangular image from. -->
-  <arg name="fiducial_len" default="0.146"/>
+  <arg name="fiducial_len" default="0.2"/>
     <!--fiducial_len: The length of one fiducial edge in meters. -->
   <arg name="undistort_points" default="false"/>
     <!--undistort_points: If `true`, the points will be undistorted
