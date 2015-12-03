@@ -18,7 +18,7 @@
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="jst" value="joystick_teleop" />
-  <arg name="cam" value="camera" />
+  <arg name="cam" value="raspicam" />
   <arg name="ms"  value="map_server" />
   <arg name="mb"  value="move_base" />
   <arg name="fd"  value="fiducial_detect" />
@@ -34,6 +34,8 @@
   <include
    file="$(arg root)/n_$(arg cam)/launch/n_$(arg cam).launch" >
     <arg name="robot_base" value="$(arg robot_base)"/>
+    <arg name="width" value="1280" />
+    <arg name="height" value="960" />
   </include>
 
   <!-- map node -->
@@ -54,7 +56,7 @@
   <include
    file="$(arg root)/n_$(arg fs)/launch/n_$(arg fs).launch.xml">
     <arg name="mapping_mode" value="$(arg mapping_mode)"/>
-    <arg name="camera_frame" value="raspi_camera_frame"/>
+    <arg name="camera_frame" value="camera_pose"/>
     <arg name="map_frame" value="map"/>
     <arg name="odom_frame" value="odom"/>
     <arg name="pose_frame" value="base_link"/>
