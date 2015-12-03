@@ -15,7 +15,7 @@ plugins:
      type: "costmap_2d::ObstacleLayer"
    - name: sonar_layer
      type: "range_sensor_layer::RangeSensorLayer"
-   - name: footprint_layer
-     type: "costmap_2d::FootprintLayer"
+#   - name: footprint_layer
+#     type: "costmap_2d::FootprintLayer"
    - name: inflation_layer
      type: "costmap_2d::InflationLayer"
