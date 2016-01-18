@@ -1,5 +1,7 @@
 # `ubiquity_launches` Launch File Repository
 
+[![Build Status](https://travis-ci.org/UbiquityRobotics/ubiquity_launches.svg?branch=master)](https://travis-ci.org/UbiquityRobotics/ubiquity_launches)
+
 `ubiquity_launches` is a ROS `git` repository that contains ROS
 `.launch` files and other associated ROS robot configuration files
 (e.g. `.yaml`, `.urdf`, etc.)  In addition, there are shell
