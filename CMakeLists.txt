@@ -16,6 +16,7 @@ catkin_package()
 ## Install ##
 #############
 install(PROGRAMS
+  bin/loki_base
   bin/loki_view_camera
   bin/loki_joystick_teleop
   bin/loki_view_raspicam
