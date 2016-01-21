@@ -38,6 +38,10 @@ install(DIRECTORY m_joystick_teleop/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_joystick_teleop
   PATTERN ".svn" EXCLUDE)
 
+install(DIRECTORY m_loki_base/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_loki_base
+  PATTERN ".svn" EXCLUDE)
+
 install(DIRECTORY m_magni_base/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_magni_base
   PATTERN ".svn" EXCLUDE)
