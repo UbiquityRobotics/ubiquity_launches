@@ -1,5 +1,7 @@
 # `ubiquity_launches` Launch File Repository
 
+[![Build Status](https://travis-ci.org/UbiquityRobotics/ubiquity_launches.svg?branch=master)](https://travis-ci.org/UbiquityRobotics/ubiquity_launches)
+
 `ubiquity_launches` is a ROS `git` repository that contains ROS
 `.launch` files and other associated ROS robot configuration files
 (e.g. `.yaml`, `.urdf`, etc.)  In addition, there are shell
@@ -609,7 +611,6 @@ Here is an example:
         
         roslaunch ubiquity_launches m_fiducial_slam.launch.xml robot_base:=loki
 
-Really ...
 
 ## Some Extra Thoughts
 
@@ -634,6 +635,4 @@ parameter for different variants of the same basic base platform
 (e.g. `botvac50`, `xv11`, etc.)  After the dust settles, the user
 can just run `ur_raspicam` and it will bring up the RaspiCam
 on the appropriate Loki, Magni, or BotVac platform.
-
-
 
