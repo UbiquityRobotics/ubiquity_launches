@@ -611,4 +611,28 @@ Here is an example:
         
         roslaunch ubiquity_launches m_fiducial_slam.launch.xml robot_base:=loki
 
-Really 
+
+## Some Extra Thoughts
+
+Right now all the files in the `.../ubiquity_launches/bin` directory
+have a platform base name embedded in them (e.g. `loki_raspicam`.)
+This is kind of bogus.  It causes there to be a plethora of
+programs in the `bin` directory. In order to solve this problem,
+we need a way to identify the platform base name separate from the
+program name.
+
+For the desktop/laptop, the patform name should just be fetch
+from the ROS parameters table.  Something like `/ur/base_name`
+would be fine.  Thus, `loki_view_raspicam` would simplify to
+`ur_view_raspicam` and would work for the `stage`, `loki`,
+`magni` and `botvac` bases.  The launch file, would set the
+base via appropriate 
+
+For the robot, we should just load the `/ur/base_name` parameter
+from a known file.  There a multitude of different places to store
+the base name and get it set.  We can also have a `/ur/variant`
+parameter for different variants of the same basic base platform
+(e.g. `botvac50`, `xv11`, etc.)  After the dust settles, the user
+can just run `ur_raspicam` and it will bring up the RaspiCam
+on the appropriate Loki, Magni, or BotVac platform.
+
