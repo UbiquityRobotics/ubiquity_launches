@@ -30,6 +30,9 @@ The following launch file directories are available:
 * `m_joystick_teleop`:
   Start joystick remote control nodes.
 
+* `m_loki_base`:
+  Start loki base nodes.
+
 * `m_magni_base`:
   Start the Magni base nodes.
 
@@ -169,6 +172,15 @@ This launch file has the following argument:
 * robot_base (Required):
   The robot base being used (e.g. "magni", "loki", etc.)
 
+### `m_loki_base` Launch File Directory
+
+This launch file launches the core Loki stack
+
+This launch file has the following argument:
+
+* robot_base (Required):
+  The robot base being used (e.g. "magni", "loki", etc.)
+
 ### `m_magni_base` Launch File Directory
 
 This node fires up the various nodes to operate the
@@ -253,7 +265,7 @@ This launch file has the following arguments:
 * image (Optional, default: 'image_rect'):
   The ROS sub-topic to fetch the rectangular image from.
 
-* fiducial_len (Optional, default: '0.146'):
+* fiducial_len (Optional, default: '0.2'):
   The length of one fiducial edge in meters.
 
 * undistort_points (Optional, default: 'false'):
@@ -371,6 +383,8 @@ This launch file has the following arguments:
 * width (Optional, default: '640'):
   The image width in pixels.
 
+* output_prefix (Optional, default: '/camera'):
+
 ### `n_relay` Launch File Directory
 
 This launch file directory will start a node that
@@ -398,12 +412,17 @@ This launch file has the following arguments:
 
 The launch file for this directory starts the ROS
 [`robot_state_publisher`](http://wiki.ros.org/robot_state_publisher)
-node.
+node.  This launch file selects the `.urdf` file based upon
+the `robot_base` argument.  The URDF files are stored in
+`...n_robot_state_publisher/urdf/{robot_base}.urf`.
 
-This launch file has the following argument:
+This launch file has the following arguments:
 
 * robot_base (Required):
   The name of the robot base (e.g. "magni", "loki", etc."
+
+* node_name (Optional, default: 'n_$(arg node)'):
+  The name of the ROS node.
 
 ### `n_spawner` Launch File Directory
 

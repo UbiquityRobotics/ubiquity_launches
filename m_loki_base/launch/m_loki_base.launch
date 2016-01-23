@@ -1,10 +1,6 @@
 <launch>
-  <!--Summary: Start joystick remote control nodes. -->
-  <!--Overview: The launch file for this directory fires off the joystick
-      nodes to support the wireless PS2/XBox game controller for
-      driving the robot around.  This launch file requires a
-      `robot_base` argument to specify which robot base is being
-      used (e.g `loki`, `magni`, etc.) -->
+  <!--Summary: Start loki base nodes. -->
+  <!--Overview: This launch file launches the core Loki stack -->
 
   <!-- Required arguments: -->
   <arg name="robot_base" />
