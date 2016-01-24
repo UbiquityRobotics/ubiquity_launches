@@ -2,8 +2,8 @@
 Changelog for package ubiquity_launches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.1 (2016-01-24)
+------------------
 * Added robot.py and test.launch .
 * Merge branch 'master' of github.com:UbiquityRobotics/ubiquity_launches
 * modifications to make loki_base work
