@@ -1,0 +1,10 @@
+<launch>
+  <machine name="remote"
+   address="toshiba.local" user="wayne"  default="never" />
+  <machine name="robot"
+   address="betty.local" user="ubuntu" default="true"
+   env-loader="/home/ubuntu/ros_setup.sh" />
+  <node machine="robot" name="robot_loop"
+   pkg="ubiquity_launches" type="robot.py"
+   launch-prefix="xterm -fn 9x15bold -e python -m pudb.run" />
+</launch>
