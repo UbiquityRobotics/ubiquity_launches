@@ -1,0 +1,21 @@
+<launch>
+  <!--Summary: Start loki base nodes. -->
+  <!--Overview: This launch file launches the core Loki stack -->
+
+  <!-- Required arguments: -->
+  <arg name="robot_base" />
+    <!--robot_base: The robot base being used (e.g. "magni", "loki", etc.) -->
+
+  <!-- Convenience arguments -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="bsm"  value="$(arg robot_base)_serial_master" />
+  <arg name="rsp"  value="robot_state_publisher" />
+
+  <!-- Fire off each node: -->
+  <include file="$(arg root)/n_$(arg bsm)/launch/n_$(arg bsm).launch.xml" />
+
+  <include file="$(arg root)/n_$(arg rsp)/launch/n_$(arg rsp).launch.xml">
+    <arg name="robot_base" value="$(arg robot_base)" />
+  </include>
+</launch>
+
