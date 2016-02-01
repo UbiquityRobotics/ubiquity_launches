@@ -18,7 +18,7 @@ trap "kill 0" EXIT
 
 # Now open the X11 channel:
 (ssh -Y ubuntu@$ROBOT_HOST \
-  'echo export DISPLAY=$DISPLAY > /tmp/display.sh ; echo $DISPLAY; sleep 260' \
+  'echo export DISPLAY=$DISPLAY > /tmp/display.sh ; echo $DISPLAY; sleep 1000000' \
   1>&2) 2>/tmp/x11up &
 
 # Now we wait for something to be written into `/tmp/x11up` before
