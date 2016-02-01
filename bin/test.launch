@@ -1,9 +1,13 @@
 <launch>
-  <machine name="remote"
-   address="toshiba.local" user="wayne"  default="never" />
+  <!-- Required Arguments -->
+  <arg name="robot_host" />
+  <arg name="platform" />
+
   <machine name="robot"
-   address="betty.local" user="ubuntu" default="true"
+   address="$(arg robot_host)" user="ubuntu"
    env-loader="/home/ubuntu/ros_setup.sh" />
+
+  <node name="x11_channel" pkg="ubiquity_launches" type="x11_channel.sh" />
   <node machine="robot" name="robot_loop"
    pkg="ubiquity_launches" type="robot.py"
    launch-prefix="xterm -fn 9x15bold -e python -m pudb.run" />
