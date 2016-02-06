@@ -15,7 +15,7 @@ def main():
 	platform = "loki"
 	if has_usb_serial:
 	    platform = "magni"
-    print("platform:={0}".format(platform))
+    print("robot_base:={0}".format(platform))
 
 if __name__ == "__main__":
     main()
