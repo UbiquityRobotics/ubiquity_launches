@@ -1,14 +1,28 @@
 <launch>
   <!-- Required Arguments -->
+  <arg name="robot_base" />
+    <!--robot_base: Is the base to use (e.g. "magni", "loki", etc.)  -->
   <arg name="robot_host" />
-  <arg name="platform" />
+    <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
+  <arg name="robot_user" />
+    <!--robot_user: Is the user name to use on the robot. -->
 
+  <!-- We need a way to document Environment variables. -->
+
+  <!-- Convenience Arguments -->
+  <arg name="prefix_enable" value="$(optenv LEV_ROBOT_PREFIX_ENABLE)" />
+  <arg name="launch_prefix$(arg prefix_enable)"
+   value="$(optenv LEV_ROBOT_PREFIX
+   xterm -fn 8x13 -e python -m pudb.run)" />
+  <arg name="launch_prefix$(arg prefix_enable)1" value="" />
+
+  <!-- Remote robot machine -->
   <machine name="robot"
-   address="$(arg robot_host)" user="ubuntu"
-   env-loader="/home/ubuntu/ros_setup.sh" />
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" />
 
-  <node name="x11_channel" pkg="ubiquity_launches" type="x11_channel.sh" />
   <node machine="robot" name="robot_loop"
    pkg="ubiquity_launches" type="robot.py"
-   launch-prefix="xterm -fn 9x15bold -e python -m pudb.run" />
+   launch-prefix="$(arg launch_prefix1)" />
+
 </launch>

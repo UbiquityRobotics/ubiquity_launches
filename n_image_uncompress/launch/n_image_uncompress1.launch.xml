@@ -1,0 +1,30 @@
+<launch>
+  <!--Summary: Uncompress an image stream. -->
+  <!--Overview: This launch file directory will start a node that takes
+      a compressed image message stream and converts it to an uncompressed
+      image stream. -->
+
+  <!-- Required arguments: -->
+  <arg name="camera_name" />
+    <!--camera_name: The base name of the camera that produces compressed
+        images.  The compress input comes in on `.../image` and the output
+	comes out on `.../image_raw`. -->
+  <arg name="robot_base" />
+    <!--robot_base: Is the base to use (e.g. "magni", "loki", etc.)  -->
+  <arg name="robot_host" />
+    <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
+  <arg name="robot_user" />
+    <!--robot_user: Is the user name to use on the robot. -->
+
+  <!-- Remote robot machine -->
+  <machine name="robot"
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- Start republish node: -->
+  <node name="n_image_uncompress" node="robot"
+   pkg="image_transport" type="republish" 
+   args="compressed in:=$(arg camera_name)/image raw out:=$(arg camera_name)/image_raw"
+   output="screen" />
+
+</launch>
