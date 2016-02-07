@@ -119,7 +119,7 @@ def macro_replace(match, macros):
     # First split the match string at the space:
     splits = match.group().split()
 
-    # Grabe the *command* and *value*:
+    # Grab the *command* and *value*:
     command = splits[0][2:]
     value = splits[1][:-1]
 
@@ -172,7 +172,7 @@ class Executable_File:
 	lines = in_file.readlines()
 	in_file.close()
 
-	# Sweep whtourh *lines* and extract *summary*, *overview_lines*,
+	# Sweep though *lines* and extract *summary*, *overview_lines*,
 	# and *launch_base_name*.  Leave *launch_base_name* as *None*
 	# if we do not find a `roslaunch ...` comman in the executable:
 	launch_base_name = None

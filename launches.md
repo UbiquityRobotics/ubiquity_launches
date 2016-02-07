@@ -2,6 +2,8 @@
 
 The following executables are available in `bin`:
 
+* `loki_base`: Run Loki Base Stack
+
 * `loki_camera`: Start the camera on Loki.
 
 * `loki_joystick_teleop`: Run Loki with a joystick.
@@ -22,7 +24,19 @@ The following executables are available in `bin`:
 
 * `magni_base`: Run Magni base software.
 
+* `platform_probe`: 
+
+* `raspicam_view`: Start the Raspberry Pi camera and show its output on the screen.
+
+* `ros_launcher.py`: 
+
+* `roscore_start.sh`: 
+
+* `roslauncher`: 
+
 The following launch file directories are available:
+
+* bin: (No Summary Available)
 
 * `m_fiducial_slam`:
   Start Fiduical SLAM (Simultaneous Localication And Mapping)
@@ -39,6 +53,12 @@ The following launch file directories are available:
 * `m_raspicam_raw`:
   Start nodes needed to support the Raspberry Pi camera.
 
+* `m_raspicam_raw`:
+  Start nodes needed to support the Raspberry Pi camera.
+
+* `m_raspicam_view`:
+  Start all the nodes to view output of Raspberry Pi camera.
+
 * `n_bus_server`:
   Launch a node to control the serial port.
 
@@ -50,6 +70,9 @@ The following launch file directories are available:
 
 * `n_fiducial_slam`:
   Convert fiducial messages into a map and a localize.
+
+* `n_image_uncompress`:
+  Uncompress an image stream.
 
 * `n_image_uncompress`:
   Uncompress an image stream.
@@ -72,11 +95,17 @@ The following launch file directories are available:
 * `n_raspicam`:
   Start a node to read the Raspberry Pi camera.
 
+* `n_raspicam`:
+  Start a node to read the Raspberry Pi camera.
+
 * `n_relay`:
   Relay messages from one topic to another.
 
 * `n_robot_state_publisher`:
   Launch the ROS `robot_state_publisher` node.
+
+* `n_rqt_image_view`:
+  Run `rqt_image_view` to view camera output on a screen.
 
 * `n_spawner`:
   Runs the ROS spawn node.
@@ -91,6 +120,11 @@ The following launch file directories are available:
   Show sonars in RViz.
 
 ## Executables
+
+### `loki_base` Executable:
+
+This program is run on the robot and starts up a Loki platform
+with the basic stack for running the robot
 
 ### `loki_camera` Executable:
 
@@ -140,7 +174,44 @@ This program will view the new `raspicam` camera topic.
 
 This program starts up the Magni base nodes.
 
+### `platform_probe` Executable:
+
+
+### `raspicam_view` Executable:
+
+This program will start the Raspberry Pi camera on the robot and
+show the resulting images on the laptop/desktop machine.  This program
+uses `rqt_image_view` view the image.  Due to race conditions, the
+the `rqt_image_view` program may come up before all image topics
+are present.  When this happens please click on the refresh button
+(a green clockwise arrow) to update the available image topics.
+Please select the topic entitled `/n_raspicam/image/camera/compressed`
+to view a reasonably real-time image coming out of the Raspberry Pi
+camera.
+
+### `ros_launcher.py` Executable:
+
+
+### `roscore_start.sh` Executable:
+
+
+### `roslauncher` Executable:
+
+
 ## Launch File Directories
+
+### `bin` Launch File Directory
+
+This launch file has the following arguments:
+
+* robot_base (Required):
+  Is the base to use (e.g. "magni", "loki", etc.)
+
+* robot_host (Required):
+  Is the robot DNS hostname to use (e.g. "betty.local").
+
+* robot_user (Required):
+  Is the user name to use on the robot.
 
 ### `m_fiducial_slam` Launch File Directory
 
@@ -201,6 +272,39 @@ This launch file has the following argument:
 
 * robot_base (Required):
   The robot base to use (e.g. "magni", "loki", etc.)
+
+### `m_raspicam_raw` Launch File Directory
+
+The launch file for this directory starts the
+Raspberry Pi camera node and a node that uncompress the output that
+comes out of the Raspberry Pi GPU (Graphical Processing Unit.)
+
+This launch file has the following arguments:
+
+* robot_base (Required):
+  The robot base to use (e.g. "magni", "loki", etc.)
+
+* robot_host (Required):
+  Is the robot DNS hostname to use (e.g. "betty.local").
+
+* robot_user (Required):
+  Is the user name to use on the robot.
+
+### `m_raspicam_view` Launch File Directory
+
+Start the Raspberry Pi camera and enough other nodes to
+view the output of the camera.
+
+This launch file has the following arguments:
+
+* robot_base (Required):
+  The robot base to use (e.g. "magni", "loki", etc.)
+
+* robot_host (Required):
+  Is the robot DNS hostname to use (e.g. "betty.local").
+
+* robot_user (Required):
+  Is the user name to use on the robot.
 
 ### `n_bus_server` Launch File Directory
 
@@ -309,6 +413,28 @@ This launch file has the following argument:
   images.  The compress input comes in on `.../image` and the output
   comes out on `.../image_raw`.
 
+### `n_image_uncompress` Launch File Directory
+
+This launch file directory will start a node that takes
+a compressed image message stream and converts it to an uncompressed
+image stream.
+
+This launch file has the following arguments:
+
+* camera_name (Required):
+  The base name of the camera that produces compressed
+  images.  The compress input comes in on `.../image` and the output
+  comes out on `.../image_raw`.
+
+* robot_base (Required):
+  Is the base to use (e.g. "magni", "loki", etc.)
+
+* robot_host (Required):
+  Is the robot DNS hostname to use (e.g. "betty.local").
+
+* robot_user (Required):
+  Is the user name to use on the robot.
+
 ### `n_joy` Launch File Directory
 
 This library launch directory will launch a node that
@@ -385,6 +511,48 @@ This launch file has the following arguments:
 
 * output_prefix (Optional, default: '/camera'):
 
+### `n_raspicam` Launch File Directory
+
+This launch file directory is responsible for
+launching a node to read images from the Raspberry Pi camera.
+
+This launch file has the following arguments:
+
+* robot_base (Required):
+  Is the base to use (e.g. "magni", "loki", etc.)
+
+* robot_host (Required):
+  Is the robot DNS hostname to use (e.g. "betty.local").
+
+* robot_user (Required):
+  Is the user name to use on the robot.
+
+* camera_frame_id (Optional, default: ''):
+
+* camera_info_url (Optional, default: 'file://$(arg root)/n_$(arg node)/params/$(arg robot_base).yaml'):
+
+* camera_name (Optional, default: 'raspicam'):
+  The name of the camera topic.
+
+* framerate (Optional, default: '30'):
+
+* height (Optional, default: '480'):
+  The image height in pixels.
+
+* quality (Optional, default: '20'):
+  The image quality after compression wher 1 is low
+  quality and 100 is high quality.
+
+* srrc_publishing_mode (Optional, default: '0'):
+
+* tf_prefix (Optional, default: ''):
+  A prefix for the various ROS TF frame identifiers.
+
+* width (Optional, default: '640'):
+  The image width in pixels.
+
+* output_prefix (Optional, default: '/camera'):
+
 ### `n_relay` Launch File Directory
 
 This launch file directory will start a node that
@@ -423,6 +591,16 @@ This launch file has the following arguments:
 
 * node_name (Optional, default: 'n_$(arg node)'):
   The name of the ROS node.
+
+### `n_rqt_image_view` Launch File Directory
+
+This runs the `rqt_image_view` node to view a camera
+output stream.
+
+This launch file has the following argument:
+
+* image (Required):
+  The topic to view for the image stream.
 
 ### `n_spawner` Launch File Directory
 

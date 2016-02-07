@@ -12,7 +12,7 @@
   <arg name="node" value="rqt_image_view" />
 
   <!-- Start `rqt_image_view` node: -->
-  <node name="$(arg node)"
+  <node name="n_$(arg node)"
    pkg="rqt_image_view" type="rqt_image_view"
    output="screen">
     <param name="image" value="$(arg image)" />

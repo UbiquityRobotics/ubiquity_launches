@@ -21,7 +21,8 @@
    env-loader="/tmp/env_loader.sh" />
 
   <!-- Start m_raspicam_raw node: -->
-  <include file="$(arg root)/n_$(arg node)/launch/m_raspicam_raw1.launch.xml">
+  <include
+   file="$(arg root)/m_raspicam_raw/launch/m_raspicam_raw1.launch.xml">
     <arg name="robot_base" value="$(arg robot_base)" />
     <arg name="robot_host" value="$(arg robot_host)" />
     <arg name="robot_user" value="$(arg robot_user)" />
@@ -30,6 +31,7 @@
   <!-- Start n_rqt_image_view node: -->
   <include
    file="$(arg root)/n_rqt_image_view/launch/n_rqt_image_view.launch.xml">
+    <arg name="image" value="raspicam/camera" />
   </include>
 
 </launch>
