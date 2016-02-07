@@ -1,0 +1,20 @@
+<launch>
+  <!--Summary: Run `rqt_image_view` to view camera output on a screen. -->
+  <!--Overview: This runs the `rqt_image_view` node to view a camera
+      output stream. -->
+
+  <!-- Required arguments: -->
+  <arg name="image" />
+    <!--image: The topic to view for the image stream. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="node" value="rqt_image_view" />
+
+  <!-- Start `rqt_image_view` node: -->
+  <node name="$(arg node)"
+   pkg="rqt_image_view" type="rqt_image_view"
+   output="screen">
+    <param name="image" value="$(arg image)" />
+  </node>
+</launch>

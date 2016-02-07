@@ -10,12 +10,13 @@ ROBOT_HOST=`echo $ROS_MASTER_URI | sed -e s,http://,, | sed -e s,:11311,,`
 # using `ssh` to remotely execute it:
 cat >/tmp/platform.sh<<EOF
 #!/bin/bash
-source /home/ubuntu/.profile
-rosrun ubiquity_launches platform_probe.py
+source /home/`whoami`/.profile
+echo \$ROS_PACKAGE_PATH > /tmp/ros_package_path
+rosrun ubiquity_launches platform_probe
 EOF
-scp -q /tmp/platform.sh ubuntu@$ROBOT_HOST:/tmp
-ssh ubuntu@$ROBOT_HOST chmod +x /tmp/platform.sh
-PLATFORM=`ssh ubuntu@$ROBOT_HOST /tmp/platform.sh`
+scp -q /tmp/platform.sh $ROBOT_HOST:/tmp
+ssh $ROBOT_HOST chmod +x /tmp/platform.sh
+PLATFORM=`ssh $ROBOT_HOST /tmp/platform.sh`
 #echo PLATFORM=$PLATFORM
 
 # Clear out file we use to indicate when the X11 channel is up:
@@ -29,7 +30,7 @@ trap "kill 0" EXIT
 # Now open the X11 channel using '&' to put it into the background.
 # The last command will sleep for a million seconds to keep the channel
 # open for a while:
-(ssh -Y ubuntu@$ROBOT_HOST \
+(ssh -Y $ROBOT_HOST \
   'echo $DISPLAY > /tmp/display ; echo $DISPLAY; sleep 1000000' \
   1>&2) 2>/tmp/x11up &
 
@@ -48,14 +49,14 @@ source ~/.profile
 export DISPLAY=\`cat /tmp/display\`
 exec "\$@"
 EOF
-scp -q /tmp/env_loader.sh ubuntu@$ROBOT_HOST:/tmp
-ssh ubuntu@$ROBOT_HOST 'chmod +x /tmp/env_loader.sh'
+scp -q /tmp/env_loader.sh $ROBOT_HOST:/tmp
+ssh $ROBOT_HOST 'chmod +x /tmp/env_loader.sh'
 
 # Now we can run the roslaunch command specifying both the PLATFORM
 # and ROBOT_HOST:
 echo roslaunch ubiquity_launches "$@" \
-    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=ubuntu
+    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=`whoami`
 roslaunch      ubiquity_launches "$@" \
-    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=ubuntu
+    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=`whoami`
 
 

@@ -45,7 +45,8 @@
    env-loader="/tmp/env_loader.sh" />
 
   <!-- Start raspicam_node: -->
-  <node pkg="raspicam" type="raspicam_node" name="$(arg node)"
+  <node pkg="raspicam" machine="robot"
+   type="raspicam_node" name="$(arg node)"
    output="screen">
     <param name="camera_frame_id"      value="$(arg camera_frame_id)" />
     <param name="camera_info_url"      value="$(arg camera_info_url)" />
@@ -69,6 +70,5 @@
   -->
   <node name="republish" type="republish" pkg="image_transport" output="screen"
      args="compressed in:=/$(arg node)/camera/image_slow raw out:=$(arg output_prefix)/image_raw" />
-
 
 </launch>

@@ -21,8 +21,8 @@
    address="$(arg robot_host)" user="$(arg robot_user)"
    env-loader="/tmp/env_loader.sh" />
 
-  <!-- Start republish node: -->
-  <node name="n_image_uncompress" node="robot"
+  <!-- Start impage uncompress node: -->
+  <node name="n_image_uncompress" machine="robot"
    pkg="image_transport" type="republish" 
    args="compressed in:=$(arg camera_name)/image raw out:=$(arg camera_name)/image_raw"
    output="screen" />

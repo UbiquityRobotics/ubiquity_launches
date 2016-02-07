@@ -1,0 +1,35 @@
+<launch>
+  <!--Summary: Start all the nodes to view output of Raspberry Pi camera. -->
+  <!--Overview: Start the Raspberry Pi camera and enough other nodes to
+   view the output of the camera. -->
+
+  <!-- Required arguments: -->
+  <arg name="robot_base" />
+    <!--robot_base: The robot base to use (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_host" />
+    <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
+  <arg name="robot_user" />
+    <!--robot_user: Is the user name to use on the robot. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="node" value="raspicam_view" />
+
+  <!-- Remote robot machine -->
+  <machine name="robot"
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- Start m_raspicam_raw node: -->
+  <include file="$(arg root)/n_$(arg node)/launch/m_raspicam_raw1.launch.xml">
+    <arg name="robot_base" value="$(arg robot_base)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+  </include>
+  
+  <!-- Start n_rqt_image_view node: -->
+  <include
+   file="$(arg root)/n_rqt_image_view/launch/n_rqt_image_view.launch.xml">
+  </include>
+
+</launch>
