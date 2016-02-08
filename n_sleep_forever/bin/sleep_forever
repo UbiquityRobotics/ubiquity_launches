@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# 1 billion seconds is 31+ years.  That is close enough to forever:
+sleep 1000000000
