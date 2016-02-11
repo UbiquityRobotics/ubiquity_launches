@@ -2,7 +2,7 @@
 
 ## Development Overview
 
-All of the ubiquity robots use
+All of the Ubiquity robots use
 [ROS](http://www.ros.org/) (Robot Operating System).
 ROS breaks a robot application into a multitude of ROS
 nodes (i.e. processes) running on one or more processors
@@ -12,7 +12,7 @@ The usual method for teaching people to develop ROS robot
 applications is to point them at some ROS tutorials and say
 "go at it".  Unfortunately, this is a little bit dumping
 buckets of blood into shark infested waters and going for
-a little swim.  At Ubiquity Robotics, we robot application
+a little swim.  At Ubiquity Robotics, we want robot application
 developers to have a much less traumatic experience.  For
 this reason, we have invested a great deal of effort to
 make ROS robot application development as easy as possible.
@@ -28,7 +28,8 @@ like a laptop or a desktop, and communicate with the robot
 via a wireless internet connection.  A further complication,
 is Ubiquity Robotics is using a Raspberry Pi 2 processor
 with the ARM7 instruction set, whereas most laptops and
-desktops use the x86 instruction set.
+desktops use the x86 instruction set.  We have to make sure
+that each machine gets the right instruction set.
 
 The Ubiquity Robotics application development environment
 assumes that there are two processors.  The robot processor
@@ -76,13 +77,14 @@ USB WiFi dongles to provide wireless technology.  Similarly,
 we recommend that you invest in a superior dual-band WiFi
 router.  You can spend an enormous amount of time tracking
 down and eradicating flaky WiFi issues and it is better to
-simply avoid the issues by using better hardware.
+simply avoid the issues by using better hardware and better
+antennas.
 
 We use a technology called
 [zeroconf](https://en.wikipedia.org/wiki/Zero-configuration_networking)
 to provide human readable names for the various processors on
 the computer network.  Each robot processor and development processor
-must have a unique host name and *MUST* run zeroconf.  The
+must have a unique host name and **MUST** run zeroconf.  The
 [DNS](https://en.wikipedia.org/wiki/Domain_Name_System) will
 present the DNS names as `hostname.local` where, `hostname` is
 the host name of the robot or development processor.
@@ -90,7 +92,7 @@ the host name of the robot or development processor.
 The ROS community extensively uses
 [Secure Shell](https://en.wikipedia.org/wiki/Secure_Shell)
 to communicate between computers.  The secure shell protocols
-provide an secure and encrypted link between computers.
+provide a secure and encrypted link between computers.
 We require that password keys be properly set up between
 the development processor and the robot processor such that
 a secure link can be established without prompting the user for
@@ -103,7 +105,7 @@ things with it:
   via secure shell.
 
 * We use the secure shell to do X11 protocol forwarding.
-  X11 a fairly old, but reliable, technology for doing remote
+  X11 a fairly old (but reliable) technology for doing remote
   window access.  Using X11 protocol forwarding, we can debug
   a program running on the robot processor with windows that
   show up on the development processor.
@@ -111,11 +113,11 @@ things with it:
 * We can use secure shell to remotely mount a chunk of the
   file system from the robot processor onto the development
   processor.  This allows you to use editors and tools on
-  development system to develop robot code.  There are requirement
+  development system to develop robot code.  There are requirements
   on how all the files are organized on both machines, but
   when all the rules are followed, you can easily build
   the same ROS packages on both your development processor and
-  robot processor.
+  robot processor without any major issues.
 
 The secure shell technology is very useful, but requires some
 effort to set up properly.
@@ -239,7 +241,7 @@ passwords all the time is a requirement.
 
    Now to verify that we succeeded, try the following (notice
    that accent characters (\`) are being used instead of single
-   quotes ("'") :
+   quotes (\') :
 
         ssh `hostname`.local` echo terrific
     
@@ -375,13 +377,16 @@ assume that ROS has already been installed.
 
         mkdir -p ~/catkin_ws/src
 
-2. Now we want to populate the work space with 3 ROS packages:
+2. Now we want to populate the work space with 4 ROS packages:
 
         cd ~/cakin_ws/src
         git clone https://github.com/UbiquityRobotics/ubiquity_launches.git
         git clone https://github.com/UbiquityRobotics/raspicam_node.git
         git clone https://github.com/UbiquityRobotics/userland.git
         git clone https://github.com/UbiquityRobotics/robot_upstart.git
+        source ~/.bashrc
+
+   {Wayne: Make sure $ROS_PACKAGE_PATH is correct.}
 
 3. Now we initialize the Catkin work space:
 
