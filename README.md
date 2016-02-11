@@ -1,5 +1,477 @@
 # `ubiquity_launches` Launch File Repository
 
+## Development Overview
+
+All of the ubiquity robots use
+[ROS](http://www.ros.org/) (Robot Operating System).
+ROS breaks a robot application into a multitude of ROS
+nodes (i.e. processes) running on one or more processors
+that communicate with one another via internet protocols.
+
+The usual method for teaching people to develop ROS robot
+applications is to point them at some ROS tutorials and say
+"go at it".  Unfortunately, this is a little bit dumping
+buckets of blood into shark infested waters and going for
+a little swim.  At Ubiquity Robotics, we robot application
+developers to have a much less traumatic experience.  For
+this reason, we have invested a great deal of effort to
+make ROS robot application development as easy as possible.
+
+The reality is that setting up a workable software
+development environment for developing ROS applications
+is actually pretty involved.  One major complication is
+that the robot typically does not have a display, keyboard,
+and mouse.  Even if it did, it not particularly easy to
+walk around with the robot as it moves.  The more workable
+solution is to develop software on a stationary platform
+like a laptop or a desktop, and communicate with the robot
+via a wireless internet connection.  A further complication,
+is Ubiquity Robotics is using a Raspberry Pi 2 processor
+with the ARM7 instruction set, whereas most laptops and
+desktops use the x86 instruction set.
+
+The Ubiquity Robotics application development environment
+assumes that there are two processors.  The robot processor
+is attached to the robot and the development processor is
+associated with either laptop or desktop computer.
+
+Ubiquity Robotics currently uses a
+[Raspberry Pi Foundation](https://www.raspberrypi.org/)
+[Raspberry Pi 2 Model B](https://www.raspberrypi.org/products/raspberry-pi-2-model-b/)
+for the robot processor.  Since "Raspberry Pi 2 Model B" is a
+mouthful of words, we shorten it down to a more manageable "RasPi2".
+The RasPi2 is a quad-core ARM Cortex-A7 CPU with 1GB of RAM,
+with 4 USB Ports, an Ethernet port, a camera interface, and
+a micro-SD card.  We plug a dual-band USB WiFi Dongle into
+one of the USB port slots to provide wireless connectivity
+with the development processor through a commercial
+off-the-shelf WiFi router.
+
+The development processor must be a 64-bit x86 hardware
+architecture processor.  You can either run some flavor
+of Ubuntu natively on the processor, or you can run a
+different operating system (e.g. Windows, MacOS, Solaris,
+etc.) and run [VirtualBox](https://www.virtualbox.org/)
+to run the Ubuntu operating system.  Neither 32-bit
+processors nor other virtual machines (e.g. VMWare,  Parallels,
+etc.) are supported.
+
+ROS currently only runs under Ubuntu and its variants (e.g.
+Kubuntu, Xubuntu, Lubuntu, etc.)  No other operating system
+options are currently supported by the ROS community.
+To be consistent, the VirtualBox image that we recommend that
+you use has [Lubuntu](/http://lubuntu.net/) installed on it.
+We also install Lubuntu on the robot processor, just in case
+you choose to plug a monitor/keyboard/mouse into the RasPi2.
+Lubuntu is a very light weight window system that does not
+over tax the RasPi2 robot processor.
+
+We really encourage people not to cut corners when it comes
+to setting up your WiFi network.  If you have heard the saying
+that "a chain is only as strong as its weakest link", our
+experience is that WiFi is the weak link in robotics.  We
+strongly recommend that people use dual band
+[802.11ac](https://en.wikipedia.org/wiki/IEEE_802.11ac)
+USB WiFi dongles to provide wireless technology.  Similarly,
+we recommend that you invest in a superior dual-band WiFi
+router.  You can spend an enormous amount of time tracking
+down and eradicating flaky WiFi issues and it is better to
+simply avoid the issues by using better hardware.
+
+We use a technology called
+[zeroconf](https://en.wikipedia.org/wiki/Zero-configuration_networking)
+to provide human readable names for the various processors on
+the computer network.  Each robot processor and development processor
+must have a unique host name and *MUST* run zeroconf.  The
+[DNS](https://en.wikipedia.org/wiki/Domain_Name_System) will
+present the DNS names as `hostname.local` where, `hostname` is
+the host name of the robot or development processor.
+
+The ROS community extensively uses
+[Secure Shell](https://en.wikipedia.org/wiki/Secure_Shell)
+to communicate between computers.  The secure shell protocols
+provide an secure and encrypted link between computers.
+We require that password keys be properly set up between
+the development processor and the robot processor such that
+a secure link can be established without prompting the user for
+a password.
+
+Once we have secure shell properly installed, we can do three
+things with it:
+
+* The `roslaunch` program can launch ROS nodes (i.e. processes)
+  via secure shell.
+
+* We use the secure shell to do X11 protocol forwarding.
+  X11 a fairly old, but reliable, technology for doing remote
+  window access.  Using X11 protocol forwarding, we can debug
+  a program running on the robot processor with windows that
+  show up on the development processor.
+
+* We can use secure shell to remotely mount a chunk of the
+  file system from the robot processor onto the development
+  processor.  This allows you to use editors and tools on
+  development system to develop robot code.  There are requirement
+  on how all the files are organized on both machines, but
+  when all the rules are followed, you can easily build
+  the same ROS packages on both your development processor and
+  robot processor.
+
+The secure shell technology is very useful, but requires some
+effort to set up properly.
+
+Lastly, we have an entire architecture for structuring ROS launch
+files.  A ROS Launch file is a sequence of one or more files in
+XML format, that when fed into the `roslaunch` program cause all
+of the ROS nodes needed to run a robot to be started.  The goal
+of the architecture is:
+
+* Sharable: The launch files are shared among one another.
+
+* Platform Neutral: The launch files can be used for more than on
+  robot platform.
+
+* Complete: Only one top level robot launch file is specified to
+  start your robot and any ancillary visualization tools need for
+  the your robot application.
+
+{Summary here}
+
+## Development Environment Details
+
+This is where we go through the steps required to set up the
+Ubiquity ROS development environment.  This is currently
+broken into a bunch of steps.  Eventually, most of these
+steps will be more automated.
+
+### Initial setup:
+
+We are going to assume that you are doing all of these instructions
+from the comfort of your own development machine.  We further
+assume that you can connect to the `ubuntu` user on your robot.
+We further assume that you can already access the robot via
+secure shell.
+
+1. Install some software on your development machine:
+
+        sudo apt-get install -y ssh fuse sshfs
+        sudo apt-get install -y 
+        sudo gpasswd -a $USER fuse
+
+2. Let's make sure that you can log into your robot via `ssh`.
+   Please replace ROBOT with your robot host name:
+
+        ssh ubuntu@ROBOT.local echo hello
+        # You will probably be prompted for the `ubuntu` account
+        # password (usually `ubuntu`).  When done it will print
+        # out `hello`.
+
+3. Create your new USER account on the development machine.
+   USER can be up to 32 characters of upper/lower case letters,
+   digits, and underscores:
+
+        sudo adduser USER
+        # It will prompt you for account password.
+        # It will prompt for a bunch of account information.
+        
+4. Now log into your new USER account:
+
+        su USER
+        # It will prompt you for your new password.
+
+5. Now let's create the same USER account on the ROBOT
+   machine.
+
+        ssh ubuntu@ROBOT.local
+        # You will probably be prompted for the `ubuntu` password.
+        # The prompt will probably change to `ubuntu@ROBOT`.
+        sudo adduser USER
+        # As before, it will for the `ubuntu` password.
+        # Please fill in the rest of the account information
+        sudo addgroup USER video
+        exit
+        # This should return you to the development processor.
+        # Now verify that you can log in as USER on the
+        # robot processor:
+        ssh USER@ROBOT.local echo yippee
+        # You should be prompted for the USER password.
+        # If everything worked, you should `yippee` printed out.
+
+   That should get the USER account built on the robot
+   processor with access to the `video` group.
+
+### Password Free Secure Shell
+
+Setting up Secure Shell to operate without prompting you for
+passwords all the time is a requirement.
+
+1. Generate a public/private key on the development machine:
+
+        if [ ! -f ~/.ssh/id_rsa ] ; then ssh-keygen -t ras ; fi
+
+   If you already have an RSA public/private key, this
+   line will return with no further prompting and you need
+   not continue.  If you do get a prompt, it will probably
+   look like:
+
+        Enter file in which to save the key (/home/USER/.ssh/id_rsa):
+
+   Just depress the `[ENTER]` key.  Next it will prompt for 
+   a pass phrase:
+
+        Enter passphrase (empty for no passphrase):
+
+   Again, depress the  `[Enter]` key.  It will prompt once again:
+
+        Enter same passphrase again:
+
+   Again, depress the `[Enter]` key.  Finally, it will crunch
+   on some numbers for a while, print out some more stuff and
+   finish.
+
+2. Now we want to make sure that the development machine can
+   use secure shell to connect to itself without a password
+   prompt:
+
+        chmod 644 ~/.ssh/authorizied_keys
+        cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+        chmod 444 ~/.ssh/authorizied_keys
+
+   Now to verify that we succeeded, try the following (notice
+   that accent characters (\`) are being used instead of single
+   quotes ("'") :
+
+        ssh `hostname`.local` echo terrific
+    
+   If everything worked, you should see `terrific` with no
+   password prompt.
+
+
+3. Now we get to do the same thing over on the robot using the
+   exact same technology:
+
+        sudo USER@ROBOT.local
+        # Prompt for USER password on ROBOT.
+        if [ ! -f ~/.ssh/id_rsa ] ; then ssh-keygen -t ras ; fi
+
+    Just depress the `[Enter]` key three times.        
+
+4. Now we want to make sure that the robot can connect to itself
+   via secure shell without any password prompts:
+
+        chmod 644 ~/.ssh/authorized_keys
+        cat ~/.ssh/id_ras.pub >> ~/.ssh/authorized_keys
+        chmod 444 ~/.ssh/authorized_keys
+
+   Now we verify that we succeeded by (again accent characters,
+   not single quote characters):
+
+        ssh `hostname`.local echo fantastic
+
+   There should be no prompt and `fantastic` should be printed out.
+
+        exit
+
+   This should return you to the development processor.
+
+5. Now we need to make it possible to log into the robot without
+   any prompt.
+
+        ssh ROBOT.local chmod 644 .ssh/authorized_keys
+        cat ~/.ssh/id_rsa.pub | ssh ROBOT.local 'cat >> .ssh/authorized_keys'
+        ssh ROBOT.local chmod 444 .ssh/authorized_keys
+
+   Now we verify that we succeeded:
+
+        ssh ROBOT.local echo awesome
+
+   There should be no password prompt, and `awesome` should be printed out.
+
+6. Since there is no particular need for the robot processor
+   to log into the development machine, we do not do the symmetric
+   step for password free secure shell from the robot processor
+   to the development processor.
+
+That covers all of the password prompt removal configuration
+of secure shell.
+
+### X11 Forwarding
+
+In order to enable X11 forwarding via secure shell, we need
+to edit the file `/etc/ssh/ssh_config` on both the development
+processor and the robot processor.
+
+1. Edit `/etc/ssh/ssh_config` on the devolopment machine:
+
+        sudo nano /etc/ssh/ssh_config
+
+   Find the two lines:
+
+        #   ForwardX11 yes
+        #   ForwardX11Trusted yes
+
+   and remove the `[#]` characters to make them look as follows:
+
+        #   ForwardX11 yes
+        #   ForwardX11Trusted yes
+
+   Write the contents out using `[Ctr-O]` followed by exiting
+   using `[Ctrl-X]` keys.
+
+2. Verify that X11 forwarding is working on the development machine.
+   Please notice the `-Y` option:
+
+        ssh -Y ROBOT.local xterm
+
+   An `xterm` window should pop up on the development processor
+   display.  The prompt inside the xterm should say `USER@ROBOT:~`.
+   With your mouse, click inside  `xterm` window and type:
+
+        hostname
+
+   inside `xterm` window followed by the `[Enter]` key.  The response
+   should be `ROBOT`.  Things are working.  Again, in the `xterm`
+   window type:
+
+        exit
+
+   and now the `xterm` window will go away.        
+
+3. Now we do the same edits over on the robot processor.  Type
+   the following being sure to specify the `-Y` option:
+ 
+
+        ssh -Y ROBOT.local
+        sudo nano /etc/ssh/ssh_config
+
+   Remove the `#` characters in front of `ForwardX11` and 
+   `ForwardX11Trusted`.  Write everything out with `[Ctrl-O]`
+   followed by `[Ctrl-X]`.  Please stay logged onto the
+   robot processor:
+
+4. Testing that we got it write is done as follows:
+
+        ssh -y ROBOT.local xterm
+
+   will cause an xterm to pop up on the development processor.
+   (Just for your information, the X11 protocol is being forwarded
+   through two secure shell X11 protocol forwarders, since there
+   no display on the robot processor.)  Dismiss the `xterm` window
+   by typing `exit` in the `xterm` window.  Finally, exit from the
+   robot processor by typing:
+
+        exit
+
+That takes care of X11 forwarding issues.
+
+### Creating the Catkin Work Spaces
+
+We will create two identical catkin work spaces on both
+the development processor and the robot processor.  We
+assume that ROS has already been installed.
+
+
+1. On the development machine:
+
+        mkdir -p ~/catkin_ws/src
+
+2. Now we want to populate the work space with 3 ROS packages:
+
+        cd ~/cakin_ws/src
+        git clone https://github.com/UbiquityRobotics/ubiquity_launches.git
+        git clone https://github.com/UbiquityRobotics/raspicam_node.git
+        git clone https://github.com/UbiquityRobotics/userland.git
+        git clone https://github.com/UbiquityRobotics/robot_upstart.git
+
+3. Now we initialize the Catkin work space:
+
+        (cd ~/catkin_ws ; cakin_make)
+
+4. Now we edit `~/.profile` to recognize the catkin workspace:
+
+        nano ~/.profile
+
+   Now we add the following code right before the line that
+   says `#if running bash`:
+
+        # Only `source /opt/ros/indigo/setup.bash` if we have not already done so.
+        # We assume that this script does not change very often:
+        if [ -d "/opt/ros/indigo/bin" ] ; then
+            case ":$PATH:" in
+            *:/opt/ros/indigo/bin:*) ;;
+            *) source /opt/ros/indigo/setup.bash ;;
+            esac
+        fi
+
+        # Only `source ~/catkin_ws/devel/setup` if it exists:
+        if [ -f ~/catkin_ws/devel/setup.sh ] ; then
+            source ~/catkin_ws/devel/setup.bash ;
+        fi
+
+        export ROS_CATKIN_WS=~/catkin_ws
+        export ROS_HOSTNAME=`hostname`.local
+        export ROS_MASTER_URI=http://`hostname`.local:11311
+        export ROSLAUNCH_SSH_UNKNOWN=1
+
+5. Now we do exactly the same steps over on the robot:
+
+        ssh ROBOT.local
+        mkdir -p ~/catkin_ws/src
+        cd ~/cakin_ws/src
+        git clone https://github.com/UbiquityRobotics/ubiquity_launches.git
+        git clone https://github.com/UbiquityRobotics/raspicam_node.git
+        git clone https://github.com/UbiquityRobotics/userland.git
+        (cd ~/catkin_ws ; cakin_make)
+        nano ~/.profile
+
+    Now edit in the exact same code from the previous step into the
+    same place in `~/.profile` and exit with `[Ctrl-O]` followed by
+    `[Ctrl-X]`.
+
+### Using `sshfs`
+
+The `sshfs` program is used to mount the `src` directory from
+the robot processor over on to the development processor
+
+To mount the robot `~/catkin_ws/src` on top of the local `~/catkin_ws/src`:
+
+        sshfs -o nonempty -o idmap=user ROBOT.local:/home/`whoami`/catkin_ws/src ~/catkin_ws/src 
+
+To unmount:
+
+        fusermount -u ~/catkin_ws/src
+
+### Making `roscore` Run All the Time
+
+*{Wayne: make `n_forever` match `n_sleep_forever`.}*
+
+This is done using the following command:
+
+        ssh ROBOT.local
+        rosrun robot_upstart install --user=USER ubiquity_launches/n_sleep_forever.launch
+        sudo service start n_forever
+
+### Install the `pudb` Python Debugger:
+
+Please do the following:
+
+        sudo apt-get install -y python python-pip xterm
+        sudo pip install pudb
+
+
+### Run `raspicam_view`
+
+Please do the following on the development machine:
+
+        rosrun ubiquity_launches raspicam_view
+
+When `rqt_image_view` pops up please select the
+`/n_raspicam/camera/image/compressed` topic.  When you are
+done, please type `[Ctrl-C]`.
+
+## Launch Files
+
+
 [![Build Status](https://travis-ci.org/UbiquityRobotics/ubiquity_launches.svg?branch=master)](https://travis-ci.org/UbiquityRobotics/ubiquity_launches)
 
 `ubiquity_launches` is a ROS `git` repository that contains ROS
@@ -533,8 +1005,8 @@ The file is shown below:
         <launch>
           <!--Summary: Start joystick remote control nodes. -->
           <!--Overview: The launch file for this directory fires off the
-	      joystick nodes to support the wireless PS2/XBox game controller
-	      for  driving the robot around.  This launch file requires a
+              joystick nodes to support the wireless PS2/XBox game controller
+              for  driving the robot around.  This launch file requires a
               `robot_base` argument to specify which robot base is being
               used (e.g `loki`, `magni`, etc.) -->
         
