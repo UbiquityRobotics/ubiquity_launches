@@ -1,0 +1,10 @@
+<launch>
+  <!-- Required arguments -->
+  <arg name="robot_platform" />
+  <arg name="robot_host" />
+  <arg name="robot_user" />
+
+  <node name="n_keyboard_drive"
+   pkg="ubiquity_launches" type="n_keyboard_drive" output="screen"/>
+
+</launch>

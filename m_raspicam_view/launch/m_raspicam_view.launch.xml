@@ -4,8 +4,8 @@
    view the output of the camera. -->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: The robot base to use (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
   <arg name="robot_host" />
     <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
   <arg name="robot_user" />
@@ -22,8 +22,8 @@
 
   <!-- Start m_raspicam_raw node: -->
   <include
-   file="$(arg root)/m_raspicam_raw/launch/m_raspicam_raw1.launch.xml">
-    <arg name="robot_base" value="$(arg robot_base)" />
+   file="$(arg root)/m_raspicam_raw/launch/m_raspicam_raw.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_host" value="$(arg robot_host)" />
     <arg name="robot_user" value="$(arg robot_user)" />
   </include>

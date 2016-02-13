@@ -1,0 +1,98 @@
+#!/usr/bin/env python
+
+# This program drives a robot using Command Velocity "Twist" messages
+# sent to the appropriate channel:
+
+import rospy
+from geometry_msgs.msg import Twist
+
+# Name this node:
+rospy.init_node("keyboard_drive")
+
+# Connect to the *cmd_vel_publisher*:
+cmd_vel_publisher = rospy.Publisher(
+ "/cmd_vel_mux/input/navi", Twist, queue_size = 1)
+
+# Set the standard sleep duration for this node to 0.2 seconds:
+rospy.sleep(0.2)
+
+# Set the poll rate to 10 times per second:
+rate = rospy.Rate(10)
+
+# Define a couple of *Twist* objects:
+move_twist = Twist()
+stop_twist = Twist()
+
+# Now process commands:
+while True:
+    # Get at *command* and star processing:
+    command = raw_input("Command: ")
+    if len(command) == 0:
+	# Empty command, just go around again:
+	pass
+    else:
+	# Parse *command* into a *command_character* and *command_arguments*:
+	command_character = command[0].lower()
+	command_arguments = command[1:].split()
+
+	# If *delay* is not set to greater than zero, the robot is not moved:
+	delay = 0.0
+
+	# Get a new empty *twist* object:
+	twist = Twist()
+
+	# Dispatch on *command_character*:
+	if command_character == "b":
+	    # Backward:
+	    twist.linear.x = -0.3
+            try:
+		delay = float(command_arguments[0])
+	    except:
+		delay = 1.0
+	elif command_character == "f":
+	    # Forward:
+	    twist.linear.x = 0.3
+            try:
+		delay = float(command_arguments[0])
+	    except:
+		delay = 1.0
+	elif command_character == "l":
+	    # Twist left:
+	    twist.angular.z = 0.25
+            try:
+		delay = float(command_arguments[0])
+	    except:
+		delay = 1.0
+	elif command_character == "q":
+	    # Quit:
+	    break
+	elif command_character == "r":
+	    # Twist right:
+	    twist.angular.z = -0.25
+            try:
+		delay = float(command_arguments[0])
+	    except:
+		delay = 1.0
+	elif command_character == "?":
+	    # Help:
+	    print(
+	      "Commands are:\n" +
+	      "  b - backward []\n" +
+	      "  f - forward []\n" +
+	      "  l - left []\n" +
+	      "  r - right []\n" +
+	      "  ? - This help message\n")
+	else:
+	    print("Unrecognized command: '{0}'".format(command))
+
+	# Move the robot:
+	if delay > 0.0:
+	    # Keep publishing Twsit(
+	    start_time = rospy.get_rostime()
+	    while (rospy.get_rostime() - start_time) < rospy.Duration(delay):
+		cmd_vel_publisher.publish(twist)
+		rate.sleep()
+
+	    # Stop the robot:
+	    cmd_vel_publisher.publish(stop_twist)
+

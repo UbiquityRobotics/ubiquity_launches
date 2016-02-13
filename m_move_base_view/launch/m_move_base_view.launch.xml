@@ -1,0 +1,19 @@
+<launch>
+  <!-- Required Arguments -->
+  <arg name="robot_platform" />
+    <!--robot_platform: Is the base to use (e.g. "magni", "loki", etc.)  -->
+  <arg name="robot_host" />
+    <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
+  <arg name="robot_user" />
+    <!--robot_user: Is the user name to use on the robot. -->
+
+  <include
+   file="$(find ubiquity_launches)/m_move_base/launch.m_move_base.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_host" value="($arg robot_host)" />
+    <arg name="robot_user" value="($arg robot_user)" />
+  <include />
+
+  <!-- This should be an include file: -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot_stage)/rviz/robot_navigation.rviz"/>
+</launch>
