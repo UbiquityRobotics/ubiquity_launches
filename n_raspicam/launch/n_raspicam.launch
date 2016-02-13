@@ -4,8 +4,8 @@
       launching a node to read images from the Raspberry Pi camera.-->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: The robot base being used (e.g. "magni", "loki", etc. ) -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc. ) -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
@@ -15,7 +15,7 @@
   <arg name="camera_frame_id" default="" />
     <!--camera_frame: The name of the ROS TF camera frame. -->
   <arg name="camera_info_url"
-   default="file://$(arg root)/n_$(arg node)/params/$(arg robot_base).yaml" />
+   default="file://$(arg root)/n_$(arg node)/params/$(arg robot_platform).yaml" />
     <!--camara_info_url: The URL for the camera `.yaml` file. -->
   <arg name="camera_name" default="raspicam" />
     <!--camera_name: The name of the camera topic. -->

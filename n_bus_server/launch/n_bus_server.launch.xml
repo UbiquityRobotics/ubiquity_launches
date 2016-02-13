@@ -5,8 +5,8 @@
   package that interfaces to the robot serial port. -->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-     <!--robot_base: The robot base name (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_platform" />
+     <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
@@ -16,6 +16,6 @@
   <node pkg="$(arg node)" type="$(arg node).py"
    name="arduino" output="screen">
     <rosparam command="load"
-     file="$(arg root)/n_$(arg node)/params/$(arg robot_base).yaml" />
+     file="$(arg root)/n_$(arg node)/params/$(arg robot_platform).yaml" />
   </node>
 </launch>

@@ -9,6 +9,6 @@
   <arg name="bs"   value="bus_server" />
 
   <include file="$(arg root)/n_$(arg bs)/launch/n_$(arg bs).launch.xml" >
-    <arg name="robot_base" value="loki" />
+    <arg name="robot_platform" value="loki" />
   </include>
 </launch>

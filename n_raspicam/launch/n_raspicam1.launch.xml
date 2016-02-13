@@ -4,8 +4,8 @@
       launching a node to read images from the Raspberry Pi camera.-->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: Is the base to use (e.g. "magni", "loki", etc.)  -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.)  -->
   <arg name="robot_host" />
     <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
   <arg name="robot_user" />
@@ -19,7 +19,7 @@
   <arg name="camera_frame_id" default="" />
     <!--camera_frame: The name of the ROS TF camera frame. -->
   <arg name="camera_info_url"
-   default="file://$(arg root)/n_$(arg node)/params/$(arg robot_base).yaml" />
+   default="file://$(arg root)/n_$(arg node)/params/$(arg robot_platform).yaml" />
     <!--camara_info_url: The URL for the camera `.yaml` file. -->
   <arg name="camera_name" default="raspicam" />
     <!--camera_name: The name of the camera topic. -->

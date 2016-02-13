@@ -4,8 +4,8 @@
       [`teleop_twist_joy`](http://wiki.ros.org/teleop_twist_joy) node. -->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: The name of the robot base (e.g. "magin", "loki", etc. -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platofrm (e.g. "magin", "loki", etc.) -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
@@ -16,7 +16,7 @@
     <param name="~enable_button" value="11" />
     <param name="~enable_turbo_button" value="9" />
     <rosparam command="load"
-     file="$(arg root)/n_$(arg ttj)/params/$(arg robot_base).yaml" />
+     file="$(arg root)/n_$(arg ttj)/params/$(arg robot_platform).yaml" />
   </node>
 
 </launch>

@@ -3,12 +3,12 @@
   <!--Overview: The launch file for this directory fires off the fiducial
   slam subsystem.  This causes the `move_base` node to be
   loaded so that local cost maps can be generated.
-  This launch file requires a `robot_base` argument to specify
+  This launch file requires a `robot_platform` argument to specify
   which robot base is being used (e.g `loki`, `magni`, etc.) -->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: The robot base (e.g. "magni", "loki", etc.) to use. -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot base (e.g. "magni", "loki", etc.) to use. -->
 
   <!-- Optional arguments: -->
   <arg name="mapping_mode" default="false" />
@@ -27,13 +27,13 @@
   <!-- Basic joystick teleop enabled base -->
   <include
    file="$(arg root)/m_$(arg jst)/launch/m_$(arg jst).launch" >
-    <arg name="robot_base" value="$(arg robot_base)" />
+    <arg name="robot_platform" value="$(arg robot_platform)" />
   </include>
 
   <!-- Camera -->
   <include
    file="$(arg root)/n_$(arg cam)/launch/n_$(arg cam).launch" >
-    <arg name="robot_base" value="$(arg robot_base)"/>
+    <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="width" value="1280" />
     <arg name="height" value="960" />
   </include>

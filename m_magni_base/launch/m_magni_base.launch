@@ -1,11 +1,11 @@
 <launch>
   <!--Summary: Start the Magni base nodes. -->
   <!--Overview: This node fires up the various nodes to operate the
-      Magni robot base.  -->
+      Magni robot platform.  -->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: The robot base (e.g. "magni", "loki", etc.) to use. -->
+  <arg name="robot_platform" />
+    <!--robot_platfrom: The robot platform (e.g. "magni", "loki", etc.) -->
 
   <!-- Convenience arguments: -->
   <arg name="pkg" value="$(find ubiquity_launches)" />
@@ -19,7 +19,7 @@
 
   <!-- Fire up the robot_state_publisher. -->
   <include file="$(arg pkg)/n_$(arg rsp)/launch/n_$(arg rsp).launch.xml">
-    <arg name="robot_base" value="magni" />
+    <arg name="robot_platform" value="magni" />
   </include>
     
   <!-- Fire up the topic forwarder. -->
