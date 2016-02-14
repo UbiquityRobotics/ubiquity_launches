@@ -1,0 +1,18 @@
+<launch>
+  <!--Summary: Start `rviz` with an optional `.rviz` file. -->
+  <!--Overview: Runs the `rviz` robot visualization tool with an an
+      optional argument that specifies a `.rviz` file. -->
+
+  <!-- No Required arguments: -->
+
+  <!-- Convenience arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+
+  <!-- Optional arguments: -->
+  <arg name="rviz_file" default="$(arg ul)/n_rviz/rviz/robot_navigation.rviz"/>
+  
+  <!-- Launch rviz -->
+  <node name="rviz"
+   pkg="rviz" type="rviz" args="-d $(arg rviz_file)"/>
+
+</launch>
