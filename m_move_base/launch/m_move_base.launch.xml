@@ -1,4 +1,7 @@
 <launch>
+  <!--Summary: -->
+  <!--Overview: -->
+
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
     <!--robot_platform: Is the base to use (e.g. "magni", "loki", etc.)  -->
@@ -76,10 +79,12 @@
   <!--  ************** Navigation  ***************  -->
   <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml"/>
 
-  <!--  ****** Maps *****  -->
-  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
-    <param name="frame_id" value="/map"/>
-  </node>
+  <include file="$(arg ul)/n_map_server/launch/n_map_server.launch.xml">
+    <arg name="map_file" value="/opt/ros/indigo/share/turtlebot_stage/maps/maze.yaml" />
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+  </include>
 
   <include file="$(find turtlebot_navigation)/launch/includes/amcl.launch.xml">
     <arg name="scan_topic" value="scan"/>
