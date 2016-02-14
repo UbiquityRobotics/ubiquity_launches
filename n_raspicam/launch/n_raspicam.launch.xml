@@ -45,7 +45,7 @@
    env-loader="/tmp/env_loader.sh" />
 
   <!-- Start raspicam_node: -->
-  <node name="n_$(arg node)"  machine="robot"
+  <node name="n_$(arg node)" machine="robot"
    pkg="raspicam" type="raspicam_node"
    output="screen">
     <param name="camera_frame_id"      value="$(arg camera_frame_id)" />
