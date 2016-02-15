@@ -19,7 +19,7 @@
 
   <!-- Fire up the robot_state_publisher. -->
   <include file="$(arg pkg)/n_$(arg rsp)/launch/n_$(arg rsp).launch.xml">
-    <arg name="robot_platform" value="magni" />
+    <arg name="robot_platform" value="$(arg robot_platform)" />
   </include>
     
   <!-- Fire up the topic forwarder. -->
