@@ -243,7 +243,7 @@ passwords all the time is a requirement.
    that accent characters (\`) are being used instead of single
    quotes (\') :
 
-        ssh `hostname`.local` echo terrific
+        ssh `hostname`.local echo terrific
     
    If everything worked, you should see `terrific` with no
    password prompt.
