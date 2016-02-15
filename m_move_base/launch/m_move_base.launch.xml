@@ -86,12 +86,15 @@
     <arg name="robot_user" value="$(arg robot_user)" />
   </include>
 
-  <include file="$(find turtlebot_navigation)/launch/includes/amcl.launch.xml">
-    <arg name="scan_topic" value="scan"/>
-    <arg name="use_map_topic" value="true"/>
-    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
-    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
-    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  <include file="$(arg ul)/n_amcl/launch/n_amcl.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="scan_topic" value="scan" />
+    <arg name="use_map_topic" value="true" />
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
   </include>
 
   <!--  **************** Visualisation ****************  -->
