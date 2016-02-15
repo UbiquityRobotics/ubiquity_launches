@@ -39,16 +39,12 @@ install(DIRECTORY m_joystick_teleop/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_joystick_teleop
   PATTERN ".svn" EXCLUDE)
 
-install(DIRECTORY m_loki_base/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_loki_base
-  PATTERN ".svn" EXCLUDE)
-
-install(DIRECTORY m_magni_base/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_magni_base
-  PATTERN ".svn" EXCLUDE)
-
 install(DIRECTORY m_raspicam_raw/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_raspicam_raw
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY m_robot_base/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_robot_base
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_bus_server/
@@ -73,10 +69,6 @@ install(DIRECTORY n_image_uncompress/
 
 install(DIRECTORY n_joy/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_joy
-  PATTERN ".svn" EXCLUDE)
-
-install(DIRECTORY n_loki_serial_master/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_loki_serial_master
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_map_server/
