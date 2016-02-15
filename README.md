@@ -453,8 +453,8 @@ To unmount:
 This is done using the following command:
 
         ssh ROBOT.local
-        rosrun robot_upstart install --user=USER ubiquity_launches/n_sleep_forever.launch
-        sudo service start n_forever
+        rosrun robot_upstart install --user=USER ubiquity_launches/n_sleep_forever/launch/n_sleep_forever.launch
+        sudo service ubiquity start
 
 ### Install the `pudb` Python Debugger:
 
