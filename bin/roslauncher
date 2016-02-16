@@ -55,8 +55,8 @@ ssh $ROBOT_HOST 'chmod +x /tmp/env_loader.sh'
 # Now we can run the roslaunch command specifying both the PLATFORM
 # and ROBOT_HOST:
 echo roslaunch ubiquity_launches "$@" \
-    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=`whoami`
+    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=ubuntu
 roslaunch      ubiquity_launches "$@" \
-    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=`whoami`
+    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=ubuntu
 
 
