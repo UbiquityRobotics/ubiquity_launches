@@ -9,7 +9,7 @@
   <arg name="rb" value="m_robot_base" />
 
   <!-- Launch the robot_base nodes: -->
-  <include file="$(arg ul)/$(arg rb)/launch/$(arg rb).launch.xml">
+  <include file="$(arg ul)/$(arg rb)/launch/$(arg rb).launch">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="robot_host" value="$(arg robot_host)"/>
     <arg name="robot_user" value="$(arg robot_user)"/>
