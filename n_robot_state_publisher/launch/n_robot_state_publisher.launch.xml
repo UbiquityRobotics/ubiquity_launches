@@ -14,7 +14,7 @@
 
   <machine name="robot"
    address="$(arg robot_host)" user="$(arg robot_user)"
-   env-loader="/tmp/env_loader.sh" /
+   env-loader="/tmp/env_loader.sh" />
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
