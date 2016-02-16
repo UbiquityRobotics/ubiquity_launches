@@ -6,7 +6,7 @@
 
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
-  <arg name="node" value="n_keyboard_drive" />
+  <arg name="node" value="n_keyboard_navigate" />
   <arg name="mb" value="m_move_base" />
 
   <!-- Luanch the move_base nodes: -->
