@@ -15,6 +15,6 @@
     <arg name="robot_user" value="$(arg robot_user)"/>
   </include>
 
-  <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py"/>
+  <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
 
 </launch>
