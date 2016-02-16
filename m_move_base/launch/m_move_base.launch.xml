@@ -69,6 +69,7 @@
   <!-- Command Velocity multiplexer -->
   <node name="mobile_base_nodelet_manager"
    pkg="nodelet" type="nodelet" args="manager"/>
+   
   <node name="cmd_vel_mux"
    pkg="nodelet" type="nodelet"
    args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
