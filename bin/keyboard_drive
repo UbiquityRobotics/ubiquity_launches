@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+##Summary: Start the keyboard driver for the robot.
+##Overview:
+##  summary here
+
+# Use `rosrun` to find `roslauncher` which does all the heavy lifting:
+rosrun ubiquity_launches roslauncher m_keyboard_drive.launch.xml

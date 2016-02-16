@@ -7,14 +7,21 @@
   <!-- Required arguments: -->
   <arg name="robot_platform" />
      <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_name"/>
+  <arg name="robot_user" />
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="node" value="bus_server" />
 
+  <machine name="robot"
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+
   <!-- Run bus server node: -->
   <node pkg="$(arg node)" type="$(arg node).py"
-   name="arduino" output="screen">
+   name="arduino" output="screen" machine="robot">
     <rosparam command="load"
      file="$(arg root)/n_$(arg node)/params/$(arg robot_platform).yaml" />
   </node>

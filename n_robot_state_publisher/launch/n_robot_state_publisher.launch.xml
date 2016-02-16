@@ -9,6 +9,12 @@
   <!-- Required arguments: -->
   <arg name="robot_platform" />
     <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_name"/>
+  <arg name="robot_user" />
+
+  <machine name="robot"
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" /
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
@@ -21,5 +27,5 @@
   <!-- Launch the robot state publisher:  -->
   <param name="robot_description"
    textfile="$(arg root)/n_$(arg node)/urdf/$(arg robot_platform).urdf" />
-  <node name="$(arg node_name)" pkg="$(arg node)" type="state_publisher" />
+  <node name="$(arg node_name)" pkg="$(arg node)" type="state_publisher" machine="robot"/>
 </launch>

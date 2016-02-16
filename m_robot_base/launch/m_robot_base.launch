@@ -1,12 +1,16 @@
 <launch>
   <!-- Required arguments: -->
   <arg name="robot_platform" />
+  <arg name="robot_name"/>
+  <arg name="robot_user" />
 
   <!-- Convenience arguments -->
   <arg name="root" value="$(find ubiquity_launches)" />
 
   <include file="$(arg root)/m_robot_base/launch/m_$(arg robot_platform)_base.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_host" value="$(arg robot_host)"/>
+    <arg name="robot_user" value="$(arg robot_user)"/>
   </include>
 
 </launch>

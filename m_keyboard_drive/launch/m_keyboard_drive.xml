@@ -1,0 +1,20 @@
+<launch>
+  <!-- Requrired arguments: -->
+  <arg name="robot_platform" />
+  <arg name="robot_name" />
+  <arg name="robot_user" />
+
+  <!-- Convenience arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="rb" value="m_robot_base" />
+
+  <!-- Launch the robot_base nodes: -->
+  <include file="$(arg ul)/$(arg rb)/launch/$(arg mb).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)"/>
+    <arg name="robot_host" value="$(arg robot_host)"/>
+    <arg name="robot_user" value="$(arg robot_user)"/>
+  </include>
+
+  <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py"/>
+
+</launch>
