@@ -5,7 +5,7 @@
   <!-- Convenience arguments -->
   <arg name="root" value="$(find ubiquity_launches)" />
 
-  <include file="$(arg root)/m_robot_base/launch/m_$(arg robot_platform)_base.launch.xml ">
+  <include file="$(arg root)/m_robot_base/launch/m_$(arg robot_platform)_base.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
   </include>
 
