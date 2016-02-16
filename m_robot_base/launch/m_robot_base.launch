@@ -1,7 +1,7 @@
 <launch>
   <!-- Required arguments: -->
   <arg name="robot_platform" />
-  <arg name="robot_name"/>
+  <arg name="robot_host"/>
   <arg name="robot_user" />
 
   <!-- Convenience arguments -->
