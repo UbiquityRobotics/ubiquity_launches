@@ -71,15 +71,13 @@
   </node>
 
   <!-- Command Velocity multiplexer -->
-  <node machine="robot" name="mobile_base_nodelet_manager"
-   pkg="nodelet" type="nodelet" args="manager"/>
+  <include file="$(arg ul)/n_cmd_vel_mux/launch/n_cmd_vel_mux.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)"/>
+    <arg name="machine_name" default="robot"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
+  </include>
 
-  <node  machine="robot" name="cmd_vel_mux"
-   pkg="nodelet" type="nodelet"
-   args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
-    <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
-    <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
-  </node>
 
   <!--  ************** Navigation  ***************  -->
   <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml"/>
