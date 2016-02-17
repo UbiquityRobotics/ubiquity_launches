@@ -1,11 +1,8 @@
 <launch>
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
-    <!--robot_platform: Is the base to use (e.g. "magni", "loki", etc.)  -->
-  <arg name="robot_host" />
-    <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
-  <arg name="robot_user" />
-    <!--robot_user: Is the user name to use on the robot. -->
+  <arg name="machine_host" />
+  <arg name="machine_user" />
 
   <!-- Optional Arguments: -->
   <arg name="node_name"       default="n_amcl" />
@@ -20,7 +17,7 @@
 
   <!-- Remote robot machine -->
   <machine name="robot"
-   address="$(arg robot_host)" user="$(arg robot_user)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
    env-loader="/tmp/env_loader.sh" />
 
   <node machine="robot" name="$(arg node_name)"
