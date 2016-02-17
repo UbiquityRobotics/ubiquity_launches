@@ -22,6 +22,7 @@
 
   <include file="$(arg ul)/$(arg ttk)/launch/$(arg ttk).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
+    <arg name="machine_name" value="viewer"/>
     <arg name="machine_host" value="$(arg viewer_host)"/>
     <arg name="machine_user" value="$(arg viewer_user)"/>
   </include>
