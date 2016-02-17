@@ -87,14 +87,14 @@
   <include file="$(arg ul)/n_map_server/launch/n_map_server.launch.xml">
     <arg name="map_file" value="/opt/ros/indigo/share/turtlebot_stage/maps/maze.yaml" />
     <arg name="robot_platform" value="$(arg robot_platform)"/>
-    <arg name="machine_host" value="$(arg viewer_host)"/>
-    <arg name="machine_user" value="$(arg viewer_user)"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
   </include>
 
   <include file="$(arg ul)/n_amcl/launch/n_amcl.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
-    <arg name="machine_host" value="$(arg viewer_host)"/>
-    <arg name="machine_user" value="$(arg viewer_user)"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
     <arg name="scan_topic" value="scan" />
     <arg name="use_map_topic" value="true" />
     <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
