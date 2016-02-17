@@ -10,12 +10,6 @@
   <arg name="viewer_user" default=""/>
 
   <!-- Convenience Arguments: -->
-  <!-- create, rhoomba -->
-  <arg name="base"       default="$(optenv TURTLEBOT_BASE kobuki)"/>
-  <!-- circles, hexagons -->
-  <arg name="stacks"     default="$(optenv TURTLEBOT_STACKS hexagons)"/>
-  <!-- kinect, asus_xtion_pro -->
-  <arg name="3d_sensor"  default="$(optenv TURTLEBOT_3D_SENSOR kinect)"/>
   <arg name="ul" value="$(find ubiquity_launches)" />
 
   <!-- Optional arguments: -->
@@ -58,16 +52,11 @@
     <arg name="viewer_user" value="$(arg viewer_user)"/>
   </include>
 
-  <!--  ***************** Robot Model *****************  -->
-  <include file="$(find turtlebot_bringup)/launch/includes/robot.launch.xml">
-    <arg name="base" value="$(arg base)" />
-    <arg name="stacks" value="$(arg stacks)" />
-    <arg name="3d_sensor" value="$(arg 3d_sensor)" />
-  </include>
-  <node name="joint_state_publisher"
+<!--   <node name="joint_state_publisher"
    pkg="joint_state_publisher" type="joint_state_publisher">
     <param name="use_gui" value="true"/>
   </node>
+ -->
 
   <!-- Command Velocity multiplexer -->
   <include file="$(arg ul)/n_cmd_vel_mux/launch/n_cmd_vel_mux.launch.xml">
