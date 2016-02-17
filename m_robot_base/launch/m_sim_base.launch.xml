@@ -1,0 +1,23 @@
+<launch>
+  <arg name="robot_platform" />
+  <arg name="robot_host" />
+  <arg name="robot_user" />
+  <arg name="viewer_host" default="localhost"/>
+  <arg name="viewer_user" default=""/>
+
+
+  <arg name="world_file"  default=" /opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"/>
+
+  <machine name="robot"
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <node machine="robot" pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
+    <param name="base_watchdog_timeout" value="0.5"/>
+    <remap from="odom" to="odom"/>
+    <remap from="base_pose_ground_truth" to="base_pose_ground_truth"/>
+    <remap from="cmd_vel" to="mobile_base/commands/velocity"/>
+    <remap from="base_scan" to="scan"/>
+  </node>
+
+</launch>
