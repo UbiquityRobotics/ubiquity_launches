@@ -3,13 +3,21 @@
   <!--Overview: Runs the `rviz` robot visualization tool with an an
       optional argument that specifies a `.rviz` file. -->
 
-  <!-- No Required arguments: -->
+  <!-- Requrired arguments: -->
+  <arg name="robot_platform" />
+  <arg name="machine_host" />
+  <arg name="machine_user" />
 
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
 
   <!-- Optional arguments: -->
   <arg name="rviz_file" default="$(arg ul)/n_rviz/rviz/robot_navigation.rviz"/>
+
+  <!-- This node is almost always run on viewer -->
+  <machine name="viewer"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
   
   <!-- Launch rviz -->
   <node name="rviz"
