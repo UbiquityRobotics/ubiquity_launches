@@ -1,8 +1,10 @@
 <launch>
   <!-- Requrired arguments: -->
   <arg name="robot_platform" />
-  <arg name="robot_name" />
+  <arg name="robot_host" />
   <arg name="robot_user" />
+  <arg name="viewer_host" default="localhost"/>
+  <arg name="viewer_user" default=""/>
 
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
@@ -11,16 +13,18 @@
 
   <!-- Launch the move_base_view nodes: -->
   <include file="$(arg ul)/$(arg mbv)/launch/$(arg mbv).launch.xml">
-    <arg name="robot_platform" value="$(arg robot_platform)"/>
-    <arg name="robot_host" value="$(arg robot_host)"/>
-    <arg name="robot_user" value="$(arg robot_user)"/>
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="viewer_host" value="$(arg viewer_host)"/>
+    <arg name="viewer_user" value="$(arg viewer_user)"/>
   </include>
 
   <!-- Launch the keyboard navigate node: -->
   <include file="$(arg ul)/$(arg node)/launch/$(arg node).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
-    <arg name="robot_host" value="$(arg robot_host)"/>
-    <arg name="robot_user" value="$(arg robot_user)"/>
+    <arg name="machine_host" value="$(arg viewer_host)"/>
+    <arg name="machine_user" value="$(arg viewer_user)"/>
   </include>
 
 </launch>
