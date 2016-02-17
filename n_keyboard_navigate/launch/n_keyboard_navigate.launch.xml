@@ -9,7 +9,7 @@
     address="$(arg machine_host)" user="$(arg machine_user)"
     env-loader="/tmp/env_loader.sh" />
 
-  <node name="n_keyboard_drive" machine="viewer"
+  <node name="n_keyboard_navigate" machine="viewer"
 	pkg="ubiquity_launches" type="n_keyboard_navigate" output="screen"/>
 
 </launch>
