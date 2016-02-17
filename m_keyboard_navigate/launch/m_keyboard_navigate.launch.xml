@@ -6,11 +6,11 @@
 
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
-  <arg name="node" value="n_keyboard_drive" />
-  <arg name="mb" value="m_move_base" />
+  <arg name="node" value="n_keyboard_navigate" />
+  <arg name="mbv" value="m_move_base_view" />
 
-  <!-- Luanch the move_base nodes: -->
-  <include file="$(arg ul)/$(arg mb)/launch/$(arg mb).launch.xml">
+  <!-- Launch the move_base_view nodes: -->
+  <include file="$(arg ul)/$(arg mbv)/launch/$(arg mbv).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="robot_host" value="$(arg robot_host)"/>
     <arg name="robot_user" value="$(arg robot_user)"/>

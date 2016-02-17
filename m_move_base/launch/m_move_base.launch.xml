@@ -47,6 +47,11 @@
         Args:
           -g : run in headless mode.
   --> 
+
+  <machine name="robot"
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" />
+
   <node pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
     <param name="base_watchdog_timeout" value="0.5"/>
     <remap from="odom" to="odom"/>
@@ -67,9 +72,10 @@
   </node>
 
   <!-- Command Velocity multiplexer -->
-  <node name="mobile_base_nodelet_manager"
+  <node machine="robot" name="mobile_base_nodelet_manager"
    pkg="nodelet" type="nodelet" args="manager"/>
-  <node name="cmd_vel_mux"
+
+  <node  machine="robot" name="cmd_vel_mux"
    pkg="nodelet" type="nodelet"
    args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
     <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
@@ -96,8 +102,5 @@
     <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
     <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
   </include>
-
-  <!--  **************** Visualisation ****************  -->
-  <include file="$(arg ul)/n_rviz/launch/n_rviz.launch.xml" />
 
 </launch>
