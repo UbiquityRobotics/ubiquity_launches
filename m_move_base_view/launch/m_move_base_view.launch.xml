@@ -8,12 +8,13 @@
     <!--robot_user: Is the user name to use on the robot. -->
 
   <include
-   file="$(find ubiquity_launches)/m_move_base/launch.m_move_base.launch.xml">
+   file="$(find ubiquity_launches)/m_move_base/launch/m_move_base.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
-    <arg name="robot_host" value="($arg robot_host)" />
-    <arg name="robot_user" value="($arg robot_user)" />
-  <include />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+  </include>
 
   <!--  **************** Visualisation ****************  -->
-  <include file="$(arg ul)/n_rviz/launch/n_rviz.launch.xml" />
+  <include file="$(find ubiquity_launches)/n_rviz/launch/n_rviz.launch.xml" />
+
 </launch>
