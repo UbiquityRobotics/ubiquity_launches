@@ -24,7 +24,7 @@ move_twist = Twist()
 stop_twist = Twist()
 
 # Now process commands:
-while True:
+while not rospy.is_shutdown():
     # Get at *command* and star processing:
     command = raw_input("Command: ")
     if len(command) == 0:
