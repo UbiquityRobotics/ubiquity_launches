@@ -1,15 +1,17 @@
 <launch>
   <!-- Requrired arguments: -->
   <arg name="robot_platform" />
+  <arg name="machine_name" default="viewer"/>
   <arg name="machine_host" />
   <arg name="machine_user" />
+
 
   <!-- This node can be run on viewer and robot, but is generally on viewer -->
   <machine name="viewer"
     address="$(arg machine_host)" user="$(arg machine_user)"
     env-loader="/tmp/env_loader.sh" />
 
-  <node name="teleop" machine="viewer"
+  <node name="teleop" machine="$(arg machine_name)"
     pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
 
 </launch>

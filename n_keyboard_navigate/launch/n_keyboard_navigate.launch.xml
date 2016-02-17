@@ -1,15 +1,16 @@
 <launch>
   <!-- Required arguments -->
   <arg name="robot_platform" />
+  <arg name="machine_name" default="viewer"/>
   <arg name="machine_host" />
   <arg name="machine_user" />
 
   <!-- This node can be run on viewer and robot, but is generally on viewer -->
-  <machine name="viewer"
+  <machine name="$(arg machine_name)"
     address="$(arg machine_host)" user="$(arg machine_user)"
     env-loader="/tmp/env_loader.sh" />
 
-  <node name="n_keyboard_navigate" machine="viewer"
+  <node name="n_keyboard_navigate" machine="$(arg machine_name)"
 	pkg="ubiquity_launches" type="n_keyboard_navigate" output="screen"/>
 
 </launch>

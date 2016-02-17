@@ -6,6 +6,7 @@
 
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
+  <arg name="machine_name" default="robot"/>
   <arg name="machine_host" />
   <arg name="machine_user" />
 
@@ -22,11 +23,11 @@
     <!--node_name: The ROS node name. -->    
 
   <!-- Remote robot machine -->
-  <machine name="robot"
+  <machine name="$(arg machine_name)"
    address="$(arg machine_host)" user="$(arg machine_user)"
    env-loader="/tmp/env_loader.sh" />
 
-  <node machine="robot" name="$(arg node_name)"
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
    pkg="$(arg node)" type="$(arg node)" args="$(arg map_file)"
    output="screen">
     <!--Wayne: This param needs some work!!! -->
