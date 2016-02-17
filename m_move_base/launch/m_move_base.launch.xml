@@ -103,7 +103,4 @@
     <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
   </include>
 
-  <!--  **************** Visualisation ****************  -->
-  <include file="$(arg ul)/n_rviz/launch/n_rviz.launch.xml" />
-
 </launch>
