@@ -5,12 +5,12 @@
   <arg name="viewer_host" default="localhost"/>
   <arg name="viewer_user" default=""/>
 
-
-  <arg name="world_file"  default=" /opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"/>
-
   <machine name="robot"
    address="$(arg robot_host)" user="$(arg robot_user)"
    env-loader="/tmp/env_loader.sh" />
+
+
+  <arg name="world_file"  default=" /opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"/>
 
   <node machine="robot" pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
     <param name="base_watchdog_timeout" value="0.5"/>
@@ -27,7 +27,7 @@
   <arg name="stacks"     default="$(optenv TURTLEBOT_STACKS hexagons)"/>
   <!-- kinect, asus_xtion_pro -->
   <arg name="3d_sensor"  default="$(optenv TURTLEBOT_3D_SENSOR kinect)"/>
-  
+
 
   <!--  ***************** Robot Model *****************  -->
   <include file="$(find turtlebot_bringup)/launch/includes/robot.launch.xml">
