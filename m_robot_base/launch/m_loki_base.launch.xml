@@ -21,14 +21,14 @@
   <!-- Fire off each node: -->
   <include file="$(arg root)/n_$(arg bs)/launch/n_$(arg bs).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
-    <arg name="robot_host" value="$(arg robot_host)"/>
-    <arg name="robot_user" value="$(arg robot_user)"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
   </include>
 
   <include file="$(arg root)/n_$(arg rsp)/launch/n_$(arg rsp).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
-    <arg name="robot_host" value="$(arg robot_host)"/>
-    <arg name="robot_user" value="$(arg robot_user)"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
   </include>
 </launch>
 

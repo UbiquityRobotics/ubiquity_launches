@@ -7,15 +7,15 @@
   <!-- Required arguments: -->
   <arg name="robot_platform" />
      <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
-  <arg name="robot_host"/>
-  <arg name="robot_user" />
+  <arg name="machine_host"/>
+  <arg name="machine_user" />
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="node" value="bus_server" />
 
   <machine name="robot"
-   address="$(arg robot_host)" user="$(arg robot_user)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
    env-loader="/tmp/env_loader.sh" />
 
 
