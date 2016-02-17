@@ -16,6 +16,8 @@
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="robot_host" value="$(arg robot_host)"/>
     <arg name="robot_user" value="$(arg robot_user)"/>
+    <arg name="viewer_host" value="$(arg viewer_host)"/>
+    <arg name="viewer_user" value="$(arg viewer_user)"/>
   </include>
 
   <include file="$(arg ul)/$(arg ttk)/launch/$(arg ttk).launch.xml">

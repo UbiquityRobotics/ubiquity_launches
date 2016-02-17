@@ -1,9 +1,11 @@
 <launch>
   <!-- Required arguments: -->
   <arg name="robot_platform" />
-  <arg name="robot_host"/>
+  <arg name="robot_host" />
   <arg name="robot_user" />
-
+  <arg name="viewer_host" default="localhost"/>
+  <arg name="viewer_user" default=""/>
+  
   <!-- Convenience arguments -->
   <arg name="root" value="$(find ubiquity_launches)" />
 
