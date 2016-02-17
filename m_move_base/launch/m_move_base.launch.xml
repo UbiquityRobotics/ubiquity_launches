@@ -4,11 +4,10 @@
 
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
-    <!--robot_platform: Is the base to use (e.g. "magni", "loki", etc.)  -->
   <arg name="robot_host" />
-    <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
   <arg name="robot_user" />
-    <!--robot_user: Is the user name to use on the robot. -->
+  <arg name="viewer_host" default="localhost"/>
+  <arg name="viewer_user" default=""/>
 
   <!-- Convenience Arguments: -->
   <!-- create, rhoomba -->
