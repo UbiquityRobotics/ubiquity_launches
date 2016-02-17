@@ -1,0 +1,26 @@
+<launch>
+  <!--Summary: -->
+  <!--Overview: -->
+
+  <!-- Required Arguments: -->
+  <arg name="robot_platform" />
+  <arg name="machine_name" default="viewer"/>
+  <arg name="machine_host" />
+  <arg name="machine_user" />
+
+  <machine name="$(arg machine_name)"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
+
+  <node machine="$(arg machine_name)" name="mobile_base_nodelet_manager"
+  pkg="nodelet" type="nodelet" args="manager"/>
+
+  <node  machine="$(arg machine_name)" name="cmd_vel_mux"
+    pkg="nodelet" type="nodelet"
+    args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+
+    <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
+    <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
+  </node>
+
+</launch>
