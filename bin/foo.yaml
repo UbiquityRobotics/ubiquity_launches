@@ -1,0 +1,7 @@
+name: foo
+package: ubiquity_launchs
+bin: foo
+language: python
+machine: robot
+topics: ["topic1"]
+parameters: []
