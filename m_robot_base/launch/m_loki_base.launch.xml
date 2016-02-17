@@ -15,10 +15,6 @@
   <arg name="bs"  value="bus_server" />
   <arg name="rsp"  value="robot_state_publisher" />
 
-  <machine name="robot"
-   address="$(arg robot_host)" user="$(arg robot_user)"
-   env-loader="/tmp/env_loader.sh" />
-
   <!-- Fire off each node: -->
   <include file="$(arg root)/n_$(arg bs)/launch/n_$(arg bs).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
