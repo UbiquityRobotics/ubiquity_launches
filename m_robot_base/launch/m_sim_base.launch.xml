@@ -10,15 +10,34 @@
    env-loader="/tmp/env_loader.sh" />
 
 
+  <include file="$(find ubiquity_launches)/n_relay/launch/n_relay.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)"/>
+    <arg name="machine_name" value="robot"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
+
+    <arg name="in_topic" value="/cmd_vel"/>
+    <arg name="out_topic" value="/cmd_vel_mux/input/teleop"/>
+  </include>
+
+
   <arg name="world_file"  default=" /opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"/>
+
 
   <node machine="robot" pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
     <param name="base_watchdog_timeout" value="0.5"/>
     <remap from="odom" to="odom"/>
     <remap from="base_pose_ground_truth" to="base_pose_ground_truth"/>
-    <remap from="cmd_vel" to="mobile_base/commands/velocity"/>
+    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
     <remap from="base_scan" to="scan"/>
   </node>
+
+  <include file="$(find ubiquity_launches)/n_cmd_vel_mux/launch/n_cmd_vel_mux.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)"/>
+    <arg name="machine_name" default="robot"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
+  </include>
 
 
   <!-- create, rhoomba -->
