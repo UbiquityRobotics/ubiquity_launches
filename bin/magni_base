@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-## Summary: Run Magni base software.
-##Overview:
-##  This program starts up the Magni base nodes.
-
-roslaunch ubiquity_launches m_magni_base.launch robot_base:=magni
