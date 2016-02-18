@@ -1,0 +1,15 @@
+#footprint: [[-0.45,-0.30], [-0.45,0.30], [0.10,0.30], [0.10,-0.30]]
+robot_radius: 0.1
+
+
+obstacle_layer:
+   observation_sources: laser_scan_sensor
+   #laser_scan_sensor: {sensor_frame: /laser, data_type: LaserScan, topic: /scan, marking: true, clearing: true, expected_update_rate: 2.0}
+   obstacle_range: 3.0
+   raytrace_range: 3.0
+
+inflation_layer:
+   inflation_radius: 0.1
+
+sonar_layer:
+   topics: ["/arduino/sensor/sonar_0", "/arduino/sensor/sonar_1", "/arduino/sensor/sonar_2", "/arduino/sensor/sonar_3", "/arduino/sensor/sonar_4", "/arduino/sensor/sonar_5", "/arduino/sensor/sonar_6", "/arduino/sensor/sonar_7", "/arduino/sensor/sonar_8", "/arduino/sensor/sonar_9", "/arduino/sensor/sonar_10", "/arduino/sensor/sonar_11", "/arduino/sensor/sonar_12", "/arduino/sensor/sonar_13", "/arduino/sensor/sonar_14", "/arduino/sensor/sonar_15"]

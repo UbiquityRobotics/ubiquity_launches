@@ -1,0 +1,35 @@
+<!-- Move Base Node -->
+<launch>
+  <!--Summary: Run the ROS move_base node. -->
+  <!--Overview: The launch file for this directory starts the ROS
+      [`move_base`](http://wiki.ros.org/move_base) node. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="mb" value="move_base" />
+
+  <!-- Run the move_base node: -->
+  <node pkg="$(arg mb)" type="move_base"
+   name="move_base" respawn="false" output="screen">
+
+    <remap from="/cmd_vel" to="/cmd_vel_mux/input/navigation" />
+
+    <rosparam command="load"
+     file="$(arg root)/n_$(arg mb)/params/dagny_nav.yaml" />
+    <rosparam command="load"
+     file="$(arg root)/n_$(arg mb)/params/local_planner.yaml" />
+  
+    <!-- local costmap parameters. Small laser scanner on /scan -->
+    <rosparam command="load" ns="local_costmap"
+     file="$(arg root)/n_$(arg mb)/params/common_costmap.yaml" />
+    <rosparam command="load" ns="local_costmap"
+     file="$(arg root)/n_$(arg mb)/params/local_costmap.yaml"  />
+  
+    <!-- global costmap parameters. Should just be a static map. -->
+    <rosparam command="load" ns="global_costmap"
+     file="$(arg root)/n_$(arg mb)/params/common_costmap.yaml" />
+    <rosparam command="load" ns="global_costmap"
+     file="$(arg root)/n_$(arg mb)/params/global_costmap.yaml" />
+
+  </node>
+</launch>
