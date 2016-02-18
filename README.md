@@ -1,5 +1,7 @@
 # `ubiquity_launches` Launch File Repository
 
+[![Build Status](https://travis-ci.org/UbiquityRobotics/ubiquity_launches.svg?branch=master)](https://travis-ci.org/UbiquityRobotics/ubiquity_launches)
+
 ## Development Overview
 
 All of the Ubiquity robots use
