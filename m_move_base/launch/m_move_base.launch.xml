@@ -58,15 +58,6 @@
   </node>
  -->
 
-  <!-- Command Velocity multiplexer -->
-  <include file="$(arg ul)/n_cmd_vel_mux/launch/n_cmd_vel_mux.launch.xml">
-    <arg name="robot_platform" value="$(arg robot_platform)"/>
-    <arg name="machine_name" default="robot"/>
-    <arg name="machine_host" value="$(arg robot_host)"/>
-    <arg name="machine_user" value="$(arg robot_user)"/>
-  </include>
-
-
   <!--  ************** Navigation  ***************  -->
   <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml"/>
 
