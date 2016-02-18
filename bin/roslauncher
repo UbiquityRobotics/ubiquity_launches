@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+
+# set -e
+# set -x
 
 # Extract robot URL from ROS_MASTER_URI environment varaible:
 ROBOT_HOST=`echo $ROS_MASTER_URI | sed -e s,http://,, | sed -e s,:11311,,`
@@ -6,15 +9,15 @@ ROBOT_HOST=`echo $ROS_MASTER_URI | sed -e s,http://,, | sed -e s,:11311,,`
 
 ROBOT_USER=`whoami`
 
-ssh $ROBOT_USER@$ROBOT_HOST -o PasswordAuthentication=no echo 'test whoami'
+ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test whoami' || ROBOT_USER='ubuntu'; ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test ubuntu'
 
-rc=$?
-if [[$rc != '0']]
-	then ROBOT_USER=ubuntu
+# rc=$?
+# if [[$rc != '0']]
+# 	then ROBOT_USER=ubuntu
 
-	ssh $ROBOT_USER@$ROBOT_HOST -o PasswordAuthentication=no echo 'test ubuntu'
-	rc=$?; if [[$rc != '0']]; then exit $rc; fi
-fi
+# 	ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test ubuntu'
+# 	rc=$?; if [[$rc != '0']]; then exit $rc; fi
+# fi
 
 # This chunk of code probes the ROBOT_HOST to find out about its
 # platform.  This is done copying short script over to
