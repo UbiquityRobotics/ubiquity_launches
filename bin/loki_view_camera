@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-##Summary: Show the gscam camera topic for Loki
-##Overview:
-##  This program will view the regular (gscam) camera topic.
-
-rqt_image_view image:=/camera/image_raw

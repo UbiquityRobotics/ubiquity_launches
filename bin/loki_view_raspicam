@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-##Summary: Show the Loki camera.
-##Overview:
-##  This program will view the new `raspicam` camera topic.
-
-rqt_image_view image:=/raspicam/camera/image/compressed
