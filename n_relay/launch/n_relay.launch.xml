@@ -10,6 +10,16 @@
   <arg name="out_topic" />
     <!--out_topic: The output topic name. -->
 
+  <arg name="robot_platform" />
+  <arg name="machine_name" default="viewer"/>
+  <arg name="machine_host" />
+  <arg name="machine_user" />
+
+  <machine name="$(arg machine_name)"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
+
+
   <!-- Convenience arguments: -->
   <arg name="node" value="relay" />
 
@@ -25,8 +35,10 @@
 	to always subscribe to both topics. -->
 
   <!-- Start relay node: -->
-  <node name="$(arg node_name)" pkg="topic_tools" type="relay"
-   args="$(arg in_topic) $(arg out_topic)" output="screen" >
+  <node name="$(arg node_name)" machine="$(arg machine_name)"
+    pkg="topic_tools" type="relay"
+    args="$(arg in_topic) $(arg out_topic)" output="screen" >
+    
     <param name="unreliable" value="$(arg unreliable) "/>
     <param name="lazy"       value="$(arg lazy) "/>
   </node>
