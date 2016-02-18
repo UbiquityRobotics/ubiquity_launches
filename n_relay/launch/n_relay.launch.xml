@@ -11,7 +11,7 @@
     <!--out_topic: The output topic name. -->
 
   <arg name="robot_platform" />
-  <arg name="machine_name" default="viewer"/>
+  <arg name="machine_name" default="robot"/>
   <arg name="machine_host" />
   <arg name="machine_user" />
 
@@ -38,7 +38,7 @@
   <node name="$(arg node_name)" machine="$(arg machine_name)"
     pkg="topic_tools" type="relay"
     args="$(arg in_topic) $(arg out_topic)" output="screen" >
-    
+
     <param name="unreliable" value="$(arg unreliable) "/>
     <param name="lazy"       value="$(arg lazy) "/>
   </node>
