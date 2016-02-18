@@ -10,19 +10,17 @@
         images.  The compress input comes in on `.../image` and the output
 	comes out on `.../image_raw`. -->
   <arg name="robot_platform" />
-    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.)  -->
-  <arg name="robot_host" />
-    <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
-  <arg name="robot_user" />
-    <!--robot_user: Is the user name to use on the robot. -->
+  <arg name="machine_name" default="robot"/>
+  <arg name="machine_host" />
+  <arg name="machine_user" />
 
   <!-- Remote robot machine -->
-  <machine name="robot"
-   address="$(arg robot_host)" user="$(arg robot_user)"
-   env-loader="/tmp/env_loader.sh" />
-
+  <machine name="$(arg machine_name)"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
+    
   <!-- Start impage uncompress node: -->
-  <node name="n_image_uncompress" machine="robot"
+  <node name="n_image_uncompress" machine="$(arg machine_name)"
    pkg="image_transport" type="republish" 
    args="compressed in:=$(arg camera_name)/image raw out:=$(arg camera_name)/image_raw"
    output="screen" />

@@ -5,11 +5,9 @@
 
   <!-- Required arguments: -->
   <arg name="robot_platform" />
-    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.)  -->
-  <arg name="robot_host" />
-    <!--robot_host: Is the robot DNS hostname to use (e.g. "betty.local"). -->
-  <arg name="robot_user" />
-    <!--robot_user: Is the user name to use on the robot. -->
+  <arg name="machine_name" default="robot"/>
+  <arg name="machine_host" />
+  <arg name="machine_user" />
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
@@ -40,12 +38,12 @@
     <!--prefix for the output of thes system. -->
 
   <!-- Remote robot machine -->
-  <machine name="robot"
-   address="$(arg robot_host)" user="$(arg robot_user)"
-   env-loader="/tmp/env_loader.sh" />
+  <machine name="$(arg machine_name)"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
 
   <!-- Start raspicam_node: -->
-  <node name="n_$(arg node)" machine="robot"
+  <node name="n_$(arg node)" machine="$(arg machine_name)"
    pkg="raspicam" type="raspicam_node"
    output="screen">
     <param name="camera_frame_id"      value="$(arg camera_frame_id)" />
@@ -61,7 +59,7 @@
     <!-- FIXME: should use a republisher so both topics are valid -->
   </node>
 
-  <node name="throttle"
+  <node name="throttle" machine="$(arg machine_name)"
    type="throttle" pkg="topic_tools"
    output="screen"
    args="messages /$(arg node)/camera/image/compressed 1.0 /$(arg node)/camera/image_slow/compressed"/>
@@ -70,7 +68,7 @@
        republish as uncompressed - this will go away once the fiducial_detect
        node can deal with compressed streams
   -->
-  <node name="republish" 
+  <node name="republish" machine="$(arg machine_name)"
    pkg="image_transport" type="republish"
    output="screen"
    args="compressed in:=/$(arg node)/camera/image_slow raw out:=$(arg output_prefix)/image_raw" />
