@@ -2,8 +2,8 @@
 Changelog for package ubiquity_launches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.0 (2016-02-18)
+------------------
 * Update Cmakelists
 * Restored n_move_base which I accidentally removed.
 * Added travis build status to README
