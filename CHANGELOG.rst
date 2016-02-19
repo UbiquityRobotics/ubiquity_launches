@@ -2,8 +2,8 @@
 Changelog for package ubiquity_launches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.1 (2016-02-18)
+------------------
 * Restore motor_node which was deleted
 * Contributors: Rohan Agrawal
 
