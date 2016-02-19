@@ -8,7 +8,7 @@ def main():
     base_file_names = argv[1:]
     for base_file_name in base_file_names:
 	yaml_file_name = base_file_name + ".yaml"
-	launch_file_name = base_file_name + ".launch"
+	launch_file_name = base_file_name + ".launch.xml"
 	
 	with open(yaml_file_name, "r") as yaml_file:
 	    yaml_data = yaml_file.read()
@@ -35,7 +35,7 @@ def main():
 
 		launch_file.write("  <!-- Optional arguments -->\n")
 		for topic in topics:
-		    launch_file.write("  <arg name=\"{0}_topic\" default=\"{1}\"\n".
+		    launch_file.write("  <arg name=\"{0}_topic\" default=\"{1}\" />\n".
 		      format(topic, topic))
 		    launch_file.write("    <!--{0}: more here -->\n".format(topic))
 		launch_file.write("\n")
@@ -43,8 +43,8 @@ def main():
 		if is_robot:
 		    launch_file.write("  <!-- Robot machine declaration -->\n")
 		    launch_file.write("  <machine name=\"robot\"\n")
-		    launch_file.write("   address=\"$(arg robot_host)\n")
-		    launch_file.write("   user=\"$(arg robot_user)\n")
+		    launch_file.write("   address=\"$(arg robot_host)\"\n")
+		    launch_file.write("   user=\"$(arg robot_user)\"\n")
 		    launch_file.write("   env-loader=\"/tmp/env_loader.sh\" />\n")
 		    launch_file.write("\n")
 

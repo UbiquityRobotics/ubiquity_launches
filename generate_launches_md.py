@@ -18,6 +18,7 @@
 import glob
 import os
 import re
+import sys
 import xml.etree.ElementTree as ET
 
 def main():
@@ -354,7 +355,15 @@ class Launch_File:
 
 	# Parse the XML:
 	#print("{0}:".format(full_file_name))
-	tree = ET.fromstring(xml_text)
+	try:
+	    tree = ET.fromstring(xml_text)
+	except ET.ParseError as error:
+	    position = error.position
+	    line = position[0]
+            column = position[1]
+	    print("XML Error in file '{0}' at line:{1} column:{2}".
+ 	      format(full_file_name, line, column))
+	    sys.exit(1)
 	requireds = []
 	optionals = []
 
