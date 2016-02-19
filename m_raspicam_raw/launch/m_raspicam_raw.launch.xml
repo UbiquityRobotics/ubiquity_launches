@@ -24,7 +24,7 @@
   </include>
   
   <!-- Start n_image_uncompress node: -->
-  <include file="$(arg root)/n_image_uncompress/launch/n_image_uncompress1.launch.xml">
+  <include file="$(arg root)/n_image_uncompress/launch/n_image_uncompress.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="machine_name" value="robot"/>
     <arg name="machine_host" value="$(arg robot_host)"/>

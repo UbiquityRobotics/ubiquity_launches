@@ -18,18 +18,17 @@ catkin_package()
 install(PROGRAMS
   bin/keyboard_drive
   bin/keyboard_navigate
-
   bin/loki_joystick_teleop
   bin/loki_local_costmap
   bin/loki_raspicam90
   bin/loki_rviz_local_costmap
   bin/loki_rviz_sonar
-
   bin/platform_probe
   bin/raspicam
   bin/raspicam_view
   bin/robot_base
   bin/roslauncher
+  bin/yaml2launch.py
 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
@@ -70,9 +69,6 @@ install(DIRECTORY m_raspicam_view/
 install(DIRECTORY m_robot_base/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_robot_base
   PATTERN ".svn" EXCLUDE)
-
-
-
 
 install(DIRECTORY n_amcl/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_amcl
@@ -165,3 +161,4 @@ install(DIRECTORY rviz_local_costmap/
 install(DIRECTORY rviz_sonar/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz_sonar
   PATTERN ".svn" EXCLUDE)
+

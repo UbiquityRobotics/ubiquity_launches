@@ -25,7 +25,7 @@ def main():
     """ This is the main program. """
 
     # List each supported robot base in *robot_bases*:
-    robot_bases = ["loki", "magni"]
+    robot_bases = ["loki", "magni", "sim"]
 
     # Search for launch file names:
     launch_file_names = []
@@ -107,6 +107,39 @@ def main():
     for launch_file in launch_files:
 	if not launch_file.visited:
 	    print("Launch File: '{0}' is unused".format(launch_file.name))
+
+    # Write out the `CMakeLists.txt` file:
+
+    with open("CMakeLists.txt", "w") as cmake_file:
+	cmake_file.write("cmake_minimum_required(VERSION 2.8.3)\n")
+	cmake_file.write("project(ubiquity_launches)\n")
+	cmake_file.write("\n")
+	cmake_file.write("find_package(catkin REQUIRED)\n")
+	cmake_file.write("\n")
+	cmake_file.write("## Find catkin macros and libraries\n")
+	cmake_file.write(
+	  "## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)\n")
+	cmake_file.write("## is used, also find other catkin packages\n")
+	cmake_file.write("catkin_package()\n")
+	cmake_file.write("\n")
+	cmake_file.write("###########\n")
+	cmake_file.write("## Build ##\n")
+	cmake_file.write("###########\n")
+	cmake_file.write("\n")
+	cmake_file.write("#############\n")
+	cmake_file.write("## Install ##\n")
+	cmake_file.write("#############\n")
+	cmake_file.write("install(PROGRAMS\n")
+	for executable_file in executable_files:
+	    cmake_file.write("  bin/{0}\n".format(executable_file.name))
+	cmake_file.write("\n")
+	cmake_file.write("  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}\n")
+	cmake_file.write(")\n")
+	cmake_file.write("\n")
+	cmake_file.write("\n")
+	for launch_file_name in sorted(launch_files_table.keys()):
+	    launch_file = launch_files_table[launch_file_name]
+	    launch_file.install_write(cmake_file)
 
 def macro_replace(match, macros):
     """ Replace "$(arg VALUE)" with the value from *macros* and return it.
@@ -197,10 +230,10 @@ class Executable_File:
 		    overview_lines.append(comment_line)
 
 	    # Deal with `roslaunch ...` command:
-	    if line.startswith("roslaunch"):
+	    if line.startswith("rosrun ubiquity_launches roslauncher"):
 		# Grab *launch_file_name*:
 		splits = line.split(' ')
-		launch_file_name = splits[2]
+		launch_file_name = splits[3]
 		#print("lauch_file_name={0}".format(launch_file_name))
 
 		# Grab the *launch_base_name*:
@@ -249,6 +282,11 @@ class Executable_File:
 	    referenced by the *Executable_File* object (i.e. *self*).
 	"""
 
+	trace = False
+	#trace = True
+	if trace:
+	    print("=>Executable_File.visit({0})".format(self.name))
+
 	# Verify argument types:
 	assert isinstance(launch_files_table, dict)
 
@@ -262,11 +300,14 @@ class Executable_File:
 	elif launch_base_name in launch_files_table:
 	    # *launch_base_name* exists and should be recursivly visited:
 	    launch_file = launch_files_table[launch_base_name]
-	    launch_file.visit(launch_files_table)
+	    launch_file.visit(launch_files_table, 1)
 	else:
 	    # Print out an error message:
 	    print("Executable '{0}' can not find launch file directory '{1}'".
 	      format(self.name, launch_base_name))
+
+	if trace:
+	    print("<=Executable_File.visit({0})".format(self.name))
 
 class Launch_File:
     def __init__(self, name,
@@ -402,15 +443,16 @@ class Launch_File:
 			file_name_previous = file_name
 			file_name = re.sub(r"\$\(arg .*?\)",
 			  lambda match: macro_replace(match, macros), file_name)
-			#print("'{0}'=>'{1}'".
+			#print("'{0}'\n  =>'{1}'".
 			#  format(file_name_previous, file_name))
+		    file_name_after = file_name
 
-		    # Determine if we have a `robot_base` argument to deal with:
-		    if file_name.find("[arg:robot_base]") >= 0:
+		    # Determine if we have a `robot_platform` argument to deal with:
+		    if file_name.find("[arg:robot_platform]") >= 0:
 			# We have a `robot_base` argument:
 
-			#print("robot_base <include...>: {0}".
-			#  format(file_after))
+			#print("ROBOT_PLATFORM <include...>: {0}".
+			#  format(file_name_after))
 
 			# Search for each *robot_base*:
 			for robot_base in robot_bases:
@@ -440,8 +482,9 @@ class Launch_File:
 			include_xml_name = splits[-1]
 			splits = include_xml_name.split('.')
 			include_base_name = splits[0]
-			#print("include_base_name='{0}'".
-			#  format(include_base_name))
+
+			#print("file_name={0} include_base_name='{1}'".
+			#  format(file_name, include_base_name))
 
 			# Collect *include_base_name* in *includes* list:
 			includes.append(include_base_name)
@@ -451,6 +494,20 @@ class Launch_File:
 	  requireds, optionals, macros, includes, conditionals)
 	return launch_file
  
+    def install_write(self, cmake_file):
+	""" *Launch_File*: Write a CMake `install` to *cmake_file*.
+	"""
+
+	# Verify argument types:
+	assert isinstance(cmake_file, file)
+
+	cmake_file.write(
+	  ("install(DIRECTORY {0}/\n" +
+	  "  DESTINATION ${{CATKIN_PACKAGE_SHARE_DESTINATION}}/{0}\n" +
+	  "  PATTERN \".svn\" EXCLUDE)\n" +
+	  "\n").
+	  format(self.name))
+
     def section_write(self, md_file):
 	""" *Launch_File*: Write out the section for the *Launch_File* object
 	    (i.e. *self*) to *md_file*.
@@ -534,13 +591,19 @@ class Launch_File:
 	    md_file.write("* {0}: (No Summary Available)\n".format(name))
 	md_file.write("\n")
 
-    def visit(self, launch_files_table):
+    def visit(self, launch_files_table, indent):
 	""" *Launch_File*: Recursively visit the *Launch_File* object
 	    (i.e. *self*) using *launch_files_table*.
 	"""
 	
+	#trace = True
+	trace = False
+	if trace:
+	    print("{0}=>Launch_File.visit({1})".format(indent * " ", self.name))
+
 	# Verify argument types:
 	assert isinstance(launch_files_table, dict)
+	assert isinstance(indent, int)
 
 	# Only work on launch files that have not been *visited*:
 	if not self.visited:
@@ -550,10 +613,10 @@ class Launch_File:
 	    for include in self.includes:
 		if include in launch_files_table:
 		    child = launch_files_table[include]
-                    child.visit(launch_files_table)
+                    child.visit(launch_files_table, indent + 1)
 		else:
-		    print("Launch file '{0}' references non-existant '{1}'".
-		      format(self.name, include))
+		    print("{0}Launch file '{1}' references non-existant '{2}' len={3}".
+		      format((indent + 1) * " ", self.name, include, len(self.includes)))
 
 	    # Also visit each *conditional* launch file (i.e. it has
 	    # `robot_base` argument in the name):
@@ -561,11 +624,14 @@ class Launch_File:
 		#print("conditional:{0}".format(conditional))
 		if conditional in launch_files_table:
 		    child = launch_files_table[conditional]
-		    child.visit(launch_files_table)
+		    child.visit(launch_files_table, indent + 1)
 		else:
 		    print("Launch file '{0}' uses non-existant base file '{1}'".
 		      format(self.name, conditional))
 	
+	if trace:
+	    print("{0}<=Launch_File.visit({1})".format(indent * " ", self.name))
+
 if __name__ == "__main__":
     main()
 
