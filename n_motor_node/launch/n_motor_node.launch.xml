@@ -1,0 +1,16 @@
+<launch>
+  <!--Summary: Start Magni motor controller software node. -->
+  <!--Overview: This library launch file starts the Magni motor controller
+      node that controls the robot base via a serial port. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="node" value="motor_node" />
+
+  <!-- Optional arguments: -->
+  <arg name="node_name" default="n_$(arg node)" />
+    <!--node_name: The name to assign to the node. -->
+
+  <!-- Start relay node: -->
+  <node name="$(arg node_name)" pkg="ubiquity_motor" type="$(arg node)" />
+
+</launch>
