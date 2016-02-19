@@ -2,6 +2,11 @@
 Changelog for package ubiquity_launches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Restore motor_node which was deleted
+* Contributors: Rohan Agrawal
+
 0.2.0 (2016-02-18)
 ------------------
 * Update Cmakelists
