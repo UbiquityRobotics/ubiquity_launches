@@ -364,18 +364,23 @@ class Launch_File:
         if not "Overview" in argument_comments:
             problems.append("There is no Overview documentation")
 
+        # Make sure each required argument is documented:
         for required in self.requireds:
             attributes = required.attrib
             name = attributes["name"]
             if not name in argument_comments:
                 problems.append(
                   "Required argument '{0}' is not documented".format(name))
+
+        # Make sure each optional argument is documented:
         for optional in self.optionals:
             attributes = optional.attrib
             name = attributes["name"]
             if not name in argument_comments:
                 problems.append(
                   "Optional argument '{0}' is not documented".format(name))
+
+        # Output any *problems* if they exist:
         if len(problems) > 0:
             print("In '{0}':".format(self.name))
             for problem in problems:
