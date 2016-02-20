@@ -215,7 +215,7 @@ camera.
 
 This program is typically embedded in a short shell script that looks as follows:
 
-#!/bin/bash
+\#!/bin/bash
 
 rosrun ubiquity_launches roslauncher XXX.launch.xml
 
