@@ -6,7 +6,7 @@ To run one of the executables below, do the following:
 
 where, `PROGRAM_NAME` is one of the executables below.
 
-Please note that tab complete can reduce typing:
+Please note that tab completion can reduce typing:
 
         rosrun ub[Tab]iquity_l[Tab]aunches rasp[Tab]icam_[Tab]view
 
@@ -37,9 +37,9 @@ The following executables are available in `bin`:
 
 * `robot_base`: Run Robot Base Stack
 
-* `roslauncher`: 
+* `roslauncher`: Helper program to launch ROS launch files.
 
-* `yaml2launch.py`: 
+* `yaml2launch.py`: An experimental program to convert a `.yaml` into a `.launch.xml` file.
 
 The following launch file directories are available:
 
@@ -213,9 +213,34 @@ camera.
 
 ### `roslauncher` Executable:
 
+This program is typically embedded in a short shell script that looks as follows:
+
+#!/bin/bash
+
+rosrun ubiquity_launches roslauncher XXX.launch.xml
+
+where `XXX.launch.xml` is structure launch file to be launched.
+
+`roslauncher` does the following:
+
+* It uses the `ROS_MASTER_URI` enviroment variable to determine
+the DNS host name for the robot.
+
+* It determins the kind of robot platform that the robot is.
+For example, `loki`, `sim` (for simulator), `botvac`,
+`magni`, etc.
+
+* It sets up X11 forwarding between the current computer (which
+usually has a display) and the robot (which usually does not.)
+X11 forwarding always the robot to remotely open windows on
+the current computer.
+
+* It starts the top level launch file (e.g. `XXX.launch.xml`
+in the example above.
 
 ### `yaml2launch.py` Executable:
 
+This is an experimental program that does not work yet.  Please move along.
 
 ## Launch File Directories
 
