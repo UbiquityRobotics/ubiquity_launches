@@ -325,6 +325,9 @@ class Launch_File:
 	assert isinstance(macros, dict)
 	assert isinstance(includes, list)
 	assert isinstance(conditionals, list)
+        for include in includes:
+            assert isinstance(include, tuple) and len(include) == 2 and \
+	      isinstance(include[0], str) and isinstance(include[1], str)
 
 	# Load up *self*:
 	self.name = name		# Launch file base name
@@ -487,7 +490,7 @@ class Launch_File:
 			#  format(file_name, include_base_name))
 
 			# Collect *include_base_name* in *includes* list:
-			includes.append(include_base_name)
+			includes.append((include_base_name, file_name))
 
 	# Construct and return *launch_file*:
 	launch_file = Launch_File(launch_file_name, argument_comments,
@@ -611,12 +614,15 @@ class Launch_File:
 
 	    # Recursively visit each mandatory *include* launch file:
 	    for include in self.includes:
-		if include in launch_files_table:
-		    child = launch_files_table[include]
+                include_name = include[0]
+                include_file_name = include[1]
+		if include_name in launch_files_table:
+		    child = launch_files_table[include_name]
                     child.visit(launch_files_table, indent + 1)
 		else:
-		    print("{0}Launch file '{1}' references non-existant '{2}' len={3}".
-		      format((indent + 1) * " ", self.name, include, len(self.includes)))
+		    print("{0}Launch file '{1}' references non-existant directory '{2}' file".
+		      format((indent + 1) * " ", self.name, include_name))
+                    print("{0}Include file='{1}'".format((indent + 1) * " ", include_file_name))
 
 	    # Also visit each *conditional* launch file (i.e. it has
 	    # `robot_base` argument in the name):
