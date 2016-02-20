@@ -74,7 +74,7 @@ def main():
     md_file.write("To run one of the executables below, do the following:\n\n")
     md_file.write("        rosrun ubiquity_launches PROGRAM_NAME\n\n")
     md_file.write("where, `PROGRAM_NAME` is one of the executables below.\n\n")
-    md_file.write("Please note that tab complete can reduce typing:\n\n")
+    md_file.write("Please note that tab completion can reduce typing:\n\n")
     md_file.write("        rosrun ub[Tab]iquity_l[Tab]aunches rasp[Tab]icam_[Tab]view\n\n")
     md_file.write("Please learn how to use tab complete, it will reduce the amount of\n")
     md_file.write("typing and frustration.\n\n")
