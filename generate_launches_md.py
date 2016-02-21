@@ -325,6 +325,9 @@ class Launch_File:
 	assert isinstance(macros, dict)
 	assert isinstance(includes, list)
 	assert isinstance(conditionals, list)
+	for include in includes:
+	    assert len(include) == 2 and \
+	      isinstance(include[0], str) and isinstance(include[1], str)
 
 	# Load up *self*:
 	self.name = name		# Launch file base name
@@ -487,7 +490,7 @@ class Launch_File:
 			#  format(file_name, include_base_name))
 
 			# Collect *include_base_name* in *includes* list:
-			includes.append(include_base_name)
+			includes.append((include_base_name, file_name))
 
 	# Construct and return *launch_file*:
 	launch_file = Launch_File(launch_file_name, argument_comments,

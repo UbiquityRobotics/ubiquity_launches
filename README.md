@@ -159,7 +159,6 @@ secure shell.
 1. Install some software on your development machine:
 
         sudo apt-get install -y ssh fuse sshfs
-        sudo apt-get install -y 
         sudo gpasswd -a $USER fuse
 
 2. Let's make sure that you can log into your robot via `ssh`.
@@ -170,134 +169,24 @@ secure shell.
         # password (usually `ubuntu`).  When done it will print
         # out `hello`.
 
-3. Create your new USER account on the development machine.
-   USER can be up to 32 characters of upper/lower case letters,
-   digits, and underscores:
-
-        sudo adduser USER
-        # It will prompt you for account password.
-        # It will prompt for a bunch of account information.
-        
-4. Now log into your new USER account:
-
-        su USER
-        # It will prompt you for your new password.
-
-5. Now let's create the same USER account on the ROBOT
-   machine.
-
-        ssh ubuntu@ROBOT.local
-        # You will probably be prompted for the `ubuntu` password.
-        # The prompt will probably change to `ubuntu@ROBOT`.
-        sudo adduser USER
-        # As before, it will for the `ubuntu` password.
-        # Please fill in the rest of the account information
-        sudo addgroup USER video
-        exit
-        # This should return you to the development processor.
-        # Now verify that you can log in as USER on the
-        # robot processor:
-        ssh USER@ROBOT.local echo yippee
-        # You should be prompted for the USER password.
-        # If everything worked, you should `yippee` printed out.
-
-   That should get the USER account built on the robot
-   processor with access to the `video` group.
 
 ### Password Free Secure Shell
 
 Setting up Secure Shell to operate without prompting you for
 passwords all the time is a requirement.
 
-1. Generate a public/private key on the development machine:
+1. Right now we use the new `configure.py` program.  Run this program
+   on your desktop/laptop.  When it comes up it prompts you with:
 
-        if [ ! -f ~/.ssh/id_rsa ] ; then ssh-keygen -t ras ; fi
+        [0]: Exit without save
+        [1]: Change current hostname ('toshiba')
+        [2]: Manage hostname WiFi access points
+        [3]: Manage secure shell access
+        [4]: Save everything and exit
+        Command: 
 
-   If you already have an RSA public/private key, this
-   line will return with no further prompting and you need
-   not continue.  If you do get a prompt, it will probably
-   look like:
-
-        Enter file in which to save the key (/home/USER/.ssh/id_rsa):
-
-   Just depress the `[ENTER]` key.  Next it will prompt for 
-   a pass phrase:
-
-        Enter passphrase (empty for no passphrase):
-
-   Again, depress the  `[Enter]` key.  It will prompt once again:
-
-        Enter same passphrase again:
-
-   Again, depress the `[Enter]` key.  Finally, it will crunch
-   on some numbers for a while, print out some more stuff and
-   finish.
-
-2. Now we want to make sure that the development machine can
-   use secure shell to connect to itself without a password
-   prompt:
-
-        chmod 644 ~/.ssh/authorizied_keys
-        cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-        chmod 444 ~/.ssh/authorizied_keys
-
-   Now to verify that we succeeded, try the following (notice
-   that accent characters (\`) are being used instead of single
-   quotes (\') :
-
-        ssh `hostname`.local echo terrific
-    
-   If everything worked, you should see `terrific` with no
-   password prompt.
-
-
-3. Now we get to do the same thing over on the robot using the
-   exact same technology:
-
-        sudo USER@ROBOT.local
-        # Prompt for USER password on ROBOT.
-        if [ ! -f ~/.ssh/id_rsa ] ; then ssh-keygen -t ras ; fi
-
-    Just depress the `[Enter]` key three times.        
-
-4. Now we want to make sure that the robot can connect to itself
-   via secure shell without any password prompts:
-
-        chmod 644 ~/.ssh/authorized_keys
-        cat ~/.ssh/id_ras.pub >> ~/.ssh/authorized_keys
-        chmod 444 ~/.ssh/authorized_keys
-
-   Now we verify that we succeeded by (again accent characters,
-   not single quote characters):
-
-        ssh `hostname`.local echo fantastic
-
-   There should be no prompt and `fantastic` should be printed out.
-
-        exit
-
-   This should return you to the development processor.
-
-5. Now we need to make it possible to log into the robot without
-   any prompt.
-
-        ssh ROBOT.local chmod 644 .ssh/authorized_keys
-        cat ~/.ssh/id_rsa.pub | ssh ROBOT.local 'cat >> .ssh/authorized_keys'
-        ssh ROBOT.local chmod 444 .ssh/authorized_keys
-
-   Now we verify that we succeeded:
-
-        ssh ROBOT.local echo awesome
-
-   There should be no password prompt, and `awesome` should be printed out.
-
-6. Since there is no particular need for the robot processor
-   to log into the development machine, we do not do the symmetric
-   step for password free secure shell from the robot processor
-   to the development processor.
-
-That covers all of the password prompt removal configuration
-of secure shell.
+   Item `[3]: Manage secure shell access` is the command to use.
+   Be sure to set SSH for both your machine and the robot.
 
 ### X11 Forwarding
 
