@@ -181,11 +181,19 @@ secure shell.
 
 ### Password Free Secure Shell
 
-Setting up Secure Shell to operate without prompting you for
-passwords all the time is a requirement.
+{Wayne: Should we be using `configure` or should we just tell
+the user to use `ssh-copy-id` instead?  I lean toward `configure`
+since it does the avhi-browse and defaults everything correctly.
+We could imagine a dedicated program that just does it, tho'}
 
-1. Right now we use the new `configure.py` program.  Run this program
-   on your desktop/laptop.  When it comes up it prompts you with:
+Setting up Secure Shell to operate without prompting you for
+passwords all the time is a requirement.  This is done as follows:
+
+1. Run the `configure` program on your desktop/laptop:
+
+        rosrun ubiquity_launches configure
+
+2. When it comes up it prompts you with:
 
         [0]: Exit without save
         [1]: Change current hostname ('toshiba')
@@ -195,9 +203,76 @@ passwords all the time is a requirement.
         Command: 
 
    Item `[3]: Manage secure shell access` is the command to use.
-   Be sure to set SSH for both your machine and the robot.
+
+3. Next, the `configure` program will scan for likely machines to
+   attempt to set you secure shell keys.  One of them should be
+   your laptop/desktop and one should be robot.  For example:
+
+        [0]: Exit SSH mode
+        [1]: Set up SSH keys for other1
+        [2]: Set up SSH keys for ROBOT
+	[3]: Set up SSH keys for other2
+	[4]: Set up SSH keys for DEVEL
+	[5]: Set up SSH keys for other3
+
+   where `ROBOT` is the host name of your robot and DEVEL is the
+   host name of your laptop/desktop.
+
+4. Type in the number for you laptop/desktop (in the example above
+   this would be `4'.  Next you get prompted with:
+
+        User name of DEVEL.local [YOUR_USER_NAME]:
+
+   where `DEVEL` is the host name of your laptop/desktop, and
+   `YOUR_USER_NAME` is your user account name on your laptop/desktop.
+   For your desktop/laptop, you want to be able to perform a loop
+   back secure shell connection from you laptop/desktop back to
+   itself without a password prompt.  (Yes, we need this!)  So,
+   just type `[Enter]`, type the correct password prompt into any
+   password prompt, and the appropriate the SSH keys will be installed.
+   A bunch of text will come out.  The text basically say that it
+   either succeeded, the key was already installed, or it will fail.
+   If it fails, you are going to need some help to fix it.  {Wayne:
+   We really need to list the most common failure situations here,
+   and how to deal with them.}
+
+5. Next, the `configure` program will list the same set of
+   options that was shown in step 3 above.  This time select the
+   number for your robot.  (In the example above, this would be `2`.)
+   This time you will be prompted with:
+
+        User name of ROBOT.local [ubuntu]:
+
+   where ROBOT is the host name of your robot.  The user name that
+   you are prompted with is `ubuntu`.  While it is possible to set
+   up your own user account on the the robot, the vast majority of
+   people will not want to go through the bother.  For this reason,
+   we use `ubuntu` account that is already on robot.  Thus, you
+   type `[Enter]` again and the same thing happens again, namely
+   you will be prompted for the `ubunut` account password (usually
+   it is `ubuntu`), and the keys will be installed.
+
+6. The final step is to install loop back keys from the robot to
+   itself (Yes, we need this.)  This is done via:
+
+        ssh ROBOT_USER@ROBOT.local rosrun ubiquity_launches configure
+
+   Now select your SSH configuration (`3`), select your robot,
+   and enter press `[Enter]` to use the default user account.
+   Again, type in the appropiate password (probably `ubuntu`)
+   for the password prompt, let the robot wrap the task up.
+
+7. Now run the following commands:
+
+        ssh YOUR_USER_NAME@DEVEL.local echo "devel loopback works"
+        ssh ubuntu@ROBOT.local echo "devel to robot works"
+        ssh ubuntu@ROBOT.local ssh ubuntu@ROBOT.local echo "robot loopback works"
+
+   They should all work without any password prompts.
 
 ### X11 Forwarding
+
+{Wayne: This step appears to be unnecessary.}
 
 In order to enable X11 forwarding via secure shell, we need
 to edit the file `/etc/ssh/ssh_config` on both the development
@@ -292,12 +367,8 @@ assume that ROS has already been installed.
 
         (cd ~/catkin_ws ; cakin_make)
 
-4. Now we edit `~/.profile` to recognize the catkin workspace:
-
-        nano ~/.profile
-
-   Now we add the following code right before the line that
-   says `#if running bash`:
+4. Now we create `~/.ros_setup` to have the following content
+   using your favorite editor (e.g. `nano ~/.ros_setup`):
 
         # Only `source /opt/ros/indigo/setup.bash` if we have not already done so.
         # We assume that this script does not change very often:
@@ -309,29 +380,40 @@ assume that ROS has already been installed.
         fi
 
         # Only `source ~/catkin_ws/devel/setup` if it exists:
-        if [ -f ~/catkin_ws/devel/setup.sh ] ; then
-            source ~/catkin_ws/devel/setup.bash ;
+        if [ -f $HOME/catkin_ws/devel/setup.sh ] ; then
+            source $HOME/catkin_ws/devel/setup.bash ;
         fi
 
-        export ROS_CATKIN_WS=~/catkin_ws
+        export ROS_CATKIN_WS=$HOME/catkin_ws
         export ROS_HOSTNAME=`hostname`.local
         export ROS_MASTER_URI=http://`hostname`.local:11311
         export ROSLAUNCH_SSH_UNKNOWN=1
 
-5. Now we do exactly the same steps over on the robot:
+5. Now we edit `~/.profile` to add the following lines:
 
-        ssh ROBOT.local
-        mkdir -p ~/catkin_ws/src
-        cd ~/cakin_ws/src
-        git clone https://github.com/UbiquityRobotics/ubiquity_launches.git
-        git clone https://github.com/UbiquityRobotics/raspicam_node.git
-        git clone https://github.com/UbiquityRobotics/userland.git
-        (cd ~/catkin_ws ; cakin_make)
-        nano ~/.profile
+	# Always set up the ROS envionment:
+        . $HOME/.ros_setup
 
-    Now edit in the exact same code from the previous step into the
-    same place in `~/.profile` and exit with `[Ctrl-O]` followed by
-    `[Ctrl-X]`.
+   right after the line:
+
+        #umask 022
+
+6. Now we add the following lines to the end of `~/.bashrc`:
+
+        # Setup ROS environment:
+	source ~/.ros_setup
+
+        # Uncomment one of these to select a robot:
+        #export ROS_MASTER_URI=http://ROBOT.local:11311	      # Robot
+	#export ROS_MASTER_URI=http://`hostname`.local:11311  # Simulator
+
+    Where `ROBOT` is the host name of the robot.  Remove the `#` comment
+    character in front of the `ROS_MASTER_URI` you want to use.  You can
+    only select one at a time.  Now run the folowing command:
+
+	source ~/.bashrc
+
+7. Now repeat these step over on the robot.
 
 ### Using `sshfs`
 
