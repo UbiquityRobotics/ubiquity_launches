@@ -18,6 +18,9 @@ ResultInactive=no
 ResultActive=yes
 ```
 
+Add your user to the netdev group by running
+`sudo addgroup $USER netdev`
+
 ## Remove Old stuff from interfaces
 
 Open `/etc/network/interfaces` with sudo and your favorite editor
