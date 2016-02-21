@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+##Summary: An experimental program to convert a `.yaml` into a `.launch.xml` file.
+##Overview:
+##  This is an experimental program that does not work yet.  Please move along.
+
 import yaml
 import sys
 

@@ -71,6 +71,14 @@ def main():
     md_file = open("launches.md", "wa")
     md_file.write("# Ubiquity Launches\n\n")
 
+    md_file.write("To run one of the executables below, do the following:\n\n")
+    md_file.write("        rosrun ubiquity_launches PROGRAM_NAME\n\n")
+    md_file.write("where, `PROGRAM_NAME` is one of the executables below.\n\n")
+    md_file.write("Please note that tab completion can reduce typing:\n\n")
+    md_file.write("        rosrun ub[Tab]iquity_l[Tab]aunches rasp[Tab]icam_[Tab]view\n\n")
+    md_file.write("Please learn how to use tab complete, it will reduce the amount of\n")
+    md_file.write("typing and frustration.\n\n")
+
     # Write out each executable file summary:
     md_file.write("The following executables are available in `bin`:\n\n")
     for executable_file in executable_files:
@@ -103,13 +111,15 @@ def main():
     for executable_file in executable_files:
 	executable_file.visit(launch_files_table)
 
-    # Print out each *launch_file* that was not visited:
+    # Visit each *launch* file and check for problems:
     for launch_file in launch_files:
-	if not launch_file.visited:
+	if launch_file.visited:
+            launch_file.check_for_issues()
+        else:
 	    print("Launch File: '{0}' is unused".format(launch_file.name))
+            
 
     # Write out the `CMakeLists.txt` file:
-
     with open("CMakeLists.txt", "w") as cmake_file:
 	cmake_file.write("cmake_minimum_required(VERSION 2.8.3)\n")
 	cmake_file.write("project(ubiquity_launches)\n")
@@ -118,7 +128,8 @@ def main():
 	cmake_file.write("\n")
 	cmake_file.write("## Find catkin macros and libraries\n")
 	cmake_file.write(
-	  "## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)\n")
+	  "## if COMPONENTS list like " +
+          "find_package(catkin REQUIRED COMPONENTS xyz)\n")
 	cmake_file.write("## is used, also find other catkin packages\n")
 	cmake_file.write("catkin_package()\n")
 	cmake_file.write("\n")
@@ -326,7 +337,7 @@ class Launch_File:
 	assert isinstance(includes, list)
 	assert isinstance(conditionals, list)
 	for include in includes:
-	    assert len(include) == 2 and \
+            assert isinstance(include, tuple) and len(include) == 2 and \
 	      isinstance(include[0], str) and isinstance(include[1], str)
 
 	# Load up *self*:
@@ -338,6 +349,42 @@ class Launch_File:
 	self.includes = includes	# Included launch files
 	self.conditionals = conditionals # Launch files that use robot_base arg.
 	self.visited = False		# Flag for mark/sweep recursive visit
+
+    def check_for_issues(self):
+        """ *Launch_File*: Check for problems with *Launch_File* object
+            (i.e. *self*).
+        """
+
+        problems = []
+
+        # Make sure we have both a summary and overview command:
+        argument_comments = self.argument_comments
+        if not "Summary" in argument_comments:
+            problems.append("There is no Summary documentation")
+        if not "Overview" in argument_comments:
+            problems.append("There is no Overview documentation")
+
+        # Make sure each required argument is documented:
+        for required in self.requireds:
+            attributes = required.attrib
+            name = attributes["name"]
+            if not name in argument_comments:
+                problems.append(
+                  "Required argument '{0}' is not documented".format(name))
+
+        # Make sure each optional argument is documented:
+        for optional in self.optionals:
+            attributes = optional.attrib
+            name = attributes["name"]
+            if not name in argument_comments:
+                problems.append(
+                  "Optional argument '{0}' is not documented".format(name))
+
+        # Output any *problems* if they exist:
+        if len(problems) > 0:
+            print("In '{0}':".format(self.name))
+            for problem in problems:
+                print("\t{0}".format(problem))
 
     @staticmethod
     def file_parse(full_file_name, robot_bases):
@@ -450,7 +497,8 @@ class Launch_File:
 			#  format(file_name_previous, file_name))
 		    file_name_after = file_name
 
-		    # Determine if we have a `robot_platform` argument to deal with:
+		    # Determine if we have a `robot_platform` argument to
+		    # deal with:
 		    if file_name.find("[arg:robot_platform]") >= 0:
 			# We have a `robot_base` argument:
 
@@ -614,12 +662,17 @@ class Launch_File:
 
 	    # Recursively visit each mandatory *include* launch file:
 	    for include in self.includes:
-		if include in launch_files_table:
-		    child = launch_files_table[include]
+                include_name = include[0]
+                include_file_name = include[1]
+		if include_name in launch_files_table:
+		    child = launch_files_table[include_name]
                     child.visit(launch_files_table, indent + 1)
 		else:
-		    print("{0}Launch file '{1}' references non-existant '{2}' len={3}".
-		      format((indent + 1) * " ", self.name, include, len(self.includes)))
+		    print(("{0}Launch file '{1}' references non-existant" +
+                           " directory '{2}' file").
+		      format((indent + 1) * " ", self.name, include_name))
+                    print("{0}Include file='{1}'".
+		      format((indent + 1) * " ", include_file_name))
 
 	    # Also visit each *conditional* launch file (i.e. it has
 	    # `robot_base` argument in the name):

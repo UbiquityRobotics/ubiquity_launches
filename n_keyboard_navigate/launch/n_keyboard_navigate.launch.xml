@@ -1,9 +1,19 @@
 <launch>
+  <!--Summary: Start keyboard navigate node. -->
+  <!--Overview: The launch file for this directory starts a
+      keyboard interface to the ROS
+      [`move_base`](http://wiki.ros.org/map_server) node.  This
+      code is still under development. -->
+
   <!-- Required arguments -->
   <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
   <arg name="machine_name" default="viewer"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
   <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
   <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
 
   <!-- This node can be run on viewer and robot, but is generally on viewer -->
   <machine name="$(arg machine_name)"

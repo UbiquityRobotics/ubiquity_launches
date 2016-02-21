@@ -2,6 +2,15 @@
 
 [![Build Status](https://travis-ci.org/UbiquityRobotics/ubiquity_launches.svg?branch=master)](https://travis-ci.org/UbiquityRobotics/ubiquity_launches)
 
+The `ubiquity_launches` repository provides a bunch of
+utilities for developing ROS code.  In particular, it
+provides, common list of programs to run robot softare
+on a robot simulator or one or more actual robots.
+
+The file [`launches.md`](launches.md) summarizes what is
+available.  If you need a higher level introduction to
+what is going, please continue reading.
+
 ## Development Overview
 
 All of the Ubiquity robots use

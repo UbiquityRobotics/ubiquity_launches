@@ -11,9 +11,13 @@
     <!--out_topic: The output topic name. -->
 
   <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
   <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
   <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
   <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
 
   <machine name="$(arg machine_name)"
     address="$(arg machine_host)" user="$(arg machine_user)"
@@ -30,7 +34,7 @@
     <!--unreliable: Set to `True` to negociate an unreliable connection
         for inbound data; other set to `False` for a reliable connection.  -->
   <arg name="lazy" default="False" />
-    <!--laxy: Set to `True` defer subscribint to the input topic until
+    <!--lazy: Set to `True` defer subscribing to the input topic until
         after there is at least one output topic; otherwise set to `False`
 	to always subscribe to both topics. -->
 

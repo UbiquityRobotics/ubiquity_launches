@@ -1,5 +1,18 @@
 # Ubiquity Launches
 
+To run one of the executables below, do the following:
+
+        rosrun ubiquity_launches PROGRAM_NAME
+
+where, `PROGRAM_NAME` is one of the executables below.
+
+Please note that tab completion can reduce typing:
+
+        rosrun ub[Tab]iquity_l[Tab]aunches rasp[Tab]icam_[Tab]view
+
+Please learn how to use tab complete, it will reduce the amount of
+typing and frustration.
+
 The following executables are available in `bin`:
 
 * `keyboard_drive`: Start the keyboard driver for the robot.
@@ -16,17 +29,17 @@ The following executables are available in `bin`:
 
 * `loki_rviz_sonar`: Show the Loki sonars in RViz
 
-* `platform_probe`: 
+* `platform_probe`: Return the kind of platform the current computer connected to.
 
-* `raspicam`: 
+* `raspicam`: Fire up a Raspberry Pi Camera on a Raspberry Pi processor.
 
 * `raspicam_view`: Start the Raspberry Pi camera and show its output on the screen.
 
 * `robot_base`: Run Robot Base Stack
 
-* `roslauncher`: 
+* `roslauncher`: Helper program to launch ROS launch files.
 
-* `yaml2launch.py`: 
+* `yaml2launch.py`: An experimental program to convert a `.yaml` into a `.launch.xml` file.
 
 The following launch file directories are available:
 
@@ -81,13 +94,11 @@ The following launch file directories are available:
 * `n_image_uncompress`:
   Uncompress an image stream.
 
-* `n_image_uncompress`:
-  Uncompress an image stream.
-
 * `n_joy`:
   Connect to a joystick node.
 
-* n_keyboard_navigate: (No Summary Available)
+* `n_keyboard_navigate`:
+  Start keyboard navigate node.
 
 * `n_map_server`:
   Start a ROS map_server node.
@@ -122,7 +133,8 @@ The following launch file directories are available:
 * `n_teleop_twist_joy`:
   Launch the ROS `teleop_twist_joy` node.
 
-* n_teleop_twist_keyboard: (No Summary Available)
+* `n_teleop_twist_keyboard`:
+  Launches the ROS `teleop_twist_joy/teleop_node` node.
 
 * `rviz_local_costmap`:
   Show local costmap in RViz.
@@ -169,9 +181,19 @@ in a mode that shows the robot sonar sensors.
 
 ### `platform_probe` Executable:
 
+The `roslauncher1` program needs to be able to query a computer
+find out what kind of robot it is.  This program will return a
+string of the form:
+
+platform:=PLATFORM_NAME
+
+where PLATFORM_NAME is one of `sim`, `loki`, `botvac`, or `magni`.
 
 ### `raspicam` Executable:
 
+This program will start the Raspberry Pi camera attached to your
+robot.  It does not bring up a viewer.  If you want the viewer as
+well, please use the `raspicam_view` program instead.
 
 ### `raspicam_view` Executable:
 
@@ -190,9 +212,34 @@ camera.
 
 ### `roslauncher` Executable:
 
+This program is typically embedded in a short shell script that looks as follows:
+
+\#!/bin/bash
+
+rosrun ubiquity_launches roslauncher XXX.launch.xml
+
+where `XXX.launch.xml` is structure launch file to be launched.
+
+`roslauncher` does the following:
+
+* It uses the `ROS_MASTER_URI` enviroment variable to determine
+the DNS host name for the robot.
+
+* It determins the kind of robot platform that the robot is.
+For example, `loki`, `sim` (for simulator), `botvac`,
+`magni`, etc.
+
+* It sets up X11 forwarding between the current computer (which
+usually has a display) and the robot (which usually does not.)
+X11 forwarding always the robot to remotely open windows on
+the current computer.
+
+* It starts the top level launch file (e.g. `XXX.launch.xml`
+in the example above.
 
 ### `yaml2launch.py` Executable:
 
+This is an experimental program that does not work yet.  Please move along.
 
 ## Launch File Directories
 
@@ -404,30 +451,42 @@ This launch file has the following arguments:
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
 
 * node_name (Optional, default: 'n_amcl'):
+  The name to assign to this ROS node.
 
 * use_map_topic (Optional, default: 'false'):
 
 * scan_topic (Optional, default: 'scan'):
+  The name of the LIDAR scan topic to subscribe to.
 
 * initial_pose_x (Optional, default: '0.0'):
+  The initial X location of the robot.
 
 * initial_pose_y (Optional, default: '0.0'):
+  The initial Y location of the robot.
 
 * initial_pose_a (Optional, default: '0.0'):
+  The initial angle of the robot.
 
 * odom_frame_id (Optional, default: 'odom'):
+  The Odometry TF frame id.
 
 * base_frame_id (Optional, default: 'base_footprint'):
+  The robot base TF frame id.
 
 * global_frame_id (Optional, default: 'map'):
+  The global TF frame id.
 
 ### `n_bus_server` Launch File Directory
 
@@ -486,12 +545,16 @@ This launch file has the following arguments:
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'viewer'):
+  The machine name (i.e. "robot" or "viewer")
 
 ### `n_fiducial_detect` Launch File Directory
 
@@ -548,19 +611,6 @@ This launch file directory will start a node that takes
 a compressed image message stream and converts it to an uncompressed
 image stream.
 
-This launch file has the following argument:
-
-* camera_name (Required):
-  The base name of the camera that produces compressed
-  images.  The compress input comes in on `.../image` and the output
-  comes out on `.../image_raw`.
-
-### `n_image_uncompress` Launch File Directory
-
-This launch file directory will start a node that takes
-a compressed image message stream and converts it to an uncompressed
-image stream.
-
 This launch file has the following arguments:
 
 * camera_name (Required):
@@ -569,12 +619,16 @@ This launch file has the following arguments:
   comes out on `.../image_raw`.
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
 
 ### `n_joy` Launch File Directory
 
@@ -587,15 +641,24 @@ This launch file has no arguments.
 
 ### `n_keyboard_navigate` Launch File Directory
 
+The launch file for this directory starts a
+keyboard interface to the ROS
+[`move_base`](http://wiki.ros.org/map_server) node.  This
+code is still under development.
+
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'viewer'):
+  The machine name (i.e. "robot" or "viewer")
 
 ### `n_map_server` Launch File Directory
 
@@ -605,12 +668,16 @@ The launch file for this directory starts the ROS
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
 
 * map_file (Optional, default: '$(arg ul)/n_$(arg node)/params/$(arg robot_platform).yaml'):
   The `.yaml` map file to use for the map server.  This also
@@ -644,21 +711,28 @@ launching a node to read images from the Raspberry Pi camera.
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
 
 * camera_frame_id (Optional, default: ''):
+  The name of the ROS TF camera frame.
 
 * camera_info_url (Optional, default: 'file://$(arg root)/n_$(arg node)/params/$(arg robot_platform).yaml'):
+  The URL for the camera `.yaml` file.
 
 * camera_name (Optional, default: 'raspicam'):
   The name of the camera topic.
 
 * framerate (Optional, default: '30'):
+  The frame rate between 15 and 90 as an integer.
 
 * height (Optional, default: '480'):
   The image height in pixels.
@@ -668,6 +742,7 @@ This launch file has the following arguments:
   quality and 100 is high quality.
 
 * srrc_publishing_mode (Optional, default: '0'):
+  (Not a clue what this argument does!)
 
 * tf_prefix (Optional, default: ''):
   A prefix for the various ROS TF frame identifiers.
@@ -676,6 +751,7 @@ This launch file has the following arguments:
   The image width in pixels.
 
 * output_prefix (Optional, default: '/camera'):
+  The prefix for the output topics of this node.
 
 ### `n_relay` Launch File Directory
 
@@ -692,12 +768,16 @@ This launch file has the following arguments:
   The output topic name.
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
 
 * node_name (Optional, default: 'n_$(arg node)'):
   The name to assign to the node.
@@ -707,6 +787,9 @@ This launch file has the following arguments:
   for inbound data; other set to `False` for a reliable connection.
 
 * lazy (Optional, default: 'False'):
+  Set to `True` defer subscribing to the input topic until
+  after there is at least one output topic; otherwise set to `False`
+  to always subscribe to both topics.
 
 ### `n_robot_state_publisher` Launch File Directory
 
@@ -740,12 +823,16 @@ This launch file has the following arguments:
   The topic to view for the image stream.
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'viewer'):
+  The machine name (i.e. "robot" or "viewer")
 
 ### `n_rviz` Launch File Directory
 
@@ -755,14 +842,20 @@ optional argument that specifies a `.rviz` file.
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'viewer'):
+  The machine name (i.e. "robot" or "viewer")
 
 * rviz_file (Optional, default: '$(arg ul)/n_rviz/rviz/robot_navigation.rviz'):
+  A file that preconfigures rviz to show navigation
+  information.
 
 ### `n_sleep_forever` Launch File Directory
 
@@ -800,15 +893,22 @@ This launch file has the following argument:
 
 ### `n_teleop_twist_keyboard` Launch File Directory
 
+This launch file directory will fire up a ROS node that
+will talk to either a PS3 or XBox game controller module.
+
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'viewer'):
+  The machine name (i.e. "robot" or "viewer")
 
 ### `rviz_local_costmap` Launch File Directory
 
