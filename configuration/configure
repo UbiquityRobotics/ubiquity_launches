@@ -205,12 +205,12 @@ def main():
                     host_name = ""
                     with open("/etc/hostname", "r") as host_name_file:
                         host_name = host_name_file.read().strip()
-                    print("host_name='{0}'".format(host_name))
+                    #print("host_name='{0}'".format(host_name))
 
                     # Determine our user name:
                     who_am_i_process = subprocess.Popen(["whoami"], stdout=subprocess.PIPE)
                     local_user_name = who_am_i_process.communicate()[0].strip()
-                    print("local_user_name='{0}'".format(local_user_name))
+                    #print("local_user_name='{0}'".format(local_user_name))
 
                     # Compute *default_user_name*, the user name to use if enter is typed:
                     default_user_name = "ubuntu"
