@@ -152,10 +152,283 @@ of the architecture is:
 
 ## Development Environment Details
 
+{Wayne: There is a fundamental issue that we need to have the
+catkin workspace set up and initialized before either the
+`rosrun` or `roslaunch` will work.}
+
+Unfortunately, We need to go through a bunch of tedious steps:
+
+* Set up your shell initialization files
+
+* Install a catkin workspace on the development machine.
+
+* Verify that we have network connectivity.
+
+* Verify that we log into the robot via secure shell.
+
 This is where we go through the steps required to set up the
 Ubiquity ROS development environment.  This is currently
 broken into a bunch of steps.  Eventually, most of these
 steps will be more automated.
+
+### Set Up Shell Your Initialization files
+
+The program you type commands at is called shell.  The shell we
+use is called `bash` which stands for Bourne Again SHell.
+(The original shell written for Unix (which predates Linux) was
+written by Stephen Bourne.)
+
+Making sure that your `bash` shell can always access your ROS
+programs and data, is actually pretty complicated.  We need
+to create a file call `~/.ros_setup` and edit a file called
+`~/.bashrc`.  (The `~` character is a short hand for `/home/USER`,
+where `USER` is the current user account name in use.)
+
+In order to simplify things, we put all of the ros intialization
+commands into a a file called `~/.ros_setup`.  This is done
+as follows:
+
+```
+cat > ~/.ros_setup
+# Unified ROS environment setup shell script.
+#
+# Only `source /opt/ros/indigo/setup.bash` if we have not already done so.
+# We assume that this script does not change very often:
+if [ -d "/opt/ros/indigo/bin" ] ; then
+    case ":$PATH:" in
+    *:/opt/ros/indigo/bin:*) ;;
+    *) source /opt/ros/indigo/setup.bash ;;
+    esac
+fi
+
+# Only `source ~/catkin_ws/devel/setup` if it exists:
+if [ -f ~/catkin_ws/devel/setup.sh ] ; then
+    source ~/catkin_ws/devel/setup.bash ;
+fi
+
+# Define some ROS environment variables:
+export ROS_CATKIN_WS=~/catkin_ws
+export ROS_HOSTNAME=`hostname`.local
+export ROS_MASTER_URI=http://`hostname`.local:11311
+export ROSLAUNCH_SSH_UNKNOWN=1
+```
+Now we get to edit `~/.bashrc` using a text editor.  The two most
+common editors on Linux are `emacs` and `vi`.  If you are not
+familiar with either of these, we suggest you use the much, much
+simpler `nano` editor.
+
+When you run:
+
+        nano ~/.bashrc
+
+You will get a lengthy file whose firs lines look like this:
+
+```
+ ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+```
+
+What you need to do is insert the following line before
+`[ -z "$PS1" ] && return`:
+
+```
+source ~/.ros_setup
+```
+You exit `nano` using the `[Ctrl-X]` key (i.e. press and hold down
+the `[Ctrl]` key followed pressing the `[X]` key.)  It will prompt
+you if you want write the file out; please type the `[Y]` key for
+`Yes` followed by the `[Enter]` key.
+
+Now type:
+
+```
+source ~/.bashrc
+rosversion -d
+```
+
+and the `rosversion` program should print out:
+
+```
+indigo
+```
+
+We are done shell setup on your development machine.  Later on below,
+we are going to ask you to perform these exact same steps on your robot.
+
+### Create and Initialize a Catkin Workspace
+
+{Wayne: We probably need to do `git build-essentials git` here.}
+
+A Catkin Workspace is what you will use to develop your robot software.
+(A "catkin" is a basically the flower of a willow tree.  ROS was
+developed at Willow Garage; hence, the use of the term "catkin".)
+
+Please do the following commands to create your `catkin_ws` directory
+and the `src` sub-directory and then move your working directory
+down to the `src` directory:
+
+```
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/src
+```
+
+Now we will fill your catkin workspace with some files.  The `git`
+program is used to fetch collections of files from the network:
+
+```
+git clone https://github.com/UbiquityRobotics/ubiquity_launches.git
+git clone https://github.com/UbiquityRobotics/raspicam_node.git
+git clone https://github.com/UbiquityRobotics/userland.git
+git clone https://github.com/UbiquityRobotics/robot_upstart.git
+```
+
+The final step is to change your working directory to `~/catkin_ws`
+and run the `catkin_make` program.
+
+```
+cd ~/catkin_ws
+catkin_make
+```
+
+The `catkin_make` program will spew out lots of text, but will eventually
+stop.  At this point you have initialized your catkin workspace.
+
+The next step is simple, we rerun the following commands to
+verify that ROS knows about your workspace:
+
+```
+source ~/.bashrc
+echo $ROS_CATKIN_WS
+```
+
+which should return
+
+```
+/home/USER/catkin_ws
+```
+
+where `USER` is the user account you are using.
+
+### Initializing Secure Shell on the Development Machine
+
+The `ssh` program is a way to securely connect to a shell command
+processor running on another machine.  We need to set up the secure
+shell on the development machine.
+
+1. First we figure out if we have a public/private key by running
+   the following command:
+
+        cd .ssh
+	ls id_rsa*
+
+   If you get back:
+
+        id_rsa id_rsa.pub
+
+   you can skip the next step.
+
+2. You need to generate an RSA public/private key pair.
+   This is done with the following command:
+
+        ssh-keygen -t rsa
+
+   You will be prompted with something like:
+
+        Enter file in which to save the key (/home/USER/.ssh/id_rsa):
+
+   where `USER` is your user account name.  Just type `[Enter]`.  Next
+   you will be prompted with:
+
+        Enter passphrase (empty for no passphrase):
+
+   Again, just type `[Enter]`.  You will be prompted again:
+
+        Enter same passphrase again:
+
+   Again, just type `[Enter]`.  Finally, the program will generate some
+   output that looks kind of like:
+
+        Your identification has been saved in /home/USER/.ssh/rsa_id.
+        Your public key has been saved in /home/USER/.ssh/rsa_id.pub.
+        The key fingerprint is:
+        42:96:46:91:63:8d:29:37:a5:b7:58:8d:3e:12:7e:a2 USER@DEVEL
+        The key's randomart image is:
+        +--[ RSA 2048]----+
+        |      oB.        |
+        |    ..Oo.o       |
+        |     +Bo+ .      |
+        |     = * .       |
+        |      * S        |
+        |     . = .       |
+        |    E            |
+        |                 |
+        |                 |
+        +-----------------+
+
+   The numbers and stuff will change, but that is what it all looks like.
+
+   Anyhow, now you have a secure shell public/private key pair.
+
+3. Now that we have secure shell key, we are going to do something
+
+
+### Bringing Up the Robot
+
+Now that you have your catkin workspace set up, we can start to
+connect to your robot.  Basically, you start with a preloaded
+micro-SD card that you plug into your Raspberry Pi 2.  (Remember,
+we shorten 'Raspberry Pi 2' down to 'RasPi2'.)  If you do not
+have preloaded micro-SD card, please see the
+[micro-SD loading instructions](https://github.com/UbiquityRobotics/ubiquity_main/blob/master/Doc_Downloading_and_Installing_the_Ubiquity_Ubuntu_ROS_Kernel_Image.md).
+
+1. Please plug an Ethernet cable between your router and your RasPi2.
+   Now plug the micro-SD card into the RasPi2 and power it up.
+   Wait for a minute or so and do the following:
+
+        ping -c 5 ubuntu.local
+
+   If you development machine can contact the `ubuntu.local`, you will
+   get 6 line that look somewhat as follows:
+
+        PING ubuntu.local (192.168.1.129) 56(84) bytes of data.
+        64 bytes from 192.168.1.129: icmp_seq=1 ttl=64 time=0.507 ms
+        64 bytes from 192.168.1.129: icmp_seq=2 ttl=64 time=0.482 ms
+        64 bytes from 192.168.1.129: icmp_seq=3 ttl=64 time=0.444 ms
+        64 bytes from 192.168.1.129: icmp_seq=4 ttl=64 time=0.490 ms
+        64 bytes from 192.168.1.129: icmp_seq=5 ttl=64 time=0.528 ms
+
+   The internet address (`192.168.1.129`) will be different as will the
+   pint times (i.e. `0.507`, `0.482', etc.)  If you get the above,
+   you have a wired connection to your robot.
+
+2. The very first thing we will do is make it possible to log into
+   the robot without always being prompted for a password.  This is
+   done using:
+
+
+2. Now we get to use a program called `ssh` for Secure Shell,
+   which allows us to connect to a shell program running on
+   another machine.  Please run the following command:
+
+        ssh ubuntu@ubuntu.local
+
+    You will be prompted for a password. please enter `ubuntu` as
+    the password.
+
+    Next it will print out some stuff like:
+
+        Welcome to Ubuntu 14.04.4 LTS (GNU/Linux 3.18.0-25-rpi2 armv7l)
+        ubuntu@ubuntu:~$
+
+    You are now connected to the robot.
+
+3. The very first thing we will do is change the robot host name
+   and set up a 
+
 
 ### Initial setup:
 
@@ -255,7 +528,7 @@ passwords all the time is a requirement.  This is done as follows:
 6. The final step is to install loop back keys from the robot to
    itself (Yes, we need this.)  This is done via:
 
-        ssh ROBOT_USER@ROBOT.local rosrun ubiquity_launches configure
+        ssh ubuntu@ROBOT.local rosrun ubiquity_launches configure
 
    Now select your SSH configuration (`3`), select your robot,
    and enter press `[Enter]` to use the default user account.
@@ -269,77 +542,6 @@ passwords all the time is a requirement.  This is done as follows:
         ssh ubuntu@ROBOT.local ssh ubuntu@ROBOT.local echo "robot loopback works"
 
    They should all work without any password prompts.
-
-### X11 Forwarding
-
-{Wayne: This step appears to be unnecessary.}
-
-In order to enable X11 forwarding via secure shell, we need
-to edit the file `/etc/ssh/ssh_config` on both the development
-processor and the robot processor.
-
-1. Edit `/etc/ssh/ssh_config` on the devolopment machine:
-
-        sudo nano /etc/ssh/ssh_config
-
-   Find the two lines:
-
-        #   ForwardX11 yes
-        #   ForwardX11Trusted yes
-
-   and remove the `[#]` characters to make them look as follows:
-
-        #   ForwardX11 yes
-        #   ForwardX11Trusted yes
-
-   Write the contents out using `[Ctr-O]` followed by exiting
-   using `[Ctrl-X]` keys.
-
-2. Verify that X11 forwarding is working on the development machine.
-   Please notice the `-Y` option:
-
-        ssh -Y ROBOT.local xterm
-
-   An `xterm` window should pop up on the development processor
-   display.  The prompt inside the xterm should say `USER@ROBOT:~`.
-   With your mouse, click inside  `xterm` window and type:
-
-        hostname
-
-   inside `xterm` window followed by the `[Enter]` key.  The response
-   should be `ROBOT`.  Things are working.  Again, in the `xterm`
-   window type:
-
-        exit
-
-   and now the `xterm` window will go away.        
-
-3. Now we do the same edits over on the robot processor.  Type
-   the following being sure to specify the `-Y` option:
- 
-
-        ssh -Y ROBOT.local
-        sudo nano /etc/ssh/ssh_config
-
-   Remove the `#` characters in front of `ForwardX11` and 
-   `ForwardX11Trusted`.  Write everything out with `[Ctrl-O]`
-   followed by `[Ctrl-X]`.  Please stay logged onto the
-   robot processor:
-
-4. Testing that we got it write is done as follows:
-
-        ssh -y ROBOT.local xterm
-
-   will cause an xterm to pop up on the development processor.
-   (Just for your information, the X11 protocol is being forwarded
-   through two secure shell X11 protocol forwarders, since there
-   no display on the robot processor.)  Dismiss the `xterm` window
-   by typing `exit` in the `xterm` window.  Finally, exit from the
-   robot processor by typing:
-
-        exit
-
-That takes care of X11 forwarding issues.
 
 ### Creating the Catkin Work Spaces
 
@@ -414,6 +616,78 @@ assume that ROS has already been installed.
 	source ~/.bashrc
 
 7. Now repeat these step over on the robot.
+
+### X11 Forwarding
+
+
+In order to enable X11 forwarding via secure shell, we need
+to edit the file `/etc/ssh/ssh_config` on both the development
+processor and the robot processor.
+
+1. {Wayne: This step appears to be unnecessary.}
+
+   Edit `/etc/ssh/ssh_config` on the devolopment machine:
+
+        sudo nano /etc/ssh/ssh_config
+
+   Find the two lines:
+
+        #   ForwardX11 yes
+        #   ForwardX11Trusted yes
+
+   and remove the `[#]` characters to make them look as follows:
+
+        #   ForwardX11 yes
+        #   ForwardX11Trusted yes
+
+   Write the contents out using `[Ctr-O]` followed by exiting
+   using `[Ctrl-X]` keys.
+
+2. Verify that X11 forwarding is working on the development machine.
+   Please notice the `-Y` option:
+
+        ssh -Y ubuntu@ROBOT.local xterm
+
+   An `xterm` window should pop up on the development processor
+   display.  The prompt inside the xterm should say `USER@ROBOT:~`.
+   With your mouse, click inside  `xterm` window and type:
+
+        hostname
+
+   inside `xterm` window followed by the `[Enter]` key.  The response
+   should be `ROBOT`.  Things are working.  Again, in the `xterm`
+   window type:
+
+        exit
+
+   and now the `xterm` window will go away.        
+
+3. Now we do the same edits over on the robot processor.  Type
+   the following being sure to specify the `-Y` option:
+ 
+
+        ssh -Y ubuntu@ROBOT.local
+        sudo nano /etc/ssh/ssh_config
+
+   Remove the `#` characters in front of `ForwardX11` and 
+   `ForwardX11Trusted`.  Write everything out with `[Ctrl-O]`
+   followed by `[Ctrl-X]`.  Please stay logged onto the
+   robot processor:
+
+4. Testing that we got it write is done as follows:
+
+        ssh -Y ubuntu@ROBOT.local xterm
+
+   will cause an xterm to pop up on the development processor.
+   (Just for your information, the X11 protocol is being forwarded
+   through two secure shell X11 protocol forwarders, since there
+   no display on the robot processor.)  Dismiss the `xterm` window
+   by typing `exit` in the `xterm` window.  Finally, exit from the
+   robot processor by typing:
+
+        exit
+
+That takes care of X11 forwarding issues.
 
 ### Using `sshfs`
 
