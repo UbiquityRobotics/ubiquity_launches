@@ -323,7 +323,7 @@ shell on the development machine.
    the following command:
 
         cd .ssh
-	ls id_rsa*
+        ls id_rsa*
 
    If you get back:
 
@@ -484,9 +484,9 @@ passwords all the time is a requirement.  This is done as follows:
         [0]: Exit SSH mode
         [1]: Set up SSH keys for other1
         [2]: Set up SSH keys for ROBOT
-	[3]: Set up SSH keys for other2
-	[4]: Set up SSH keys for DEVEL
-	[5]: Set up SSH keys for other3
+        [3]: Set up SSH keys for other2
+        [4]: Set up SSH keys for DEVEL
+        [5]: Set up SSH keys for other3
 
    where `ROBOT` is the host name of your robot and DEVEL is the
    host name of your laptop/desktop.
@@ -593,7 +593,7 @@ assume that ROS has already been installed.
 
 5. Now we edit `~/.profile` to add the following lines:
 
-	# Always set up the ROS envionment:
+        # Always set up the ROS envionment:
         . $HOME/.ros_setup
 
    right after the line:
@@ -603,17 +603,17 @@ assume that ROS has already been installed.
 6. Now we add the following lines to the end of `~/.bashrc`:
 
         # Setup ROS environment:
-	source ~/.ros_setup
+        source ~/.ros_setup
 
         # Uncomment one of these to select a robot:
         #export ROS_MASTER_URI=http://ROBOT.local:11311	      # Robot
-	#export ROS_MASTER_URI=http://`hostname`.local:11311  # Simulator
+        #export ROS_MASTER_URI=http://`hostname`.local:11311  # Simulator
 
     Where `ROBOT` is the host name of the robot.  Remove the `#` comment
     character in front of the `ROS_MASTER_URI` you want to use.  You can
     only select one at a time.  Now run the folowing command:
 
-	source ~/.bashrc
+        source ~/.bashrc
 
 7. Now repeat these step over on the robot.
 
