@@ -44,6 +44,14 @@ else
     sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net --recv-key 0xB01FA116
 fi
 
+# Make the Ubiquity Robotics ROS indigo repository available to `apt-get`:
+if [ -f /etc/apt/sources.list.d/ubiquityrobotics-latest.list ] ; then
+    echo "/etc/apt/sources.list already points to Ubiquity Robotics"
+else
+    echo "deb http://packages.ubiquityrobotics.com:8080/building/ubuntu trusty main" > /etc/apt/sources.list.d/ubiquityrobotics-latest.list
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B5A652C1
+fi
+
 # Update the apt-get database so it can find everything:
 sudo apt-get update
 
