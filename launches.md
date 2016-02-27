@@ -15,6 +15,28 @@ typing and frustration.
 
 The following executables are available in `bin`:
 
+* `catkin_ws`: 
+
+* `catkin_ws`: 
+
+* `catkin_ws`: 
+
+* `catkin_ws`: 
+
+* `catkin_ws`: 
+
+* `catkin_ws`: 
+
+* `catkin_ws`: 
+
+* `catkin_ws`: 
+
+* `catkin_ws`: 
+
+* `catkin_ws`: 
+
+* `devel_install.sh`: 
+
 * `keyboard_drive`: Start the keyboard driver for the robot.
 
 * `keyboard_navigate`: Start the keyboard driver for the robot.
@@ -143,6 +165,39 @@ The following launch file directories are available:
   Show sonars in RViz.
 
 ## Executables
+
+### `catkin_ws` Executable:
+
+
+### `catkin_ws` Executable:
+
+
+### `catkin_ws` Executable:
+
+
+### `catkin_ws` Executable:
+
+
+### `catkin_ws` Executable:
+
+
+### `catkin_ws` Executable:
+
+
+### `catkin_ws` Executable:
+
+
+### `catkin_ws` Executable:
+
+
+### `catkin_ws` Executable:
+
+
+### `catkin_ws` Executable:
+
+
+### `devel_install.sh` Executable:
+
 
 ### `keyboard_drive` Executable:
 
