@@ -16,6 +16,7 @@ catkin_package()
 ## Install ##
 #############
 install(PROGRAMS
+  bin/devel_install.sh
   bin/keyboard_drive
   bin/keyboard_navigate
   bin/loki_joystick_teleop
