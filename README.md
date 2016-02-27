@@ -160,7 +160,9 @@ Unfortunately, We need to go through a bunch of tedious steps:
 
 * Set up your shell initialization files
 
-* Install a catkin workspace on the development machine.
+* Create and Initialize your Catkin Workspace
+
+* Initializing Secure Shell on the Development Machine
 
 * Verify that we have network connectivity.
 
@@ -188,56 +190,55 @@ In order to simplify things, we put all of the ros intialization
 commands into a a file called `~/.ros_setup`.  This is done
 as follows:
 
-```
-cat > ~/.ros_setup
-# Unified ROS environment setup shell script.
-#
-# Only `source /opt/ros/indigo/setup.bash` if we have not already done so.
-# We assume that this script does not change very often:
-if [ -d "/opt/ros/indigo/bin" ] ; then
-    case ":$PATH:" in
-    *:/opt/ros/indigo/bin:*) ;;
-    *) source /opt/ros/indigo/setup.bash ;;
-    esac
-fi
+        cat << EOF > ~/.ros_setup
+        # Unified ROS environment setup shell script.
+        #
+        # Only `source /opt/ros/indigo/setup.bash` if we have not already done so.
+        # We assume that this script does not change very often:
+        if [ -d "/opt/ros/indigo/bin" ] ; then
+            case ":$PATH:" in
+            *:/opt/ros/indigo/bin:*) ;;
+            *) source /opt/ros/indigo/setup.bash ;;
+            esac
+        fi
+        
+        # Only `source ~/catkin_ws/devel/setup` if it exists:
+        if [ -f ~/catkin_ws/devel/setup.sh ] ; then
+            source ~/catkin_ws/devel/setup.bash ;
+        fi
+        
+        # Define some ROS environment variables:
+        export ROS_CATKIN_WS=~/catkin_ws
+        export ROS_HOSTNAME=`hostname`.local
+        export ROS_MASTER_URI=http://`hostname`.local:11311
+        export ROSLAUNCH_SSH_UNKNOWN=1
+        EOF
 
-# Only `source ~/catkin_ws/devel/setup` if it exists:
-if [ -f ~/catkin_ws/devel/setup.sh ] ; then
-    source ~/catkin_ws/devel/setup.bash ;
-fi
-
-# Define some ROS environment variables:
-export ROS_CATKIN_WS=~/catkin_ws
-export ROS_HOSTNAME=`hostname`.local
-export ROS_MASTER_URI=http://`hostname`.local:11311
-export ROSLAUNCH_SSH_UNKNOWN=1
-```
 Now we get to edit `~/.bashrc` using a text editor.  The two most
-common editors on Linux are `emacs` and `vi`.  If you are not
-familiar with either of these, we suggest you use the much, much
-simpler `nano` editor.
+common editors on Linux are `emacs` and `vi`, which are both
+extremely capable editors with steep learning curves.  If you are not
+familiar with either of these editors, we suggest you use the much,
+much simpler `nano` editor just get started.
 
 When you run:
 
         nano ~/.bashrc
 
-You will get a lengthy file whose firs lines look like this:
+You will get a lengthy file whose first lines look like this:
 
-```
- ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-```
-
+        
+        # ~/.bashrc: executed by bash(1) for non-login shells.
+        # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+        # for examples
+        
+        # If not running interactively, don't do anything
+        [ -z "$PS1" ] && return
+        
 What you need to do is insert the following line before
 `[ -z "$PS1" ] && return`:
 
-```
-source ~/.ros_setup
-```
+        source ~/.ros_setup
+
 You exit `nano` using the `[Ctrl-X]` key (i.e. press and hold down
 the `[Ctrl]` key followed pressing the `[X]` key.)  It will prompt
 you if you want write the file out; please type the `[Y]` key for
@@ -245,19 +246,14 @@ you if you want write the file out; please type the `[Y]` key for
 
 Now type:
 
-```
-source ~/.bashrc
-rosversion -d
-```
+        source ~/.bashrc
+        rosversion -d
 
 and the `rosversion` program should print out:
 
-```
-indigo
-```
+        indigo
 
-We are done shell setup on your development machine.  Later on below,
-we are going to ask you to perform these exact same steps on your robot.
+We are done shell setup on your development machine.
 
 ### Create and Initialize a Catkin Workspace
 
@@ -271,28 +267,24 @@ Please do the following commands to create your `catkin_ws` directory
 and the `src` sub-directory and then move your working directory
 down to the `src` directory:
 
-```
-mkdir -p ~/catkin_ws/src
-cd ~/catkin_ws/src
-```
+        mkdir -p ~/catkin_ws/src
+        cd ~/catkin_ws/src
+
+{Wayne: The git repository list below should probably be changed.}
 
 Now we will fill your catkin workspace with some files.  The `git`
 program is used to fetch collections of files from the network:
 
-```
-git clone https://github.com/UbiquityRobotics/ubiquity_launches.git
-git clone https://github.com/UbiquityRobotics/raspicam_node.git
-git clone https://github.com/UbiquityRobotics/userland.git
-git clone https://github.com/UbiquityRobotics/robot_upstart.git
-```
+        git clone https://github.com/UbiquityRobotics/ubiquity_launches.git
+        git clone https://github.com/UbiquityRobotics/raspicam_node.git
+        git clone https://github.com/UbiquityRobotics/userland.git
+        git clone https://github.com/UbiquityRobotics/robot_upstart.git
 
 The final step is to change your working directory to `~/catkin_ws`
-and run the `catkin_make` program.
+and run the `catkin_make` program as follows:
 
-```
-cd ~/catkin_ws
-catkin_make
-```
+        cd ~/catkin_ws
+        catkin_make
 
 The `catkin_make` program will spew out lots of text, but will eventually
 stop.  At this point you have initialized your catkin workspace.
@@ -300,16 +292,12 @@ stop.  At this point you have initialized your catkin workspace.
 The next step is simple, we rerun the following commands to
 verify that ROS knows about your workspace:
 
-```
-source ~/.bashrc
-echo $ROS_CATKIN_WS
-```
+        source ~/.bashrc
+        echo $ROS_CATKIN_WS
 
 which should return
 
-```
-/home/USER/catkin_ws
-```
+        /home/USER/catkin_ws
 
 where `USER` is the user account you are using.
 
@@ -331,7 +319,10 @@ shell on the development machine.
 
    you can skip the next step.
 
-2. You need to generate an RSA public/private key pair.
+2. (Remeber: skip this step if you already have both an `id_rsa` and
+   `id_rsa.pub` file in your `~/.ssh` directory.)
+
+   If you are here, you need to generate an RSA public/private key pair.
    This is done with the following command:
 
         ssh-keygen -t rsa
@@ -374,6 +365,20 @@ shell on the development machine.
    Anyhow, now you have a secure shell public/private key pair.
 
 3. Now that we have secure shell key, we are going to do something
+   a little obscure.  We are going to make it possible to securely log
+   into your machine without a password prompt.  This done using the
+   following command:
+
+        ssh-copy-id USER@DEVEL.local
+
+   where `USER` is your account user name, and `DEVEL` is the host name
+   for your development machine.  This will probably prompt you for your
+   password to complete the key transfer.  If it does not prompt you for
+   a password, that means you (or somebody else) previously did this step.
+
+   To verify that it worked, please run:
+
+        
 
 
 ### Bringing Up the Robot
@@ -606,7 +611,7 @@ assume that ROS has already been installed.
         source ~/.ros_setup
 
         # Uncomment one of these to select a robot:
-        #export ROS_MASTER_URI=http://ROBOT.local:11311	      # Robot
+        #export ROS_MASTER_URI=http://ROBOT.local:11311       # Robot
         #export ROS_MASTER_URI=http://`hostname`.local:11311  # Simulator
 
     Where `ROBOT` is the host name of the robot.  Remove the `#` comment
