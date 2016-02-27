@@ -17,14 +17,14 @@ if [ "$MACHINE_ARCH" != "x86_64" ] ; then
 fi
 
 # Verify that we are on a Unbuntu:
-DISTRO_ID = `lsb_release -s -i`
+DISTRO_ID = `lsb_release -si`
 if [ "$DISTRO_ID" != "Ubuntu" ] ; then
     echo "ROS only runs on a Ubuntu distribution, not $DISRO_ID"
     exit 1
 fi
 
 # Verify that we are on 14.04:
-DISTRO_VERSION = `lsb_release -s -r`
+DISTRO_VERSION = `lsb_release -sr`
 if [ "$DISTRO_VERSION" != "14.04" ] ; then
     echo "This script file only works for Ubuntu 14.04, not Ubuntu $DISTRO_VERSION"
     exit 1
@@ -47,8 +47,7 @@ fi
 # Update the apt-get database so it can find everything:
 sudo apt-get update
 
-# Install packages (alphabetical order):
-sudo apt-get install -y                 \
+MISCELLANEOUS_PACKAGES =                \
   bmap-tools                            \
   build-essential                       \
   curl                                  \
@@ -74,6 +73,30 @@ sudo apt-get install -y                 \
   python-pip                            \
   python-rosdep                         \
   python-serial                         \
+  setserial                             \
+  sshfs                                 \
+  ubuntu-standard                       \
+  vim                                   \
+  wireless-tools                        \
+  wpasupplicant                         \
+  xterm                                 \
+  zip
+
+# Wayne: Do we need?:
+#    wpa_suplicant
+#    python-bloom
+
+ROS_SIMULATOR_PACKAGES =                \
+  ros-indigo-turtlebot                  \
+  ros-indigo-turtlebot-apps             \
+  ros-indigo-turtlebot-interactions     \
+  ros-indigo-turtlebot-simulator        \
+  ros-indigo-kobuki-ftdi                \
+  ros-indigo-rocon-remocon              \
+  ros-indigo-rocon-qt-library           \
+  ros-indigo-ar-track-alvar-msgs
+
+ROS_PACKAGES =                          \
   ros-indigo-compressed-image-transport \
   ros-indigo-desktop-full               \
   ros-indigo-joy                        \
@@ -89,18 +112,13 @@ sudo apt-get install -y                 \
   ros-indigo-turtlebot-teleop           \
   ros-indigo-xacro                      \
   ros-indigo-yocs-velocity-smoother     \
-  setserial                             \
-  sshfs                                 \
-  ubuntu-standard                       \
-  vim                                   \
-  wireless-tools                        \
-  wpasupplicant                         \
-  xterm                                 \
-  zip
+  $ROS_SIMULATOR_PACKAGES
 
-# Do we need:
-#    wpa_suplicant
-#    python-bloom
+
+# Install packages (alphabetical order):
+sudo apt-get install -y                 \
+  $MISCELLANEOUS_PACKAGES               \
+  $ROS_PACKAGES
 
 # Install the python debugger:
 sudo pip install pudb
@@ -176,4 +194,5 @@ if [ ! -f catkin_ws/src ] ; then
     (cd catkin_ws; catkin_make)
 fi
 
-
+# Now remind the user to type `source ~/.bashrc` to get their bashrc setup properly:
+echo "Please type `source ~/.bashrc` to finish setting up ROS:
