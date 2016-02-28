@@ -17,14 +17,17 @@
   <arg name="cvm" value="cmd_vel_mux" />
 
   <!-- Optional arguments: -->
-  <arg name="base" default="$(optenv TURTLEBOT_BASE kobuki)"/>
-    <!--base: The kind of robot base (e.g. "create", or "Rhoomba"). -->
-  <arg name="stacks" default="$(optenv TURTLEBOT_STACKS hexagons)"/>
+  <arg name="base" default="kobuki"/>
+    <!--base: The kind of robot base (e.g. "create", "kobuki", "Rhoomba", ...). -->
+  <arg name="stacks" default="hexagons"/>
     <!--stacks: The kind of stack on the robot (e.g. "circles", "hexagons"). -->
-  <arg name="3d_sensor" default="$(optenv TURTLEBOT_3D_SENSOR kinect)"/>
+  <arg name="3d_sensor" default="asus_xtion_pro"/>
     <!--3d_sensor: The kind of 3D sensor (e.g. "kinect, "asus_xtion_pro"). -->
-  <!-- FIXME: Remove references tot turtlebot_stage stuff: -->
-  <arg name="world_file" default=" /opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"/>
+  <arg name="world_file" default="$(arg ul)/m_robot_base/maps/stage/maze.world"/>
+    <!--world_file: The `.world` file to construct the robot simulation environment.
+        Note that the currently the world file must be in a in a directory called
+        `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
+        Good luck finding any useful documentation.  -->
 
   <!-- Launch joint state publisher node: -->
   <include file="$(arg ul)/n_$(arg jsp)/launch/n_$(arg jsp).launch.xml" >
