@@ -1,4 +1,5 @@
 <launch>
+  <!-- FIXME: Add documentation: -->
   <arg name="robot_platform" />
   <arg name="robot_host" />
   <arg name="robot_user" />
@@ -9,7 +10,15 @@
    address="$(arg robot_host)" user="$(arg robot_user)"
    env-loader="/tmp/env_loader.sh" />
 
+  <!-- FIXME: Remove <node> tags: -->
+  <node machine="robot" name="joint_state_publisher"
+   pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="true"/>
+  </node>
 
+  <param name="/use_sim_time" value="true"/>
+
+  <!-- FIXME: Remove '/' from in_topic and out_topic remappings: -->
   <include file="$(find ubiquity_launches)/n_relay/launch/n_relay.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="machine_name" value="robot"/>
@@ -21,6 +30,7 @@
   </include>
 
 
+  <!-- FIXME: Remove references tot turtlebot_stage stuff: -->
   <arg name="world_file"  default=" /opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"/>
 
 

@@ -1,6 +1,7 @@
 <launch>
-  <!--Summary: -->
-  <!--Overview: -->
+  <!--Summary: Starts the `move_base` navigation system for a robot. -->
+  <!--Overview: Start the `move_base` navigation system for the currently
+        selected robot. -->
 
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
@@ -13,8 +14,10 @@
   <arg name="ul" value="$(find ubiquity_launches)" />
 
   <!-- Optional arguments: -->
+  <!-- FIXME: Accssing TURTLEBOT_STATE_MAP_FILE env. var. -->
   <!-- Name of the map to use (without path nor extension) and initial position -->
-  <arg name="map_file"       default=" $(env TURTLEBOT_STAGE_MAP_FILE)"/> <!-- robopark_plan -->
+  <arg name="map_file" default=" $(env TURTLEBOT_STAGE_MAP_FILE)"/>
+    <!--map_file: Read from TURTLEBOT_STAGE_MAP_FILE env. variable. -->
   <arg name="initial_pose_x" default="2.0"/>
     <!--initial_pose_x: Initial X position of robot in simultion. -->
   <arg name="initial_pose_y" default="2.0"/>
@@ -22,29 +25,8 @@
   <arg name="initial_pose_a" default="0.0"/>
     <!--initial_pose_a: Initial angular position of robot in simultion (radians). -->
 
-  <param name="/use_sim_time" value="true"/>
-  <!--  ******************** Stage ********************  -->
-  <!-- 
-        Publishes transforms:
-          /base_link -> /base_laser
-          /base_footprint -> /base_link (identity)
-          /odom -> base_footprint
-        Publishes topics:
-          /odom : odometry data from the simulated odometry
-          /base_scan : laser data from the simulated laser
-          /base_pose_ground_truth : the ground truth pose
-        Parameters:
-          base_watchdog_timeout : time (s) after receiving the last command on cmd_vel
-                                  before stopping the robot
-        Args:
-          -g : run in headless mode.
-  --> 
-
-  <machine name="robot"
-   address="$(arg robot_host)" user="$(arg robot_user)"
-   env-loader="/tmp/env_loader.sh" />
-
-  <include file="$(arg ul)/m_robot_base/launch/m_robot_base.launch">
+  <!-- Start the robot base: -->
+  <include file="$(arg ul)/m_robot_base/launch/m_robot_base.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_host" value="$(arg robot_host)" />
     <arg name="robot_user" value="$(arg robot_user)" />
@@ -52,15 +34,12 @@
     <arg name="viewer_user" value="$(arg viewer_user)"/>
   </include>
 
-<!--   <node name="joint_state_publisher"
-   pkg="joint_state_publisher" type="joint_state_publisher">
-    <param name="use_gui" value="true"/>
-  </node>
- -->
-
-  <!--  ************** Navigation  ***************  -->
+  <!-- FIXME: Still references turtlebot navigation. -->
+  <!-- Start the navigation system: -->
   <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml"/>
 
+  <!-- FIXME: stop reaching into turtlebot_stage for `maze.yaml`.  -->
+  <!-- Start the map server: -->
   <include file="$(arg ul)/n_map_server/launch/n_map_server.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="machine_name" default="robot"/>
@@ -70,6 +49,7 @@
     <arg name="map_file" value="/opt/ros/indigo/share/turtlebot_stage/maps/maze.yaml" />
   </include>
 
+  <!-- Start the AMCL (Adaptive Monte Carlo Localization) system: -->
   <include file="$(arg ul)/n_amcl/launch/n_amcl.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="machine_name" default="robot"/>
