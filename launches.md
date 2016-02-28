@@ -4,9 +4,11 @@ To run one of the executables below, do the following:
 
         rosrun ubiquity_launches PROGRAM_NAME
 
+
 where, `PROGRAM_NAME` is one of the executables below.
 
 Please note that tab completion can reduce typing:
+
 
         rosrun ub[Tab]iquity_l[Tab]aunches rasp[Tab]icam_[Tab]view
 
@@ -14,26 +16,6 @@ Please learn how to use tab complete, it will reduce the amount of
 typing and frustration.
 
 The following executables are available in `bin`:
-
-* `catkin_ws`: 
-
-* `catkin_ws`: 
-
-* `catkin_ws`: 
-
-* `catkin_ws`: 
-
-* `catkin_ws`: 
-
-* `catkin_ws`: 
-
-* `catkin_ws`: 
-
-* `catkin_ws`: 
-
-* `catkin_ws`: 
-
-* `catkin_ws`: 
 
 * `devel_install.sh`: 
 
@@ -166,36 +148,6 @@ The following launch file directories are available:
 
 ## Executables
 
-### `catkin_ws` Executable:
-
-
-### `catkin_ws` Executable:
-
-
-### `catkin_ws` Executable:
-
-
-### `catkin_ws` Executable:
-
-
-### `catkin_ws` Executable:
-
-
-### `catkin_ws` Executable:
-
-
-### `catkin_ws` Executable:
-
-
-### `catkin_ws` Executable:
-
-
-### `catkin_ws` Executable:
-
-
-### `catkin_ws` Executable:
-
-
 ### `devel_install.sh` Executable:
 
 
@@ -203,9 +155,29 @@ The following launch file directories are available:
 
 summary here
 
+* m_keyboard_drive
+  * m_robot_base
+    * n_relay
+    * n_cmd_vel_mux
+    * robot (not found)
+  * n_teleop_twist_keyboard
+
 ### `keyboard_navigate` Executable:
 
 summary here
+
+* m_keyboard_navigate
+  * m_move_base_view
+    * m_move_base
+      * m_robot_base
+        * n_relay
+        * n_cmd_vel_mux
+        * robot (not found)
+      * move_base (not found)
+      * n_map_server
+      * n_amcl
+    * n_rviz
+  * n_keyboard_navigate
 
 ### `loki_joystick_teleop` Executable:
 
@@ -250,6 +222,10 @@ This program will start the Raspberry Pi camera attached to your
 robot.  It does not bring up a viewer.  If you want the viewer as
 well, please use the `raspicam_view` program instead.
 
+* m_raspicam_raw
+  * n_raspicam
+  * n_image_uncompress
+
 ### `raspicam_view` Executable:
 
 This program will start the Raspberry Pi camera on the robot and
@@ -262,8 +238,19 @@ Please select the topic entitled `/n_raspicam/image/camera/compressed`
 to view a reasonably real-time image coming out of the Raspberry Pi
 camera.
 
+* m_raspicam_view
+  * m_raspicam_raw
+    * n_raspicam
+    * n_image_uncompress
+  * n_rqt_image_view
+
 ### `robot_base` Executable:
 
+
+* m_robot_base
+  * n_relay
+  * n_cmd_vel_mux
+  * robot (not found)
 
 ### `roslauncher` Executable:
 

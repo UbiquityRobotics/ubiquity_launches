@@ -5,10 +5,12 @@
 # and scans executables in the `bin` sub-directory and any launch
 # file anywhere under `ubiquity_launches`.
 #
-# Two operations are performed:
+# Three operations are performed:
 #
 # * It scrapes executables and launch files to write documentation
 #   into the `launches.md` file.
+#
+# * It also fills in the information needed for CMakeLists.txt.
 #
 # * Using the binary executables, it recursively visits all used
 #   launch files.  If a launch file is not used, it is flagged as
@@ -67,15 +69,25 @@ def main():
 	launch_file = Launch_File.file_parse(launch_file_name, robot_bases)
 	launch_files.append(launch_file)
 
+    # Create *launch_files_table*:
+    launch_files_table = {}
+    for launch_file in launch_files:
+	launch_files_table[launch_file.name] = launch_file
+
     # Open the markdown file:
     md_file = open("launches.md", "wa")
     md_file.write("# Ubiquity Launches\n\n")
 
-    md_file.write("To run one of the executables below, do the following:\n\n")
+    md_file.write("To run one of the executables below, do the following:\n")
+    md_file.write("\n")
     md_file.write("        rosrun ubiquity_launches PROGRAM_NAME\n\n")
-    md_file.write("where, `PROGRAM_NAME` is one of the executables below.\n\n")
+    md_file.write("\n")
+    md_file.write("where, `PROGRAM_NAME` is one of the executables below.\n")
+    md_file.write("\n")
     md_file.write("Please note that tab completion can reduce typing:\n\n")
-    md_file.write("        rosrun ub[Tab]iquity_l[Tab]aunches rasp[Tab]icam_[Tab]view\n\n")
+    md_file.write("\n")
+    md_file.write("        rosrun ub[Tab]iquity_l[Tab]aunches rasp[Tab]icam_[Tab]view\n")
+    md_file.write("\n")
     md_file.write("Please learn how to use tab complete, it will reduce the amount of\n")
     md_file.write("typing and frustration.\n\n")
 
@@ -92,7 +104,7 @@ def main():
     # Write out each executable file section:
     md_file.write("## Executables\n\n")
     for executable_file in executable_files:
-	executable_file.section_write(md_file)
+	executable_file.section_write(md_file, launch_files_table)
 
     # Write out each launch file section:
     md_file.write("## Launch File Directories\n\n")
@@ -101,11 +113,6 @@ def main():
 
     # Close the markdown file:
     md_file.close()
-
-    # Create *launch_files_table*:
-    launch_files_table = {}
-    for launch_file in launch_files:
-	launch_files_table[launch_file.name] = launch_file
 
     # Recursively visit each *executable_file*:
     for executable_file in executable_files:
@@ -255,23 +262,31 @@ class Executable_File:
 	return Executable_File(
 	  executable_name, summary, overview_lines, launch_base_name)
 
-    def section_write(self, md_file):
+    def section_write(self, md_file, launch_files_table):
 	""" *Executable_File*: Write the section for the *Executable_File*
 	    object (i.e. *self*) out to *md_file*.
 	"""
 
 	# Verify argument types:
 	assert isinstance(md_file, file)
+	assert isinstance(launch_files_table, dict)
 
 	# Grab some values from *self*:
 	name = self.name
 	overview_lines = self.overview_lines
+	launch_base_name = self.launch_base_name
 
 	# Write out the executable section:
 	md_file.write("### `{0}` Executable:\n\n".format(name))
 	for overview_line in overview_lines:
 	    md_file.write("{0}\n".format(overview_line))
 	md_file.write("\n")
+
+	if launch_base_name != None:
+	    if launch_base_name in launch_files_table:
+		launch_file = launch_files_table[launch_base_name]
+		launch_file.nested_write(md_file, 0, launch_files_table)
+	    md_file.write("\n")
 
     def summary_write(self, md_file):
 	""" *Executable_File*: Write the summary for the *Executable_File*
@@ -558,6 +573,27 @@ class Launch_File:
 	  "  PATTERN \".svn\" EXCLUDE)\n" +
 	  "\n").
 	  format(self.name))
+
+    def nested_write(self, md_file, indent, launch_files_table):
+	""" *Launch_File*: Write out all of the launch files called from the current
+	    *Launch_File* object to *md_file* indented by *indent*.
+	"""
+
+	# Verify argument types:
+	assert isinstance(md_file, file)
+	assert isinstance(indent, int)
+	assert isinstance(launch_files_table, dict)
+
+	md_file.write("{0}* {1}\n".format(indent * "  ", self.name))
+	for include in self.includes:
+	    assert isinstance(include, tuple) and len(include) == 2
+	    launch_name = include[0]
+	    if launch_name in launch_files_table:
+		launch_file = launch_files_table[launch_name]
+		launch_file.nested_write(md_file, indent + 1, launch_files_table)
+	    else:
+		md_file.write("{0}* {1} (not found)\n".
+		  format((indent + 1) * "  ", launch_name))
 
     def section_write(self, md_file):
 	""" *Launch_File*: Write out the section for the *Launch_File* object
