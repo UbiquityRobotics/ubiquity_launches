@@ -1,10 +1,15 @@
 <launch>
   <!-- Required Arguments -->
   <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "loki", "sim", "magni") to use. -->
   <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
   <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
   <arg name="viewer_host" default="localhost"/>
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
   <arg name="viewer_user" default=""/>
+    <!--viewer_user: The user account on the display computer to use. -->
 
   <include
    file="$(find ubiquity_launches)/m_move_base/launch/m_move_base.launch.xml">

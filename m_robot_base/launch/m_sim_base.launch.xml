@@ -1,30 +1,32 @@
 <launch>
-  <!-- FIXME: Add documentation: -->
   <!-- Required arguments: -->
   <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "loki", "sim", "magni") to use. -->
   <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
   <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
   <arg name="viewer_host" default="localhost"/>
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
   <arg name="viewer_user" default=""/>
+    <!--viewer_user: The user account on the display computer to use. -->
 
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
   <arg name="jsp" value="joint_state_publisher" />
+  <arg name="cvm" value="cmd_vel_mux" />
 
   <!-- Optional arguments: -->
-  <!-- create, rhoomba -->
-  <arg name="base"       default="$(optenv TURTLEBOT_BASE kobuki)"/>
-  <!-- circles, hexagons -->
-  <arg name="stacks"     default="$(optenv TURTLEBOT_STACKS hexagons)"/>
-  <!-- kinect, asus_xtion_pro -->
-  <arg name="3d_sensor"  default="$(optenv TURTLEBOT_3D_SENSOR kinect)"/>
+  <arg name="base" default="$(optenv TURTLEBOT_BASE kobuki)"/>
+    <!--base: The kind of robot base (e.g. "create", or "Rhoomba"). -->
+  <arg name="stacks" default="$(optenv TURTLEBOT_STACKS hexagons)"/>
+    <!--stacks: The kind of stack on the robot (e.g. "circles", "hexagons"). -->
+  <arg name="3d_sensor" default="$(optenv TURTLEBOT_3D_SENSOR kinect)"/>
+    <!--3d_sensor: The kind of 3D sensor (e.g. "kinect, "asus_xtion_pro"). -->
   <!-- FIXME: Remove references tot turtlebot_stage stuff: -->
-  <arg name="world_file"  default=" /opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"/>
+  <arg name="world_file" default=" /opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world"/>
 
-  <machine name="robot"
-   address="$(arg robot_host)" user="$(arg robot_user)"
-   env-loader="/tmp/env_loader.sh" />
-
+  <!-- Launch joint state publisher node: -->
   <include file="$(arg ul)/n_$(arg jsp)/launch/n_$(arg jsp).launch.xml" >
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="machine_name" value="robot" />
@@ -32,16 +34,9 @@
     <arg name="machine_user" value="$(arg robot_user)" />
   </include>
 
-  <!-- FIXME: Remove <node> tags:
-  <node machine="robot" name="joint_state_publisher"
-   pkg="joint_state_publisher" type="joint_state_publisher">
-    <param name="use_gui" value="true"/>
-  </node>
-   -->
-  <param name="/use_sim_time" value="true"/>
-
   <!-- FIXME: Remove '/' from in_topic and out_topic remappings: -->
-  <include file="$(find ubiquity_launches)/n_relay/launch/n_relay.launch.xml">
+  <!-- Launch topic relaying node: -->
+  <include file="$(arg ul)/n_relay/launch/n_relay.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="machine_name" value="robot"/>
     <arg name="machine_host" value="$(arg robot_host)"/>
@@ -51,6 +46,13 @@
     <arg name="out_topic" value="/cmd_vel_mux/input/teleop"/>
   </include>
 
+  <machine name="robot"
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <param name="/use_sim_time" value="true"/>
+
+  <!-- FIXME: Create a n_stageros. -->
   <node machine="robot" pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
     <param name="base_watchdog_timeout" value="0.5"/>
     <remap from="odom" to="odom"/>
@@ -59,13 +61,15 @@
     <remap from="base_scan" to="scan"/>
   </node>
 
-  <include file="$(find ubiquity_launches)/n_cmd_vel_mux/launch/n_cmd_vel_mux.launch.xml">
+  <!-- Launch command velocity multiplexer node: -->
+  <include file="$(arg ul)/n_$(arg cvm)/launch/n_$(arg cvm).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="machine_name" default="robot"/>
     <arg name="machine_host" value="$(arg robot_host)"/>
     <arg name="machine_user" value="$(arg robot_user)"/>
   </include>
 
+  <!-- FIXME: Remove turtlebot stuff -->
   <!--  ***************** Robot Model *****************  -->
   <include file="$(find turtlebot_bringup)/launch/includes/robot.launch.xml">
     <arg name="base" value="$(arg base)" />
