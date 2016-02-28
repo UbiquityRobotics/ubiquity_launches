@@ -1,0 +1,52 @@
+<launch>
+  <!--Summary: Launches stage robot simulation envirnoment for ROS. -->
+  <!--Overview: Stage is an environment for simulating robot operating
+      in a simulated 2D environment.  This node starts up the
+      stage_ros/stageros program to perform this simulation.  The
+      [Stage Manual](http://playerstage.sourceforge.net/doc/Stage-3.2.1/modules.html)
+      is available elsewhere on the net. -->
+
+  <!-- Required Arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+  <arg name="world_file" />
+    <!--world_file: The `.world` file to construct the robot simulation environment.
+        Note that the currently the world file must be in a in a directory called
+        `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
+        Good luck finding any useful documentation.  -->
+
+  <!-- Convenience arguments: -->
+  <arg name="sr" value="stage_ros" />
+
+  <!-- Optional Arguments: -->
+  <arg name="joint_states_topic" default="joint_states" />
+    <!--joint_states_topic: The topic to publish joint states on. -->
+  <arg name="node_name" default="n_$(arg sr)" />
+    <!--node_name: The name to assign to this node. -->
+  <arg name="rate" default="10" />
+    <!--rate: The rate at which joint states are published. -->
+  <arg name="use_gui" default="False" />
+    <!--use_gui: If "True", pops up a GUI window that allows the joints to be changed. -->
+
+  <!-- Machine configuration: -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- FIXME: Create a n_stageros. -->
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="$(arg sr)" type="stageros" args="$(arg world_file)">
+    <param name="base_watchdog_timeout" value="0.5"/>
+    <remap from="odom" to="odom"/>
+    <remap from="base_pose_ground_truth" to="base_pose_ground_truth"/>
+    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
+    <remap from="base_scan" to="scan"/>
+  </node>
+
+</launch>
