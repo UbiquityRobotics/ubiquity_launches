@@ -86,8 +86,11 @@
     <arg name="publish_frequency" value="5.0" />
   </include>
 
-  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
-    <rosparam command="load" file="$(find turtlebot_bringup)/param/$(arg base)/diagnostics.yaml" />
-  </node>
+  <!-- This not readly needed for a simulator, so leave it off:
+    <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
+      <rosparam command="load"
+       file="$(find turtlebot_bringup)/param/$(arg base)/diagnostics.yaml" />
+    </node>
+  -->
 
 </launch>
