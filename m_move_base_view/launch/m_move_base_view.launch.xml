@@ -1,4 +1,8 @@
 <launch>
+  <!--Summary: Set up a robot base for navigation with viewing via RViz. -->
+  <!--Overview: Run the nodes to required to navigate a robot platform along
+        with an RViz node to view what is going on. -->
+
   <!-- Required Arguments -->
   <arg name="robot_platform" />
     <!--robot_platform: The robot platform (e.g. "loki", "sim", "magni") to use. -->

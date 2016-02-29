@@ -1,9 +1,9 @@
 <launch>
-  <!--Summary: Start keyboard navigate node. -->
+  <!--Summary: Start keyboard navigation node (currently broken.) -->
   <!--Overview: The launch file for this directory starts a
       keyboard interface to the ROS
       [`move_base`](http://wiki.ros.org/map_server) node.  This
-      code is still under development. -->
+      code is still under development.  (Code is currently broken.)-->
 
   <!-- Required arguments -->
   <arg name="robot_platform" />

@@ -1,14 +1,23 @@
 <launch>
+  <!--Summary: Navigate robot by keyboard with an RViz viewer. -->
+  <!--Overview: Configure the robot for navigation with a keyboard
+        and start of RViz to show progress. -->
+
   <!-- Requrired arguments: -->
   <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
   <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
   <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
   <arg name="viewer_host" default="localhost"/>
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
   <arg name="viewer_user" default=""/>
+    <!--viewer_user: The user account on the display computer to use. -->
 
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
-  <arg name="node" value="n_keyboard_navigate" />
+  <arg name="kn" value="n_keyboard_navigate" />
   <arg name="mbv" value="m_move_base_view" />
 
   <!-- Launch the move_base_view nodes: -->
@@ -21,7 +30,7 @@
   </include>
 
   <!-- Launch the keyboard navigate node: -->
-  <include file="$(arg ul)/$(arg node)/launch/$(arg node).launch.xml">
+  <include file="$(arg ul)/$(arg kn)/launch/$(arg kn).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="machine_name" value="viewer"/>
     <arg name="machine_host" value="$(arg viewer_host)"/>

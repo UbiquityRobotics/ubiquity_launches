@@ -22,10 +22,11 @@
 
   <!-- Optional arguments: -->
   <arg name="joint_states_topic" default="joint_states" />
+    <!--joint_states_topic: Topic on which joint states are published. -->
   <arg name="node_name" default="n_$(arg rsp)" />
     <!--node_name: The name of the ROS node. -->
   <arg name="tf_prefix" default="" />
-    <!--tx_prefix: The text to prepend to each TF name. -->
+    <!--tf_prefix: The text to prepend to each TF name. -->
   <arg name="publish_frequency" default="50.0" />
     <!--publish_frequency: The frequency at which to publish -->
   <arg name="use_tf_static" default="true"/>

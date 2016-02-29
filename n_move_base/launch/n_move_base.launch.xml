@@ -2,13 +2,80 @@
 <launch>
   <!--Summary: Run the ROS move_base node. -->
   <!--Overview: The launch file for this directory starts the ROS
-      [`move_base`](http://wiki.ros.org/move_base) node. -->
+        [`move_base`](http://wiki.ros.org/move_base) node for manageing
+        robot navigation. -->
+
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="mb" value="move_base" />
 
-  <!-- Run the move_base node: -->
+  <!-- Optional arguments: -->
+  <arg name="odom_frame_id" default="odom"/>
+    <!--odom_frame_id: The odomentry TF id. -->
+  <arg name="base_frame_id" default="base_footprint"/>
+    <!--base_frame_id: The base frame TF id. -->
+  <arg name="global_frame_id" default="map"/>
+    <!--global_frame_id: The global frame TF id. -->
+  <arg name="odom_topic" default="odom" />
+    <!--odom_topic: The odemetry topic to subscribe to. -->
+  <arg name="laser_topic" default="scan" />
+    <!--laser_topic: The laser topic to subscribe to. -->
+  <arg name="custom_param_file" default="$(find turtlebot_navigation)/param/dummy.yaml"/>
+    <!--custom_param_file: Not a clue. -->
+
+  <!-- Define the robot machine: -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <node machine="$(arg machine_name)" name="move_base"
+   pkg="move_base" type="move_base"
+   respawn="false" output="screen">
+    <rosparam command="load" ns="global_costmap"
+     file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" />
+    <rosparam command="load" ns="local_costmap"
+     file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" />   
+    <rosparam command="load"
+     file="$(find turtlebot_navigation)/param/local_costmap_params.yaml" />
+    <rosparam command="load"
+     file="$(find turtlebot_navigation)/param/global_costmap_params.yaml" />
+    <rosparam command="load"
+     file="$(find turtlebot_navigation)/param/dwa_local_planner_params.yaml" />
+    <rosparam command="load"
+     file="$(find turtlebot_navigation)/param/move_base_params.yaml" />
+    <rosparam command="load"
+     file="$(find turtlebot_navigation)/param/global_planner_params.yaml" />
+    <rosparam command="load"
+     file="$(find turtlebot_navigation)/param/navfn_global_planner_params.yaml" />
+    <!-- external params file that could be loaded into the move_base namespace -->
+    <rosparam  command="load"
+     file="$(arg custom_param_file)"/>
+    
+    <!-- reset frame_id parameters using user input data -->
+    <param name="global_costmap/global_frame" value="$(arg global_frame_id)"/>
+    <param name="global_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+    <param name="local_costmap/global_frame" value="$(arg odom_frame_id)"/>
+    <param name="local_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+    <param name="DWAPlannerROS/global_frame_id" value="$(arg odom_frame_id)"/>
+
+    <!-- Do topic remapping: -->
+    <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+    <remap from="scan" to="$(arg laser_topic)"/>
+  </node>
+
+  <!-- This is the really old stuff...:
+
   <node pkg="$(arg mb)" type="move_base"
    name="move_base" respawn="false" output="screen">
 
@@ -19,17 +86,16 @@
     <rosparam command="load"
      file="$(arg root)/n_$(arg mb)/params/local_planner.yaml" />
   
-    <!-- local costmap parameters. Small laser scanner on /scan -->
     <rosparam command="load" ns="local_costmap"
      file="$(arg root)/n_$(arg mb)/params/common_costmap.yaml" />
     <rosparam command="load" ns="local_costmap"
      file="$(arg root)/n_$(arg mb)/params/local_costmap.yaml"  />
   
-    <!-- global costmap parameters. Should just be a static map. -->
     <rosparam command="load" ns="global_costmap"
      file="$(arg root)/n_$(arg mb)/params/common_costmap.yaml" />
     <rosparam command="load" ns="global_costmap"
      file="$(arg root)/n_$(arg mb)/params/global_costmap.yaml" />
-
   </node>
+  -->
+
 </launch>

@@ -1,10 +1,21 @@
 <launch>
+  <!--Summary: Launch a robot in a mode that can be driven from a keyboard. -->
+  <!--Overview: Set up a robot so that it can be driven from the keyboard
+        on the development machine.  The ROS
+        [teleop_twist_keyboard](http://wiki.ros.org/teleop_twist_keyboard)
+        node documentation explains the keyboard controls. -->
+
   <!-- Requrired arguments: -->
   <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
   <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
   <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
   <arg name="viewer_host" default="localhost"/>
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
   <arg name="viewer_user" default=""/>
+    <!--viewer_user: The user account on the display computer to use. -->
 
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />

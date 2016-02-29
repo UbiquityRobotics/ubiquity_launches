@@ -99,6 +99,10 @@ install(DIRECTORY n_image_uncompress/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_image_uncompress
   PATTERN ".svn" EXCLUDE)
 
+install(DIRECTORY n_joint_state_publisher/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_joint_state_publisher
+  PATTERN ".svn" EXCLUDE)
+
 install(DIRECTORY n_joy/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_joy
   PATTERN ".svn" EXCLUDE)
@@ -145,6 +149,10 @@ install(DIRECTORY n_sleep_forever/
 
 install(DIRECTORY n_spawner/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_spawner
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY n_stage_ros/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_stage_ros
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_teleop_twist_joy/

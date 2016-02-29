@@ -1,15 +1,25 @@
 <launch>
+  <!--Summary: Set up a robot base for operation. -->
+  <!--Overview: Launches all the nodes needed to bring up basic driving
+        of a robot platform. -->
+
   <!-- Required arguments: -->
   <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
   <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
   <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
   <arg name="viewer_host" default="localhost"/>
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
   <arg name="viewer_user" default=""/>
+    <!--viewer_user: The user account on the display computer to use. -->
 
   <!-- Convenience arguments -->
-  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="ul" value="$(find ubiquity_launches)" />
 
-  <include file="$(arg root)/m_robot_base/launch/m_$(arg robot_platform)_base.launch.xml">
+  <!-- Dispatch to the appropriate platform specific launch file. -->
+  <include file="$(arg ul)/m_robot_base/launch/m_$(arg robot_platform)_base.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_host" value="$(arg robot_host)"/>
     <arg name="robot_user" value="$(arg robot_user)"/>

@@ -53,14 +53,17 @@ The following launch file directories are available:
 * `m_joystick_teleop`:
   Start joystick remote control nodes.
 
-* m_keyboard_drive: (No Summary Available)
+* `m_keyboard_drive`:
+  Launch a robot in a mode that can be driven from a keyboard.
 
-* m_keyboard_navigate: (No Summary Available)
+* `m_keyboard_navigate`:
+  Navigate robot by keyboard with an RViz viewer.
 
 * `m_move_base`:
-  
+  Starts the `move_base` navigation system for a robot.
 
-* m_move_base_view: (No Summary Available)
+* `m_move_base_view`:
+  Set up a robot base for navigation with viewing via RViz.
 
 * `m_raspicam_raw`:
   Start nodes needed to support the Raspberry Pi camera.
@@ -74,11 +77,13 @@ The following launch file directories are available:
 * `m_robot_base`:
   Start the Magni base nodes.
 
-* m_robot_base: (No Summary Available)
+* `m_robot_base`:
+  Set up a robot base for operation.
 
 * m_robot_base: (No Summary Available)
 
-* n_amcl: (No Summary Available)
+* `n_amcl`:
+  Launch the Adaptive Monte Carlo Localization node.
 
 * `n_bus_server`:
   Launch a node to control the serial port.
@@ -98,11 +103,14 @@ The following launch file directories are available:
 * `n_image_uncompress`:
   Uncompress an image stream.
 
+* `n_joint_state_publisher`:
+  Launches joint_state_publisher node.
+
 * `n_joy`:
   Connect to a joystick node.
 
 * `n_keyboard_navigate`:
-  Start keyboard navigate node.
+  Start keyboard navigation node (currently broken.)
 
 * `n_map_server`:
   Start a ROS map_server node.
@@ -134,6 +142,9 @@ The following launch file directories are available:
 * `n_spawner`:
   Runs the ROS spawn node.
 
+* `n_stage_ros`:
+  Launches stage robot simulation envirnoment for ROS.
+
 * `n_teleop_twist_joy`:
   Launch the ROS `teleop_twist_joy` node.
 
@@ -157,9 +168,11 @@ summary here
 
 * m_keyboard_drive
   * m_robot_base
+    * n_joint_state_publisher
     * n_relay
+    * n_stage_ros
     * n_cmd_vel_mux
-    * robot (not found)
+    * n_robot_state_publisher
   * n_teleop_twist_keyboard
 
 ### `keyboard_navigate` Executable:
@@ -170,10 +183,14 @@ summary here
   * m_move_base_view
     * m_move_base
       * m_robot_base
+        * n_joint_state_publisher
         * n_relay
+        * n_stage_ros
         * n_cmd_vel_mux
-        * robot (not found)
-      * move_base (not found)
+        * n_robot_state_publisher
+      * velocity_smoother (not found)
+      * safety_controller (not found)
+      * n_move_base
       * n_map_server
       * n_amcl
     * n_rviz
@@ -248,9 +265,11 @@ camera.
 
 
 * m_robot_base
+  * n_joint_state_publisher
   * n_relay
+  * n_stage_ros
   * n_cmd_vel_mux
-  * robot (not found)
+  * n_robot_state_publisher
 
 ### `roslauncher` Executable:
 
@@ -317,35 +336,54 @@ This launch file has the following argument:
 
 ### `m_keyboard_drive` Launch File Directory
 
+Set up a robot so that it can be driven from the keyboard
+on the development machine.  The ROS
+[teleop_twist_keyboard](http://wiki.ros.org/teleop_twist_keyboard)
+node documentation explains the keyboard controls.
+
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * robot_host (Required):
+  The DNS address for the robot.
 
 * robot_user (Required):
+  The user account on the robot to use.
 
 * viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
 
 * viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
 
 ### `m_keyboard_navigate` Launch File Directory
 
+Configure the robot for navigation with a keyboard
+and start of RViz to show progress.
+
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * robot_host (Required):
+  The DNS address for the robot.
 
 * robot_user (Required):
+  The user account on the robot to use.
 
 * viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
 
 * viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
 
 ### `m_move_base` Launch File Directory
 
-
+Start the `move_base` navigation system for the currently
+selected robot.
 
 This launch file has the following arguments:
 
@@ -359,7 +397,8 @@ This launch file has the following arguments:
 
 * viewer_user (Optional, default: ''):
 
-* map_file (Optional, default: ' $(env TURTLEBOT_STAGE_MAP_FILE)'):
+* map_file (Optional, default: '$(arg ul)/m_robot_base/maps/stage/maze.world'):
+  The stage `.world` file to use.
 
 * initial_pose_x (Optional, default: '2.0'):
   Initial X position of robot in simultion.
@@ -372,17 +411,25 @@ This launch file has the following arguments:
 
 ### `m_move_base_view` Launch File Directory
 
+Run the nodes to required to navigate a robot platform along
+with an RViz node to view what is going on.
+
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "loki", "sim", "magni") to use.
 
 * robot_host (Required):
+  The DNS address for the robot.
 
 * robot_user (Required):
+  The user account on the robot to use.
 
 * viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
 
 * viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
 
 ### `m_raspicam_raw` Launch File Directory
 
@@ -454,41 +501,64 @@ This launch file has the following arguments:
 
 ### `m_robot_base` Launch File Directory
 
+Launches all the nodes needed to bring up basic driving
+of a robot platform.
+
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * robot_host (Required):
+  The DNS address for the robot.
 
 * robot_user (Required):
+  The user account on the robot to use.
 
 * viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
 
 * viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
 
 ### `m_robot_base` Launch File Directory
 
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "loki", "sim", "magni") to use.
 
 * robot_host (Required):
+  The DNS address for the robot.
 
 * robot_user (Required):
+  The user account on the robot to use.
 
 * viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
 
 * viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
 
-* world_file (Optional, default: ' /opt/ros/indigo/share/turtlebot_stage/maps/stage/maze.world'):
+* base (Optional, default: 'kobuki'):
+  The kind of robot base (e.g. "create", "kobuki", "Rhoomba", ...).
 
-* base (Optional, default: '$(optenv TURTLEBOT_BASE kobuki)'):
+* stacks (Optional, default: 'hexagons'):
+  The kind of stack on the robot (e.g. "circles", "hexagons").
 
-* stacks (Optional, default: '$(optenv TURTLEBOT_STACKS hexagons)'):
+* 3d_sensor (Optional, default: 'asus_xtion_pro'):
+  The kind of 3D sensor (e.g. "kinect, "asus_xtion_pro").
 
-* 3d_sensor (Optional, default: '$(optenv TURTLEBOT_3D_SENSOR kinect)'):
+* world_file (Optional, default: '$(arg ul)/m_robot_base/maps/stage/maze.world'):
+  The `.world` file to construct the robot simulation environment.
+  Note that the currently the world file must be in a in a directory called
+  `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
+  Good luck finding any useful documentation.
 
 ### `n_amcl` Launch File Directory
+
+This node will launch the
+[Adaptive Monte Carlo Localization](http://wiki.ros.org/amcl) node.
 
 This launch file has the following arguments:
 
@@ -508,6 +578,7 @@ This launch file has the following arguments:
   The name to assign to this ROS node.
 
 * use_map_topic (Optional, default: 'false'):
+  `true` enable the use of the map topic.
 
 * scan_topic (Optional, default: 'scan'):
   The name of the LIDAR scan topic to subscribe to.
@@ -672,6 +743,36 @@ This launch file has the following arguments:
 * machine_name (Optional, default: 'robot'):
   The machine name (i.e. "robot" or "viewer")
 
+### `n_joint_state_publisher` Launch File Directory
+
+This will launch a joint_state_publisher node.
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
+* machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
+
+* joint_states_topic (Optional, default: 'joint_states'):
+  The topic to publish joint states on.
+
+* node_name (Optional, default: 'n_$(arg jsp)'):
+  The name to assign to this node.
+
+* rate (Optional, default: '10'):
+  The rate at which joint states are published.
+
+* use_gui (Optional, default: 'False'):
+  If "True", pops up a GUI window that allows the joints to be changed.
+
 ### `n_joy` Launch File Directory
 
 This library launch directory will launch a node that
@@ -686,7 +787,7 @@ This launch file has no arguments.
 The launch file for this directory starts a
 keyboard interface to the ROS
 [`move_base`](http://wiki.ros.org/map_server) node.  This
-code is still under development.
+code is still under development.  (Code is currently broken.)
 
 This launch file has the following arguments:
 
@@ -741,9 +842,40 @@ This launch file has the following argument:
 ### `n_move_base` Launch File Directory
 
 The launch file for this directory starts the ROS
-[`move_base`](http://wiki.ros.org/move_base) node.
+[`move_base`](http://wiki.ros.org/move_base) node for manageing
+robot navigation.
 
-This launch file has no arguments.
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
+* machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
+
+* odom_frame_id (Optional, default: 'odom'):
+  The odomentry TF id.
+
+* base_frame_id (Optional, default: 'base_footprint'):
+  The base frame TF id.
+
+* global_frame_id (Optional, default: 'map'):
+  The global frame TF id.
+
+* odom_topic (Optional, default: 'odom'):
+  The odemetry topic to subscribe to.
+
+* laser_topic (Optional, default: 'scan'):
+  The laser topic to subscribe to.
+
+* custom_param_file (Optional, default: '$(find turtlebot_navigation)/param/dummy.yaml'):
+  Not a clue.
 
 ### `n_raspicam` Launch File Directory
 
@@ -844,15 +976,35 @@ the `robot_platform` argument.  The URDF files are stored in
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
+  The user account on the machine.
 
 * machine_name (Optional, default: 'viewer'):
+  The machine name (i.e. "robot" or "viewer")
 
-* node_name (Optional, default: 'n_$(arg node)'):
+* joint_states_topic (Optional, default: 'joint_states'):
+  Topic on which joint states are published.
+
+* node_name (Optional, default: 'n_$(arg rsp)'):
   The name of the ROS node.
+
+* tf_prefix (Optional, default: ''):
+  The text to prepend to each TF name.
+
+* publish_frequency (Optional, default: '50.0'):
+  The frequency at which to publish
+
+* use_tf_static (Optional, default: 'true'):
+  Set to true to use /tf_static latched static broadcaster.
+
+* robot_description_file (Optional, default: '$(arg ul)/n_$(arg rsp)/urdf/$(arg robot_platform).urdf'):
+  The name of a file that contains the robot
+  structure in URDF format.
 
 ### `n_rqt_image_view` Launch File Directory
 
@@ -922,6 +1074,46 @@ This launch file has the following arguments:
 
 * node_name (Optional, default: 'n_$(arg node)'):
   The name to assign to the node.
+
+### `n_stage_ros` Launch File Directory
+
+Stage is an environment for simulating robot operating
+in a simulated 2D environment.  This node starts up the
+stage_ros/stageros program to perform this simulation.  The
+[Stage Manual](http://playerstage.sourceforge.net/doc/Stage-3.2.1/modules.html)
+is available elsewhere on the net.
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
+* world_file (Required):
+  The `.world` file to construct the robot simulation environment.
+  Note that the currently the world file must be in a in a directory called
+  `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
+  Good luck finding any useful documentation.
+
+* machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
+
+* joint_states_topic (Optional, default: 'joint_states'):
+  The topic to publish joint states on.
+
+* node_name (Optional, default: 'n_$(arg sr)'):
+  The name to assign to this node.
+
+* rate (Optional, default: '10'):
+  The rate at which joint states are published.
+
+* use_gui (Optional, default: 'False'):
+  If "True", pops up a GUI window that allows the joints to be changed.
 
 ### `n_teleop_twist_joy` Launch File Directory
 

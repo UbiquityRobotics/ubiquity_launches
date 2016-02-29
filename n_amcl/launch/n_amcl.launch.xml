@@ -1,4 +1,8 @@
 <launch>
+  <!--Summary: Launch the Adaptive Monte Carlo Localization node. -->
+  <!--Overview: This node will launch the 
+      [Adaptive Monte Carlo Localization](http://wiki.ros.org/amcl) node. -->
+
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
     <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
@@ -13,7 +17,7 @@
   <arg name="node_name"       default="n_amcl" />
     <!--node_name: The name to assign to this ROS node. -->
   <arg name="use_map_topic"   default="false" />
-    <!--use-map_topic: `true` enable the use of the map topic. -->
+    <!--use_map_topic: `true` enable the use of the map topic. -->
   <arg name="scan_topic"      default="scan" /> 
     <!--scan_topic: The name of the LIDAR scan topic to subscribe to. -->
   <arg name="initial_pose_x"  default="0.0" />

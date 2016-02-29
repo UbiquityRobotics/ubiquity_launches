@@ -35,9 +35,18 @@
 
   <!-- FIXME: Still references turtlebot navigation. -->
   <!-- Start the navigation system: -->
-  <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml"/>
+  <include file="$(find turtlebot_navigation)/launch/includes/velocity_smoother.launch.xml"/>
+  <include file="$(find turtlebot_navigation)/launch/includes/safety_controller.launch.xml"/>
 
-  <!-- Start the map server: -->
+  <!-- Start move_base node: -->
+  <include file="$(arg ul)/n_move_base/launch/n_move_base.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="machine_name" value="robot" />
+    <arg name="machine_host" value="$(arg robot_host)" />
+    <arg name="machine_user" value="$(arg robot_user)" />
+  </include>
+
+  <!-- Start the map server node: -->
   <include file="$(arg ul)/n_map_server/launch/n_map_server.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="machine_name" default="robot"/>
