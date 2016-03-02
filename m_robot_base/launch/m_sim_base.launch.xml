@@ -75,12 +75,10 @@
   <!-- FIXME: Remove turtlebot stuff -->
   <!--  ***************** Robot Model *****************  -->
 
-  <arg name="urdf_file"
-   default="$(find xacro)/xacro.py '$(find turtlebot_description)/robots/$(arg base)_$(arg stacks)_$(arg 3d_sensor).urdf.xacro'" />
-  <param name="robot_description" command="$(arg urdf_file)" />
+  <param name="robot_description" textfile="$(arg ul)/n_$(arg rsp)/urdf/sim.urdf" /> 
 
   <!-- important generally, but specifically utilised by the current app manager -->  
-  <param name="robot/name" value="$(optenv ROBOT turtlebot)"/>
+  <param name="robot/name" value="turtlebot"/>
   <param name="robot/type" value="turtlebot"/>
   
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
