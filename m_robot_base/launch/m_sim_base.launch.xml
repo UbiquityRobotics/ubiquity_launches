@@ -39,7 +39,6 @@
     <arg name="machine_user" value="$(arg robot_user)" />
   </include>
 
-  <!-- FIXME: Remove '/' from in_topic and out_topic remappings: -->
   <!-- Launch topic relaying node: -->
   <include file="$(arg ul)/n_relay/launch/n_relay.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
@@ -47,8 +46,8 @@
     <arg name="machine_host" value="$(arg robot_host)" />
     <arg name="machine_user" value="$(arg robot_user)" />
 
-    <arg name="in_topic" value="/cmd_vel"/>
-    <arg name="out_topic" value="/cmd_vel_mux/input/teleop" />
+    <arg name="in_topic" value="cmd_vel"/>
+    <arg name="out_topic" value="cmd_vel_mux/input/teleop" />
   </include>
 
   <!-- Use simulator time to control everything: -->
@@ -72,20 +71,7 @@
     <arg name="machine_user" value="$(arg robot_user)"/>
   </include>
 
-  <!-- FIXME: Remove turtlebot stuff -->
-  <!--  ***************** Robot Model *****************  -->
-
-  <param name="robot_description" textfile="$(arg ul)/n_$(arg rsp)/urdf/sim.urdf" /> 
-
-  <!-- important generally, but specifically utilised by the current app manager -->  
-  <param name="robot/name" value="turtlebot"/>
-  <param name="robot/type" value="turtlebot"/>
-  
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
-    <param name="publish_frequency" type="double" value="5.0" />
-  </node>
-
-  <!-- Launch the robot state publisher:
+  <!-- Launch the robot state publisher: -->
   <include file="$(arg ul)/n_$(arg rsp)/launch/n_$(arg rsp).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="machine_name" value="robot" />
@@ -93,11 +79,7 @@
     <arg name="machine_user" value="$(arg robot_user)" />
 
     <arg name="publish_frequency" value="5.0" />
+    <arg name="robot_description_file" value="$(arg ul)/n_$(arg rsp)/urdf/sim.urdf" />
   </include>
- -->
-
-  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
-    <rosparam command="load" file="$(find turtlebot_bringup)/param/$(arg base)/diagnostics.yaml" />
-  </node>
 
 </launch>

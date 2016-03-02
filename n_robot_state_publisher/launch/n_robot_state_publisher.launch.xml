@@ -41,11 +41,14 @@
    address="$(arg machine_host)" user="$(arg machine_user)"
    env-loader="/tmp/env_loader.sh" />
 
+  <!-- For some reason we have to set the `robot_description` parameter out here
+       rather than inside the `<node ... >...</node>`.  This works.  -->
+  <param name="robot_description" textfile="$(arg robot_description_file)" />
+
   <!-- Launch the robot state publisher:  -->
   <node machine="$(arg machine_name)" name="$(arg node_name)"
    pkg="$(arg rsp)" type="state_publisher">
     <remap from="joint_states" to="$(arg joint_states_topic)" />
-    <param name="robot_description" textfile="$(arg robot_description_file)" />
     <param name="tf_prefix" value="$(arg tf_prefix)" />
     <param name="publish_frequency" value="$(arg publish_frequency)" />
     <param name="use_tf_static" value="$(arg use_tf_static)" />
