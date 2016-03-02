@@ -76,7 +76,15 @@
   <param name="robot/name" value="turtlebot"/>
   <param name="robot/type" value="turtlebot"/>
   
-  <!-- Launch the robot state publisher: -->
+  <!-- FIXME: Remove turtlebot stuff -->
+  <!--  ***************** Robot Model *****************  -->
+  <include file="$(find turtlebot_bringup)/launch/includes/robot.launch.xml">
+    <arg name="base" value="$(arg base)" />
+    <arg name="stacks" value="$(arg stacks)" />
+    <arg name="3d_sensor" value="$(arg 3d_sensor)" />
+  </include>
+
+  <!-- Launch the robot state publisher:
   <include file="$(arg ul)/n_$(arg rsp)/launch/n_$(arg rsp).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="machine_name" value="robot" />
@@ -85,5 +93,5 @@
 
     <arg name="publish_frequency" value="5.0" />
   </include>
-
+ -->
 </launch>
