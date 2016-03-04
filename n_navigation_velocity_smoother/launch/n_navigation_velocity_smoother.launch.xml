@@ -1,0 +1,67 @@
+<launch>
+  <!--Summary: Launches joint_state_publisher node. -->
+  <!--Overview: This will launch a joint_state_publisher node.  -->
+
+  <!-- Required Arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="nvs" value="navigation_velocity_smoother" />
+
+  <!-- Optional Arguments: -->
+  <arg name="node_name" default="n_$(arg nvs)" />
+    <!--node_name: The name to use for the node: -->
+  <arg name="raw_cmd_vel_stopic" default="$(arg node_name)/raw_cmd_vel" />
+    <!--raw_cmd_vel_stopic: The topic to subscribe to get the input velocity commands. -->
+  <arg name="odometry_stopic" default="$(arg node_name)/odometry" />
+    <!--odometry_stopic: The topic to subscribe to look at to for the robot odometry. -->
+  <arg name="robot_cmd_vel_stopic" default="$(arg node_name)/robot_cmd_vel" />
+    <!--robot_cmd_vel: The topic to subscribe to get end robot velocity commands. -->
+  <arg name="smooth_cmd_vel_ptopic" default="$(arg node_name)/smooth_cmd_vel" />
+    <!--smooth_cmd_vel_ptopic: The topic that is published which has the smoothed
+        velocity commands. -->
+
+  <!-- Add all of these as parameters:
+    * ~accel_lim_v (double):
+      Linear acceleration limit. Mandatory.
+    * ~accel_lim_w (double):
+      Angular acceleration limit. Mandatory.
+    * ~speed_lim_v (double):
+      Linear velocity limit. Mandatory.
+    * ~speed_lim_w (double):
+      Angular velocity limit. Mandatory.
+    * ~decel_factor (double, default: 1.0):
+      Deceleration/acceleration ratio. Useful to make deceleration more aggressive,
+      for example to safely brake on robots with high inertia.
+    * ~frequency (double, default: 20.0):
+      Output messages rate. The velocity smoother keeps it regardless incoming
+      messages rate, interpolating whenever necessary.
+    * ~robot_feedback (int, default: 0):
+      Specifies which topic to use as robot velocity feedback (0 - none, 1 - odometry,
+      2 - end robot commands). See hints below for more details.
+  -->
+
+  <!-- Define the robot machine: -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- Launch the topic: -->
+  <node pkg="nodelet" type="nodelet" name="n_navigation_velocity_smoother"
+   args="load yocs_velocity_smoother/VelocitySmootherNodelet /mobile_base_nodelet_manager">
+    <rosparam file="$(arg ul)/n_$(arg nvs)/yaml/smoother.yaml" command="load" />
+    <remap from="$(arg node_name)/odometry" to="$(arg odometry_stopic)" />
+    <remap from="$(arg node_name)/raw_cmd_vel" to="$(arg raw_cmd_vel_stopic)"/>
+    <remap from="$(arg node_name)/robot_cmd_vel" to="$(arg robot_cmd_vel_stopic)" /> 
+    <remap from="$(arg node_name)/smooth_cmd_vel" to="$(arg smooth_cmd_vel_ptopic)" />
+  </node>
+
+</launch>

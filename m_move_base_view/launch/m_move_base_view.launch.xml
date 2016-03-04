@@ -15,6 +15,7 @@
   <arg name="viewer_user" default=""/>
     <!--viewer_user: The user account on the display computer to use. -->
 
+  <!-- Launch the move_base nodes: -->
   <include
    file="$(find ubiquity_launches)/m_move_base/launch/m_move_base.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
@@ -24,7 +25,7 @@
     <arg name="viewer_user" value="$(arg viewer_user)"/>
   </include>
 
-  <!--  **************** Visualisation ****************  -->
+  <!-- Launch the RViz visualisation node: -->
   <include file="$(find ubiquity_launches)/n_rviz/launch/n_rviz.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
     <arg name="machine_host" value="$(arg viewer_host)"/>
