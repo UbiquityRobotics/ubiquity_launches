@@ -37,6 +37,8 @@
     <arg name="machine_name" value="robot" />
     <arg name="machine_host" value="$(arg robot_host)" />
     <arg name="machine_user" value="$(arg robot_user)" />
+
+    <arg name="node_name" value="$(arg jsp)" />
   </include>
 
   <!-- Launch topic relaying node: -->
@@ -83,6 +85,7 @@
     <arg name="machine_host" value="$(arg robot_host)" />
     <arg name="machine_user" value="$(arg robot_user)" />
 
+    <arg name="node_name" value="$(arg rsp)" />
     <arg name="publish_frequency" value="5.0" />
     <arg name="robot_description_file" value="$(arg ul)/n_$(arg rsp)/urdf/sim.urdf" />
   </include>

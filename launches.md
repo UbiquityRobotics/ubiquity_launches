@@ -898,7 +898,7 @@ This launch file has the following arguments:
 * machine_name (Optional, default: 'robot'):
   The machine name (i.e. "robot" or "viewer")
 
-* yaml_file (Optional, default: '$(arg ul)/n_$(arg nvs)/yaml/empty.yaml'):
+* yaml_file (Optional, default: '$(arg ul)/n_$(arg nvs)/yaml/smoother.yaml'):
   A `.yaml` file that can specifiy the various parameters for this node
   as an alternative to specifying them indificually.  Individual arguments
   should override the `.yaml` file.
@@ -913,6 +913,7 @@ This launch file has the following arguments:
   The topic to subscribe to look at to for the robot odometry.
 
 * robot_cmd_vel_stopic (Optional, default: '$(arg node_name)/robot_cmd_vel'):
+  The topic to subscribe to get end robot velocity commands.
 
 * smooth_cmd_vel_ptopic (Optional, default: '$(arg node_name)/smooth_cmd_vel'):
   The topic that is published which has the
@@ -929,6 +930,8 @@ This launch file has the following arguments:
   more aggressive, for example to safely brake on robots with high inertia.
 
 * frequency (Optional, default: '2.0'):
+  Output messages rate. The velocity smoother keeps it regardless incoming
+  messages rate, interpolating whenever necessary.
 
 * robot_feedback (Optional, default: '2'):
   Specifies which topic to use as robot velocity feedback
@@ -1044,8 +1047,8 @@ This launch file has the following arguments:
 * machine_name (Optional, default: 'viewer'):
   The machine name (i.e. "robot" or "viewer")
 
-* joint_states_topic (Optional, default: 'joint_states'):
-  Topic on which joint states are published.
+* joint_states_stopic (Optional, default: 'joint_states'):
+  The joint states are obtained by subscribing to this topic.
 
 * node_name (Optional, default: 'n_$(arg rsp)'):
   The name of the ROS node.
@@ -1135,8 +1138,9 @@ This launch file has the following arguments:
 ### `n_stage_ros` Launch File Directory
 
 Stage is an environment for simulating robot operating
-in a simulated 2D environment.  This node starts up the
-stage_ros/stageros program to perform this simulation.  The
+in a simulated 2D environment.  This node starts up the ROS
+[stage_ros](http://wiki.ros.org/stage_ros) node to perform this simulation.
+The
 [Stage Manual](http://playerstage.sourceforge.net/doc/Stage-3.2.1/modules.html)
 is available elsewhere on the net.
 
@@ -1160,9 +1164,6 @@ This launch file has the following arguments:
 * machine_name (Optional, default: 'robot'):
   The machine name (i.e. "robot" or "viewer")
 
-* joint_states_topic (Optional, default: 'joint_states'):
-  The topic to publish joint states on.
-
 * node_name (Optional, default: 'n_$(arg sr)'):
   The name to assign to this node.
 
@@ -1171,6 +1172,35 @@ This launch file has the following arguments:
 
 * use_gui (Optional, default: 'False'):
   If "True", pops up a GUI window that allows the joints to be changed.
+
+* cmd_vel_stopic (Optional, default: 'cmd_vel'):
+  The velocity command to drive the roboto position in the model.
+
+* odom_ptopic (Optional, default: 'odom'):
+  Odometry from the position model is published to this topic.
+
+* base_scan_ptopic (Optional, default: 'base_scan'):
+  Laser scan information is published to this topic.
+
+* base_pose_ground_truth_ptopic (Optional, default: 'base_pose_ground_truth'):
+  Ground truth pose information is publishde to this topic.
+
+* image_ptopic (Optional, default: 'image'):
+  A visual camera imageis published to this topic.
+
+* depth_ptopic (Optional, default: 'depth'):
+  A depth camera image is published to this topic.
+
+* camera_info_ptopic (Optional, default: 'camera_info'):
+  Camera calibration information is published to this topic.
+
+* base_watchdog_timeout (Optional, default: '0.2'):
+  The time in seconds after receiving the last command on
+  the `cmd_vel` topic before the robot stops.
+
+* is_depth_canonical (Optional, default: 'true'):
+  Specifies whether to depth image should use a canonical
+  (32FC1) or OpenNI (16UC1) representation.
 
 ### `n_teleop_twist_joy` Launch File Directory
 

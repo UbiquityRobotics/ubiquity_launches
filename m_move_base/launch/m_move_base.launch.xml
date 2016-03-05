@@ -80,6 +80,7 @@
     <arg name="machine_host" value="$(arg robot_host)"/>
     <arg name="machine_user" value="$(arg robot_user)"/>
 
+    <arg name="node_name" value="map_server" />
     <arg name="map_file" value="$(arg ul)/m_robot_base/maps/maze.yaml" />
   </include>
 
@@ -90,6 +91,7 @@
     <arg name="machine_host" value="$(arg robot_host)"/>
     <arg name="machine_user" value="$(arg robot_user)"/>
 
+    <arg name="node_name" value="amcl" />
     <arg name="scan_topic" value="scan" />
     <arg name="use_map_topic" value="true" />
     <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
