@@ -56,6 +56,7 @@
    address="$(arg machine_host)" user="$(arg machine_user)"
    env-loader="/tmp/env_loader.sh" />
 
+  <!-- FIXME: Uncommenting the parameters below breaks things!!! -->
   <!-- Launch the topic: -->
   <node pkg="nodelet" type="nodelet" name="n_navigation_velocity_smoother"
    args="load yocs_velocity_smoother/VelocitySmootherNodelet /mobile_base_nodelet_manager">
@@ -64,15 +65,15 @@
     <remap from="$(arg node_name)/raw_cmd_vel" to="$(arg raw_cmd_vel_stopic)"/>
     <remap from="$(arg node_name)/robot_cmd_vel" to="$(arg robot_cmd_vel_stopic)" /> 
     <remap from="$(arg node_name)/smooth_cmd_vel" to="$(arg smooth_cmd_vel_ptopic)" />
-<!--
-    <param name="speed_lim_v" value="$(arg speed_lim_v)" />
-    <param name="speed_lim_w" value="$(arg speed_lim_w)" />
-    <param name="accel_lim_v" value="$(arg accel_lim_v)" />
-    <param name="accel_lim_w" value="$(arg accel_lim_w)" />
-    <param name="decel_factor" value="$(arg decel_factor)" />
-    <param name="frequency" value="$(arg frequency)" />
-    <param name="robot_feedback" value="$(arg robot_feedback)" />
--->
+    <!--
+      <param name="speed_lim_v" value="$(arg speed_lim_v)" />
+      <param name="speed_lim_w" value="$(arg speed_lim_w)" />
+      <param name="accel_lim_v" value="$(arg accel_lim_v)" />
+      <param name="accel_lim_w" value="$(arg accel_lim_w)" />
+      <param name="decel_factor" value="$(arg decel_factor)" />
+      <param name="frequency" value="$(arg frequency)" />
+      <param name="robot_feedback" value="$(arg robot_feedback)" />
+    -->
   </node>
 
 </launch>

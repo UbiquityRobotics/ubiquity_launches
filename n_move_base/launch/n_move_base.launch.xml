@@ -16,8 +16,9 @@
     <!--machine_user: The user account on the machine. -->
 
   <!-- Convenience arguments: -->
-  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="ul" value="$(find ubiquity_launches)" />
   <arg name="mb" value="move_base" />
+  <arg name="yaml_dir" value="$(arg ul)/n_$(arg mb)/params/$(arg robot_platform)" />
 
   <!-- Optional arguments: -->
   <arg name="odom_frame_id" default="odom"/>
@@ -30,7 +31,7 @@
     <!--odom_topic: The odemetry topic to subscribe to. -->
   <arg name="laser_topic" default="scan" />
     <!--laser_topic: The laser topic to subscribe to. -->
-  <arg name="custom_param_file" default="$(find turtlebot_navigation)/param/dummy.yaml"/>
+  <arg name="custom_param_file" default="$(arg yaml_dir)/dummy.yaml"/>
     <!--custom_param_file: Not a clue. -->
 
   <!-- Define the robot machine: -->
@@ -42,21 +43,21 @@
    pkg="move_base" type="move_base"
    respawn="false" output="screen">
     <rosparam command="load" ns="global_costmap"
-     file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" />
+     file="$(arg yaml_dir)/costmap_common_params.yaml" />
     <rosparam command="load" ns="local_costmap"
-     file="$(find turtlebot_navigation)/param/costmap_common_params.yaml" />   
+     file="$(arg yaml_dir)/costmap_common_params.yaml" />   
     <rosparam command="load"
-     file="$(find turtlebot_navigation)/param/local_costmap_params.yaml" />
+     file="$(arg yaml_dir)/local_costmap_params.yaml" />
     <rosparam command="load"
-     file="$(find turtlebot_navigation)/param/global_costmap_params.yaml" />
+     file="$(arg yaml_dir)/global_costmap_params.yaml" />
     <rosparam command="load"
-     file="$(find turtlebot_navigation)/param/dwa_local_planner_params.yaml" />
+     file="$(arg yaml_dir)/dwa_local_planner_params.yaml" />
     <rosparam command="load"
-     file="$(find turtlebot_navigation)/param/move_base_params.yaml" />
+     file="$(arg yaml_dir)/move_base_params.yaml" />
     <rosparam command="load"
-     file="$(find turtlebot_navigation)/param/global_planner_params.yaml" />
+     file="$(arg yaml_dir)/global_planner_params.yaml" />
     <rosparam command="load"
-     file="$(find turtlebot_navigation)/param/navfn_global_planner_params.yaml" />
+     file="$(arg yaml_dir)/navfn_global_planner_params.yaml" />
     <!-- external params file that could be loaded into the move_base namespace -->
     <rosparam  command="load"
      file="$(arg custom_param_file)"/>

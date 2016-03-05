@@ -12,6 +12,11 @@
   <arg name="machine_user" />
     <!--machine_user: The user account on the machine. -->
 
+  <!-- Convenience Arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="cvm" value="cmd_vel_mux" />
+  <arg name="yaml_dir" value="$(arg ul)/n_$(arg cvm)/param/$(arg robot_platform)" />
+
   <machine name="$(arg machine_name)"
     address="$(arg machine_host)" user="$(arg machine_user)"
     env-loader="/tmp/env_loader.sh" />
@@ -23,7 +28,7 @@
     pkg="nodelet" type="nodelet"
     args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
 
-    <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
+    <param name="yaml_cfg_file" value="$(arg yaml_dir)/mux.yaml"/>
     <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
   </node>
 

@@ -34,18 +34,6 @@
     <arg name="viewer_user" value="$(arg viewer_user)"/>
   </include>
 
-  <!-- FIXME: Still references turtlebot navigation. -->
-  <!-- Start the navigation system: -->
-  <!--
-  <node pkg="nodelet" type="nodelet" name="navigation_velocity_smoother"
-   args="load yocs_velocity_smoother/VelocitySmootherNodelet /mobile_base_nodelet_manager">
-    <rosparam file="$(find turtlebot_bringup)/param/defaults/smoother.yaml" command="load"/>
-    <remap from="navigation_velocity_smoother/smooth_cmd_vel" to="/cmd_vel_mux/input/navi"/>
-    <remap from="navigation_velocity_smoother/odometry" to="/odom"/>
-    <remap from="navigation_velocity_smoother/robot_cmd_vel" to="/mobile_base/commands/velocity"/>
-  </node>
-  -->
-
   <include file="$(arg ul)/n_$(arg nvs)/launch/n_$(arg nvs).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="machine_name" value="robot" />
