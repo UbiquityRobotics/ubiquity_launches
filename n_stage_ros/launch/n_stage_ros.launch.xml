@@ -26,8 +26,6 @@
   <arg name="sr" value="stage_ros" />
 
   <!-- Optional Arguments: -->
-  <arg name="joint_states_topic" default="joint_states" />
-    <!--joint_states_topic: The topic to publish joint states on. -->
   <arg name="node_name" default="n_$(arg sr)" />
     <!--node_name: The name to assign to this node. -->
   <arg name="rate" default="10" />
@@ -60,14 +58,19 @@
    address="$(arg machine_host)" user="$(arg machine_user)"
    env-loader="/tmp/env_loader.sh" />
 
-  <!-- FIXME: Create a n_stageros. -->
+  <!-- FIXME: Figure what the issue is with the depth topic. -->
+  <!-- Launch stageros node to simulate a robot and a robot environement: -->
   <node machine="$(arg machine_name)" name="$(arg node_name)"
    pkg="$(arg sr)" type="stageros" args="$(arg world_file)">
-    <param name="base_watchdog_timeout" value="0.5"/>
-    <remap from="odom" to="odom"/>
-    <remap from="base_pose_ground_truth" to="base_pose_ground_truth"/>
-    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
-    <remap from="base_scan" to="scan"/>
-  </node>
+    <remap from="cmd_vel" to="$(arg cmd_vel_stopic)" />
+    <remap from="odom" to="$(arg odom_ptopic)" />
+    <remap from="base_pose_ground_truth" to="$(arg base_pose_ground_truth_ptopic)"/>
+    <remap from="base_scan" to="$(arg base_scan_ptopic)"/>
+    <remap from="image" to="$(arg image_ptopic)" />
+    <!-- <remap from="depth" to="$(arg depth_ptopic)" /> -->
+    <remap from="camera_info" to="$(arg camera_info_ptopic)" />
+    <param name="base_watchdog_timeout" value="$(arg base_watchdog_timeout)" />
+    <param name="is_depth_canonical" value="$(arg is_depth_canonical)" />
+ </node>
 
 </launch>

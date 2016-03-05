@@ -61,6 +61,11 @@
     <arg name="machine_user" value="$(arg robot_user)" />
 
     <arg name="world_file" value="$(arg ul)/m_robot_base/maps/stage/maze.world" />
+    <arg name="base_watchdog_timeout" value="0.5" />
+    <arg name="cmd_vel_stopic" value="/mobile_base/commands/velocity"/>
+    <arg name="odom_ptopic" value="odom" />
+    <arg name="base_pose_ground_truth_ptopic" value="base_pose_ground_truth" />
+    <arg name="base_scan_ptopic" value="scan" />
   </include>
 
   <!-- Launch command velocity multiplexer node: -->

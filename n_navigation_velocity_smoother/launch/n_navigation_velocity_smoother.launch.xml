@@ -18,7 +18,7 @@
   <arg name="nvs" value="navigation_velocity_smoother" />
 
   <!-- Optional Arguments: -->
-  <arg name="yaml_file" default="$(arg ul)/n_$(arg nvs)/yaml/empty.yaml" />
+  <arg name="yaml_file" default="$(arg ul)/n_$(arg nvs)/yaml/smoother.yaml" />
     <!--yaml_file: A `.yaml` file that can specifiy the various parameters for this node
         as an alternative to specifying them indificually.  Individual arguments
         should override the `.yaml` file. -->
@@ -64,6 +64,7 @@
     <remap from="$(arg node_name)/raw_cmd_vel" to="$(arg raw_cmd_vel_stopic)"/>
     <remap from="$(arg node_name)/robot_cmd_vel" to="$(arg robot_cmd_vel_stopic)" /> 
     <remap from="$(arg node_name)/smooth_cmd_vel" to="$(arg smooth_cmd_vel_ptopic)" />
+<!--
     <param name="speed_lim_v" value="$(arg speed_lim_v)" />
     <param name="speed_lim_w" value="$(arg speed_lim_w)" />
     <param name="accel_lim_v" value="$(arg accel_lim_v)" />
@@ -71,6 +72,7 @@
     <param name="decel_factor" value="$(arg decel_factor)" />
     <param name="frequency" value="$(arg frequency)" />
     <param name="robot_feedback" value="$(arg robot_feedback)" />
+-->
   </node>
 
 </launch>
