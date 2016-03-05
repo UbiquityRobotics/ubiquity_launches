@@ -38,11 +38,9 @@
    address="$(arg machine_host)" user="$(arg machine_user)"
    env-loader="/tmp/env_loader.sh" />
 
-  <!-- FIXME: Make the parmeters depend an user supplied arguments!!! -->
-  <!-- Launch the AMCL node: -->
   <node machine="$(arg machine_name)" name="$(arg node_name)"
    pkg="amcl" type="amcl">
-    <param name="~use_map_topic"             value="$(arg use_map_topic)" />
+    <param name="use_map_topic"             value="$(arg use_map_topic)" />
     <!-- Publish scans from best pose at a max of 10 Hz -->
     <param name="odom_model_type"           value="diff" />
     <param name="odom_alpha5"               value="0.1" />

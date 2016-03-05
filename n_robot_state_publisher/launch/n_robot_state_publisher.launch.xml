@@ -21,8 +21,8 @@
   <arg name="rsp"  value="robot_state_publisher" />
 
   <!-- Optional arguments: -->
-  <arg name="joint_states_stopic" default="joint_states" />
-    <!--joint_states_stopic: The joint states are obtained by subscribing to this topic. -->
+  <arg name="joint_states_topic" default="joint_states" />
+    <!--joint_states_topic: Topic on which joint states are published. -->
   <arg name="node_name" default="n_$(arg rsp)" />
     <!--node_name: The name of the ROS node. -->
   <arg name="tf_prefix" default="" />
@@ -48,7 +48,7 @@
   <!-- Launch the robot state publisher:  -->
   <node machine="$(arg machine_name)" name="$(arg node_name)"
    pkg="$(arg rsp)" type="state_publisher">
-    <remap from="joint_states" to="$(arg joint_states_stopic)" />
+    <remap from="joint_states" to="$(arg joint_states_topic)" />
     <param name="tf_prefix" value="$(arg tf_prefix)" />
     <param name="publish_frequency" value="$(arg publish_frequency)" />
     <param name="use_tf_static" value="$(arg use_tf_static)" />

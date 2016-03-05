@@ -396,7 +396,7 @@ class Launch_File:
                   "Optional argument '{0}' is not documented".format(name))
 	    if name.endswith("_topic"):
 		problems.append(
-		  "Optional topic argument '{0}' is neither _stopic nor _ptopic".format(name))
+		  "Optional topic argument is neither _stopic nor _ptopic".format(name))
 
         # Output any *problems* if they exist:
         if len(problems) > 0:

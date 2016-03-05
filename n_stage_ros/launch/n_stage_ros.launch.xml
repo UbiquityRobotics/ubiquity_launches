@@ -33,7 +33,7 @@
   <arg name="use_gui" default="False" />
     <!--use_gui: If "True", pops up a GUI window that allows the joints to be changed. -->
   <arg name="cmd_vel_stopic" default="cmd_vel" />
-    <!--cmd_vel_stopic: The velocity command to drive the roboto position in the model. -->>
+    <!--cmd_vel: The velocity command to drive the roboto position in the model. -->>
   <arg name="odom_ptopic" default="odom" />
     <!--odom_ptopic: Odometry from the position model is published to this topic. -->
   <arg name="base_scan_ptopic" default="base_scan" />

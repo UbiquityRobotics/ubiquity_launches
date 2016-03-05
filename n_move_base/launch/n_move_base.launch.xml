@@ -68,8 +68,8 @@
     <param name="local_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
     <param name="DWAPlannerROS/global_frame_id" value="$(arg odom_frame_id)"/>
 
-    <!-- FIXME: These remaps are basically wrong!!! -->
     <!-- Do topic remapping: -->
+    <!-- FIXME: These remaps are basically wrong!!! -->
     <remap from="cmd_vel" to="n_navigation_velocity_smoother/raw_cmd_vel"/>
     <remap from="odom" to="$(arg odom_topic)"/>
     <remap from="scan" to="$(arg laser_topic)"/>
