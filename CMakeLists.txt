@@ -123,6 +123,10 @@ install(DIRECTORY n_move_base/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_move_base
   PATTERN ".svn" EXCLUDE)
 
+install(DIRECTORY n_navigation_velocity_smoother/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_navigation_velocity_smoother
+  PATTERN ".svn" EXCLUDE)
+
 install(DIRECTORY n_raspicam/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_raspicam
   PATTERN ".svn" EXCLUDE)

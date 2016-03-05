@@ -121,6 +121,9 @@ The following launch file directories are available:
 * `n_move_base`:
   Run the ROS move_base node.
 
+* `n_navigation_velocity_smoother`:
+  Launches navigation_velocity_smoother node.
+
 * `n_raspicam`:
   Start a node to read the Raspberry Pi camera.
 
@@ -188,8 +191,7 @@ summary here
         * n_stage_ros
         * n_cmd_vel_mux
         * n_robot_state_publisher
-      * velocity_smoother (not found)
-      * safety_controller (not found)
+      * n_navigation_velocity_smoother
       * n_move_base
       * n_map_server
       * n_amcl
@@ -876,6 +878,61 @@ This launch file has the following arguments:
 
 * custom_param_file (Optional, default: '$(find turtlebot_navigation)/param/dummy.yaml'):
   Not a clue.
+
+### `n_navigation_velocity_smoother` Launch File Directory
+
+This will launch a the
+[yocs_velocity_smoother](http://wiki.ros.org/yocs_velocity_smoother) node.
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
+* machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
+
+* yaml_file (Optional, default: '$(arg ul)/n_$(arg nvs)/yaml/empty.yaml'):
+  A `.yaml` file that can specifiy the various parameters for this node
+  as an alternative to specifying them indificually.  Individual arguments
+  should override the `.yaml` file.
+
+* node_name (Optional, default: 'n_$(arg nvs)'):
+  The name to use for the node:
+
+* raw_cmd_vel_stopic (Optional, default: '$(arg node_name)/raw_cmd_vel'):
+  The topic to subscribe to get the input velocity commands.
+
+* odometry_stopic (Optional, default: '$(arg node_name)/odometry'):
+  The topic to subscribe to look at to for the robot odometry.
+
+* robot_cmd_vel_stopic (Optional, default: '$(arg node_name)/robot_cmd_vel'):
+
+* smooth_cmd_vel_ptopic (Optional, default: '$(arg node_name)/smooth_cmd_vel'):
+  The topic that is published which has the
+  smoothed velocity commands.
+
+* speed_lim_v (Optional, default: '0.8'):
+  Linear velocity limit.
+
+* speed_lim_w (Optional, default: '5.4'):
+  Angular velocity limit.
+
+* decel_factor (Optional, default: '1.5'):
+  Deceleration/acceleration ratio. Useful to make deceleration
+  more aggressive, for example to safely brake on robots with high inertia.
+
+* frequency (Optional, default: '2.0'):
+
+* robot_feedback (Optional, default: '2'):
+  Specifies which topic to use as robot velocity feedback
+  (0 - none, 1 - odometry, 2 - end robot commands). See hints below for more details.
 
 ### `n_raspicam` Launch File Directory
 

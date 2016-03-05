@@ -1,6 +1,7 @@
 <launch>
-  <!--Summary: Launches joint_state_publisher node. -->
-  <!--Overview: This will launch a joint_state_publisher node.  -->
+  <!--Summary: Launches navigation_velocity_smoother node. -->
+  <!--Overview: This will launch a the
+      [yocs_velocity_smoother](http://wiki.ros.org/yocs_velocity_smoother) node.  -->
 
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
@@ -17,6 +18,10 @@
   <arg name="nvs" value="navigation_velocity_smoother" />
 
   <!-- Optional Arguments: -->
+  <arg name="yaml_file" default="$(arg ul)/n_$(arg nvs)/yaml/empty.yaml" />
+    <!--yaml_file: A `.yaml` file that can specifiy the various parameters for this node
+        as an alternative to specifying them indificually.  Individual arguments
+        should override the `.yaml` file. -->
   <arg name="node_name" default="n_$(arg nvs)" />
     <!--node_name: The name to use for the node: -->
   <arg name="raw_cmd_vel_stopic" default="$(arg node_name)/raw_cmd_vel" />
@@ -26,28 +31,25 @@
   <arg name="robot_cmd_vel_stopic" default="$(arg node_name)/robot_cmd_vel" />
     <!--robot_cmd_vel: The topic to subscribe to get end robot velocity commands. -->
   <arg name="smooth_cmd_vel_ptopic" default="$(arg node_name)/smooth_cmd_vel" />
-    <!--smooth_cmd_vel_ptopic: The topic that is published which has the smoothed
-        velocity commands. -->
-
-  <!-- Add all of these as parameters:
-    * ~accel_lim_v (double):
-      Linear acceleration limit. Mandatory.
-    * ~accel_lim_w (double):
-      Angular acceleration limit. Mandatory.
-    * ~speed_lim_v (double):
-      Linear velocity limit. Mandatory.
-    * ~speed_lim_w (double):
-      Angular velocity limit. Mandatory.
-    * ~decel_factor (double, default: 1.0):
-      Deceleration/acceleration ratio. Useful to make deceleration more aggressive,
-      for example to safely brake on robots with high inertia.
-    * ~frequency (double, default: 20.0):
-      Output messages rate. The velocity smoother keeps it regardless incoming
-      messages rate, interpolating whenever necessary.
-    * ~robot_feedback (int, default: 0):
-      Specifies which topic to use as robot velocity feedback (0 - none, 1 - odometry,
-      2 - end robot commands). See hints below for more details.
-  -->
+    <!--smooth_cmd_vel_ptopic: The topic that is published which has the
+	smoothed velocity commands. -->
+  <arg name="speed_lim_v" default="0.8" />
+    <!--speed_lim_v: Linear velocity limit. -->
+  <arg name="speed_lim_w" default="5.4" />
+    <!--speed_lim_w:Angular velocity limit. -->
+  <arg name="accel_lim_v" value="1.0" />
+    <!--accel_lim_v:  Linear acceleration limit. -->
+  <arg name="accel_lim_w" value="2.0" />
+    <!--accel_lim_w: Angular acceleration limit. -->
+  <arg name="decel_factor" default="1.5" />
+    <!--decel_factor:  Deceleration/acceleration ratio. Useful to make deceleration
+        more aggressive, for example to safely brake on robots with high inertia. -->
+  <arg name="frequency" default="2.0" />
+    <!--frequencey: Output messages rate. The velocity smoother keeps it regardless incoming
+      messages rate, interpolating whenever necessary. -->
+  <arg name="robot_feedback" default="2" />
+    <!--robot_feedback:  Specifies which topic to use as robot velocity feedback
+        (0 - none, 1 - odometry, 2 - end robot commands). See hints below for more details. -->
 
   <!-- Define the robot machine: -->
   <machine name="$(arg machine_name)"
@@ -57,11 +59,18 @@
   <!-- Launch the topic: -->
   <node pkg="nodelet" type="nodelet" name="n_navigation_velocity_smoother"
    args="load yocs_velocity_smoother/VelocitySmootherNodelet /mobile_base_nodelet_manager">
-    <rosparam file="$(arg ul)/n_$(arg nvs)/yaml/smoother.yaml" command="load" />
+    <rosparam command="load" file="$(arg yaml_file)" />
     <remap from="$(arg node_name)/odometry" to="$(arg odometry_stopic)" />
     <remap from="$(arg node_name)/raw_cmd_vel" to="$(arg raw_cmd_vel_stopic)"/>
     <remap from="$(arg node_name)/robot_cmd_vel" to="$(arg robot_cmd_vel_stopic)" /> 
     <remap from="$(arg node_name)/smooth_cmd_vel" to="$(arg smooth_cmd_vel_ptopic)" />
+    <param name="speed_lim_v" value="$(arg speed_lim_v)" />
+    <param name="speed_lim_w" value="$(arg speed_lim_w)" />
+    <param name="accel_lim_v" value="$(arg accel_lim_v)" />
+    <param name="accel_lim_w" value="$(arg accel_lim_w)" />
+    <param name="decel_factor" value="$(arg decel_factor)" />
+    <param name="frequency" value="$(arg frequency)" />
+    <param name="robot_feedback" value="$(arg robot_feedback)" />
   </node>
 
 </launch>
