@@ -16,53 +16,109 @@
   <!-- Optional Arguments: -->
   <arg name="node_name"       default="n_amcl" />
     <!--node_name: The name to assign to this ROS node. -->
-  <arg name="use_map_topic"   default="false" />
-    <!--use_map_topic: `true` enable the use of the map topic. -->
   <arg name="scan_stopic"      default="scan" /> 
     <!--scan_stopic: The name of the LIDAR scan topic to subscribe to. -->
-  <arg name="initial_pose_x"  default="0.0" />
-    <!--initial_pose_x: The initial X location of the robot. -->
-  <arg name="initial_pose_y"  default="0.0" />
-    <!--initial_pose_y: The initial Y location of the robot. -->
-  <arg name="initial_pose_a"  default="0.0" />
-    <!--initial_pose_a: The initial angle of the robot. -->
-  <arg name="odom_frame_id"   default="odom" />
-    <!--odom_frame_id: The Odometry TF frame id. -->
-  <arg name="base_frame_id"   default="base_footprint" />
-    <!--base_frame_id: The robot base TF frame id. -->
-  <arg name="global_frame_id" default="map" />
-    <!--global_frame_id: The global TF frame id. -->
-
-  <arg name="odom_model_type"           default="diff" />
-  <arg name="odom_alpha5"               default="0.1" />
-  <arg name="gui_publish_rate"          default="10.0" />
-  <arg name="laser_max_beams"           default="60" />
-  <arg name="laser_max_range"           default="12.0" />
+  <!-- Missing tf stopic -->
+  <!-- Missing initialpose_stopic -->
+  <!-- Missing map_stopic -->
+  <!-- Missing global_localization pservice -->
+  <!-- Missing static_map cservice -->
   <arg name="min_particles"             default="500" />
+    <!--min_particles: Minimum allowed number of particles. -->
   <arg name="max_particles"             default="2000" />
+    <!--max_particles: Maximum allowed number of particles. -->
   <arg name="kld_err"                   default="0.05" />
+    <!--kld_err: Maximum error between the true distribution and the estimated distribution. -->
   <arg name="kld_z"                     default="0.99" />
-  <arg name="odom_alpha1"               default="0.2" />
-  <arg name="odom_alpha2"               default="0.2" />
-    <!-- translation std dev, m -->
-  <arg name="odom_alpha3"               default="0.2" />
-  <arg name="odom_alpha4"               default="0.2" />
-  <arg name="laser_z_hit"               default="0.5" />
-  <arg name="laser_z_short"             default="0.05" />
-  <arg name="laser_z_max"               default="0.05" />
-  <arg name="laser_z_rand"              default="0.5" />
-  <arg name="laser_sigma_hit"           default="0.2" />
-  <arg name="laser_lambda_short"        default="0.1" />
-  <arg name="laser_model_type"          default="likelihood_field" />
-    <!-- <param name="laser_model_type" default="beam"/> -->
-  <arg name="laser_likelihood_max_dist" default="2.0" />
+    <!--kld_z: Upper standard normal quantile for (1 - p), where p is the probability
+	that the error on the estimated distrubition will be less than `kld_err`. -->
   <arg name="update_min_d"              default="0.25" />
+    <!--update_min_d: Translational movement required before performing a filter update. -->
   <arg name="update_min_a"              default="0.2" />
+    <!--update_min_a: Rotational movement required before performing a filter update. -->
   <arg name="resample_interval"         default="1" />
-    <!-- Increase tolerance because the computer can get quite busy -->
+    <!--resample_interval: Number of filter updates required before resampling. -->
   <arg name="transform_tolerance"       default="1.0" />
+    <!--transform_tolerance: Time with which to post-date the transform that is published,
+	to indicate that this transform is valid into the future. -->
   <arg name="recovery_alpha_slow"       default="0.0" />
+    <!--recovery_alpha_slow: (disabled) Exponential decay rate for the slow average
+	weight filter, used in deciding when to recover by adding random poses.
+	A good value might be 0.001. -->
   <arg name="recovery_alpha_fast"       default="0.0" />
+    <!--recovery_alpha_fast: (disabled) Exponential decay rate for the fast average
+	weight filter, used in deciding when to recover by adding random poses.
+	A good value might be 0.1. -->
+  <arg name="initial_pose_x"  default="0.0" />
+    <!--initial_pose_x: Initial pose mean (x), used to initialize filter with
+        Gaussian distribution. -->
+  <arg name="initial_pose_y"  default="0.0" />
+    <!--initial_pose_y: Initial pose mean (y), used to initialize filter with
+	Gaussian distribution.  -->
+  <arg name="initial_pose_a"  default="0.0" />
+    <!--initial_pose_a: Initial pose mean (yaw), used to initialize filter with
+	Gaussian distribution. -->
+  <!-- initial_cov_xx is missing. -->
+  <!-- initial_cov_yy is missing. -->
+  <!-- initial_cov_aa is missing. -->
+  <arg name="gui_publish_rate"          default="10.0" />
+    <!--gui_publish_rate: Maximum rate (Hz) at which scans and paths are published
+        for visualization, -1.0 to disable. -->
+  <!-- save_pose_rate is missing. -->
+  <arg name="use_map_topic"   default="false" />
+    <!--use_map_topic: `true` enable the use of the map topic. -->
+  <!-- first_map_only is missing. -->
+  <!-- laser_min_range is missing. -->
+  <arg name="laser_max_range"           default="12.0" />
+    <!--laser_max_range: Maximum scan range to be considered; -1.0 will cause
+	the laser's reported maximum range to be used. -->
+  <arg name="laser_max_beams"           default="60" />
+    <!--laser_max_beams: How many evenly-spaced beams in each scan to be
+	used when updating the filter. -->
+  <arg name="laser_z_hit"               default="0.5" />
+    <!--laser_z_hit: Mixture weight for the z_hit part of the model. -->
+  <arg name="laser_z_short"             default="0.05" />
+    <!--laser_z_short: Mixture weight for the z_short part of the model. -->
+  <arg name="laser_z_max"               default="0.05" />
+    <!--laser_z_max: Mixture weight for the z_max part of the model. -->
+  <arg name="laser_z_rand"              default="0.5" />
+    <!--laser_z_rand: Mixture weight for the z_rand part of the model. -->
+  <arg name="laser_sigma_hit"           default="0.2" />
+    <!--laser_sigma_hit: Standard deviation for Gaussian model used in z_hit
+	part of the model. -->
+  <arg name="laser_lambda_short"        default="0.1" />
+    <!--laser_lambda_short: Exponential decay parameter for z_short part of model. -->
+  <arg name="laser_likelihood_max_dist" default="2.0" />
+    <!--laser_likelihood_max_dist: Maximum distance to do obstacle inflation on
+	map, for use in likelihood_field model. -->
+  <arg name="laser_model_type"          default="likelihood_field" />
+    <!--laser_model_type: Which model to use, either `beam`, `likelihood_field`,
+	or `likelihood_field_prob` (same as `likelihood_field` but incorporates
+	the beamskip feature, if enabled). -->
+  <arg name="odom_model_type"           default="diff" />
+    <!--odom_model_type: Which model to use, either "diff" or "omni". -->
+  <arg name="odom_alpha1"               default="0.2" />
+    <!--odom_alpha1: Specifies the expected noise in odometry's rotation
+	estimate from the rotational component of the robot's motion. -->
+  <arg name="odom_alpha2"               default="0.2" />
+    <!--odom_alpha2: Specifies the expected noise in odometry's rotation
+	estimate from translational component of the robot's motion. -->
+  <arg name="odom_alpha3"               default="0.2" />
+    <!--odom_alpha3: Specifies the expected noise in odometry's translation
+	estimate from the translational component of the robot's motion. -->
+  <arg name="odom_alpha4"               default="0.2" />
+    <!--odom_alpha4: Specifies the expected noise in odometry's translation
+	estimate from the rotational component of the robot's motion. -->
+  <arg name="odom_alpha5"               default="0.1" />
+    <!--odom_alpha5: Translation-related noise parameter
+	(only used if model is "omni"). -->
+  <arg name="odom_frame_id"		default="odom" />
+    <!--odom_frame_id: Which frame to use for odometry. -->
+  <arg name="base_frame_id"		default="base_footprint" />
+    <!--base_frame_id: Which frame to use for the robot base. -->
+  <arg name="global_frame_id" default="map" />
+    <!--global_frame_id: Which frame to use for the robot base. -->
+  <!-- tf_broadcast is missing. -->
 
   <!-- Remote robot machine -->
   <machine name="$(arg machine_name)"

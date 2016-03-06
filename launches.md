@@ -583,83 +583,131 @@ This launch file has the following arguments:
 * node_name (Optional, default: 'n_amcl'):
   The name to assign to this ROS node.
 
-* use_map_topic (Optional, default: 'false'):
-  `true` enable the use of the map topic.
-
 * scan_stopic (Optional, default: 'scan'):
   The name of the LIDAR scan topic to subscribe to.
 
-* initial_pose_x (Optional, default: '0.0'):
-  The initial X location of the robot.
-
-* initial_pose_y (Optional, default: '0.0'):
-  The initial Y location of the robot.
-
-* initial_pose_a (Optional, default: '0.0'):
-  The initial angle of the robot.
-
-* odom_frame_id (Optional, default: 'odom'):
-  The Odometry TF frame id.
-
-* base_frame_id (Optional, default: 'base_footprint'):
-  The robot base TF frame id.
-
-* global_frame_id (Optional, default: 'map'):
-  The global TF frame id.
-
-* odom_model_type (Optional, default: 'diff'):
-
-* odom_alpha5 (Optional, default: '0.1'):
-
-* gui_publish_rate (Optional, default: '10.0'):
-
-* laser_max_beams (Optional, default: '60'):
-
-* laser_max_range (Optional, default: '12.0'):
-
 * min_particles (Optional, default: '500'):
+  Minimum allowed number of particles.
 
 * max_particles (Optional, default: '2000'):
+  Maximum allowed number of particles.
 
 * kld_err (Optional, default: '0.05'):
+  Maximum error between the true distribution and the estimated distribution.
 
 * kld_z (Optional, default: '0.99'):
-
-* odom_alpha1 (Optional, default: '0.2'):
-
-* odom_alpha2 (Optional, default: '0.2'):
-
-* odom_alpha3 (Optional, default: '0.2'):
-
-* odom_alpha4 (Optional, default: '0.2'):
-
-* laser_z_hit (Optional, default: '0.5'):
-
-* laser_z_short (Optional, default: '0.05'):
-
-* laser_z_max (Optional, default: '0.05'):
-
-* laser_z_rand (Optional, default: '0.5'):
-
-* laser_sigma_hit (Optional, default: '0.2'):
-
-* laser_lambda_short (Optional, default: '0.1'):
-
-* laser_model_type (Optional, default: 'likelihood_field'):
-
-* laser_likelihood_max_dist (Optional, default: '2.0'):
+  Upper standard normal quantile for (1 - p), where p is the probability
+  that the error on the estimated distrubition will be less than `kld_err`.
 
 * update_min_d (Optional, default: '0.25'):
+  Translational movement required before performing a filter update.
 
 * update_min_a (Optional, default: '0.2'):
+  Rotational movement required before performing a filter update.
 
 * resample_interval (Optional, default: '1'):
+  Number of filter updates required before resampling.
 
 * transform_tolerance (Optional, default: '1.0'):
+  Time with which to post-date the transform that is published,
+  to indicate that this transform is valid into the future.
 
 * recovery_alpha_slow (Optional, default: '0.0'):
+  (disabled) Exponential decay rate for the slow average
+  weight filter, used in deciding when to recover by adding random poses.
+  A good value might be 0.001.
 
 * recovery_alpha_fast (Optional, default: '0.0'):
+  (disabled) Exponential decay rate for the fast average
+  weight filter, used in deciding when to recover by adding random poses.
+  A good value might be 0.1.
+
+* initial_pose_x (Optional, default: '0.0'):
+  Initial pose mean (x), used to initialize filter with
+  Gaussian distribution.
+
+* initial_pose_y (Optional, default: '0.0'):
+  Initial pose mean (y), used to initialize filter with
+  Gaussian distribution.
+
+* initial_pose_a (Optional, default: '0.0'):
+  Initial pose mean (yaw), used to initialize filter with
+  Gaussian distribution.
+
+* gui_publish_rate (Optional, default: '10.0'):
+  Maximum rate (Hz) at which scans and paths are published
+  for visualization, -1.0 to disable.
+
+* use_map_topic (Optional, default: 'false'):
+  `true` enable the use of the map topic.
+
+* laser_max_range (Optional, default: '12.0'):
+  Maximum scan range to be considered; -1.0 will cause
+  the laser's reported maximum range to be used.
+
+* laser_max_beams (Optional, default: '60'):
+  How many evenly-spaced beams in each scan to be
+  used when updating the filter.
+
+* laser_z_hit (Optional, default: '0.5'):
+  Mixture weight for the z_hit part of the model.
+
+* laser_z_short (Optional, default: '0.05'):
+  Mixture weight for the z_short part of the model.
+
+* laser_z_max (Optional, default: '0.05'):
+  Mixture weight for the z_max part of the model.
+
+* laser_z_rand (Optional, default: '0.5'):
+  Mixture weight for the z_rand part of the model.
+
+* laser_sigma_hit (Optional, default: '0.2'):
+  Standard deviation for Gaussian model used in z_hit
+  part of the model.
+
+* laser_lambda_short (Optional, default: '0.1'):
+  Exponential decay parameter for z_short part of model.
+
+* laser_likelihood_max_dist (Optional, default: '2.0'):
+  Maximum distance to do obstacle inflation on
+  map, for use in likelihood_field model.
+
+* laser_model_type (Optional, default: 'likelihood_field'):
+  Which model to use, either `beam`, `likelihood_field`,
+  or `likelihood_field_prob` (same as `likelihood_field` but incorporates
+  the beamskip feature, if enabled).
+
+* odom_model_type (Optional, default: 'diff'):
+  Which model to use, either "diff" or "omni".
+
+* odom_alpha1 (Optional, default: '0.2'):
+  Specifies the expected noise in odometry's rotation
+  estimate from the rotational component of the robot's motion.
+
+* odom_alpha2 (Optional, default: '0.2'):
+  Specifies the expected noise in odometry's rotation
+  estimate from translational component of the robot's motion.
+
+* odom_alpha3 (Optional, default: '0.2'):
+  Specifies the expected noise in odometry's translation
+  estimate from the translational component of the robot's motion.
+
+* odom_alpha4 (Optional, default: '0.2'):
+  Specifies the expected noise in odometry's translation
+  estimate from the rotational component of the robot's motion.
+
+* odom_alpha5 (Optional, default: '0.1'):
+  Translation-related noise parameter
+  (only used if model is "omni").
+
+* odom_frame_id (Optional, default: 'odom'):
+  Which frame to use for odometry.
+
+* base_frame_id (Optional, default: 'base_footprint'):
+  Which frame to use for the robot base.
+
+* global_frame_id (Optional, default: 'map'):
+  Which frame to use for the robot base.
 
 ### `n_bus_server` Launch File Directory
 
