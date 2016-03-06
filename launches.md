@@ -394,14 +394,19 @@ selected robot.
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
 
 * robot_host (Required):
+  The DNS address for the robot.
 
 * robot_user (Required):
+  The user account on the robot to use.
 
 * viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
 
 * viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
 
 * map_file (Optional, default: '$(arg ul)/m_robot_base/maps/stage/maze.world'):
   The stage `.world` file to use.

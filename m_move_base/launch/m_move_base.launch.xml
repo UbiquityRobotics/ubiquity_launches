@@ -5,10 +5,15 @@
 
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
   <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
   <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
   <arg name="viewer_host" default="localhost"/>
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
   <arg name="viewer_user" default=""/>
+    <!--viewer_user: The user account on the display computer to use. -->
 
   <!-- Convenience Arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
@@ -35,6 +40,7 @@
     <arg name="viewer_user" value="$(arg viewer_user)"/>
   </include>
 
+  <!-- Start the navigation velocity smoother node. -->
   <include file="$(arg ul)/n_$(arg nvs)/launch/n_$(arg nvs).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="machine_name" value="robot" />

@@ -13,6 +13,7 @@
   <arg name="machine_user" />
     <!--machine_user: The user account on the machine. -->
 
+  <!-- FIXME: Add missing arguments: -->
   <!-- Optional Arguments: -->
   <arg name="node_name"       default="n_amcl" />
     <!--node_name: The name to assign to this ROS node. -->
