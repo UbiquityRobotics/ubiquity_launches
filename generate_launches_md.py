@@ -370,6 +370,7 @@ class Launch_File:
             (i.e. *self*).
         """
 
+	# We collect any issues in *problems*:
         problems = []
 
         # Make sure we have both a summary and overview command:
@@ -379,13 +380,58 @@ class Launch_File:
         if not "Overview" in argument_comments:
             problems.append("There is no Overview documentation")
 
-        # Make sure each required argument is documented:
+        # Make sure each required argument is documented; also costruct *required_names*:
+	required_names = {}
         for required in self.requireds:
             attributes = required.attrib
-            name = attributes["name"]
-            if not name in argument_comments:
+            required_name = attributes["name"]
+	    required_names[required_name] = required_name
+            if not required_name in argument_comments:
                 problems.append(
-                  "Required argument '{0}' is not documented".format(name))
+                  "Required argument '{0}' is not documented".format(required_name))
+
+        # Make sure each optional argument is documented; also construct *optional_names*:
+	optional_names = {}
+	for optional in self.optionals:
+            attributes = optional.attrib
+	    optional_name = attributes["name"]
+	    optional_names[optional_name] = optional_name
+            if not optional_name in argument_comments:
+                problems.append(
+                  "Optional argument '{0}' is not documented".format(optional_name))
+
+	# Construct *merged_names* which is the union of *required_names* and *optional_names*:
+	merged_names = required_names.copy()
+	merged_names.update(optional_names)
+
+	# Now check for required arguments depending upon the *base_name* prefix:
+	base_name = self.name
+	if not "robot_platform" in required_names:
+	    # Every launch file must have *robot_platform*:
+	    problems.append("No 'robot_platform' argument for '{0}'".format(base_name))
+	if base_name.startswith("m_"):
+	    # Every "m_*" launch file must have `robot_host`, `robot_user`, `viewer_host`,
+	    # and `viewer_user`:
+	    if not "robot_host" in required_names:
+		problems.append("No 'robot_host' argument for '{0}'".format(base_name))
+	    if not "robot_user" in required_names:
+		problems.append("No 'robot_user' argument for '{0}'".format(base_name))
+	    if not "viewer_host" in merged_names:
+		problems.append("No 'viewer_host' argument for '{0}'".format(base_name))
+	    if not "viewer_user" in merged_names:
+		problems.append("No 'viewer_user' argument for '{0}'".format(base_name))
+	elif base_name.startswith("n_"):
+	    # Every "n_*" launch file must have `machine_name`, `machine_host`, and `machine_user`:
+	    if not "machine_name" in merged_names:
+		print("merged_names={0} required_names={1} optional_names={2}".
+		  format(merged_names.keys(), required_names.keys(), optional_names.keys()))
+		problems.append("No 'machine_name' argument for '{0}'".format(base_name))
+	    if not "machine_host" in required_names:
+		problems.append("No 'machine_host' argument for '{0}'".format(base_name))
+	    if not "machine_user" in required_names:
+		problems.append("No 'machine_user' argument for '{0}'".format(base_name))
+	else:
+	    print("Launch File: '{0}' does not start with 'm_' or 'n_'".foramt(base_name))
 
         # Make sure each optional argument is documented:
         for optional in self.optionals:

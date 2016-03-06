@@ -5,7 +5,7 @@
 
   <!-- Required arguments: -->
   <arg name="robot_platform" />
-    <!--robot_platform: The robot platofrm (e.g. "magin", "loki", etc.) -->
+    <!--robot_platform: The robot platofrm (e.g. "magni", "loki", etc.) -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />

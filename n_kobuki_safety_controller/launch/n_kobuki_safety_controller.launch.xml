@@ -7,7 +7,7 @@
 
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
-    <!--robot_platform: The robot platform (e.g. "magin", "loki", etc.) -->
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
   <arg name="machine_name" default="robot"/>
     <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
   <arg name="machine_host" />

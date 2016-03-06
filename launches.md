@@ -350,7 +350,7 @@ node documentation explains the keyboard controls.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * robot_host (Required):
   The DNS address for the robot.
@@ -372,7 +372,7 @@ and start of RViz to show progress.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * robot_host (Required):
   The DNS address for the robot.
@@ -394,7 +394,7 @@ selected robot.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * robot_host (Required):
   The DNS address for the robot.
@@ -451,14 +451,19 @@ comes out of the Raspberry Pi GPU (Graphical Processing Unit.)
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * robot_host (Required):
+  The DNS address for the robot.
 
 * robot_user (Required):
+  The user account on the robot to use.
 
 * viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
 
 * viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
 
 ### `m_raspicam_view` Launch File Directory
 
@@ -468,14 +473,19 @@ view the output of the camera.
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * robot_host (Required):
+  The DNS address for the robot.
 
 * robot_user (Required):
+  The user account on the robot to use.
 
 * viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
 
 * viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
 
 ### `m_robot_base` Launch File Directory
 
@@ -518,7 +528,7 @@ of a robot platform.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * robot_host (Required):
   The DNS address for the robot.
@@ -574,7 +584,7 @@ This node will launch the
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -771,7 +781,7 @@ This launch file has the following arguments:
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -845,7 +855,7 @@ This launch file has the following arguments:
   comes out on `.../image_raw`.
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -863,7 +873,7 @@ This will launch a joint_state_publisher node.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -905,7 +915,7 @@ code is still under development.  (Code is currently broken.)
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -926,7 +936,7 @@ events that will cause the robot to stop in its tracks.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -960,7 +970,7 @@ The launch file for this directory starts the ROS
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -997,7 +1007,7 @@ robot navigation.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1034,7 +1044,7 @@ This will launch a the
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1092,7 +1102,7 @@ launching a node to read images from the Raspberry Pi camera.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1149,7 +1159,7 @@ This launch file has the following arguments:
   The output topic name.
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1183,7 +1193,7 @@ the `robot_platform` argument.  The URDF files are stored in
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1224,7 +1234,7 @@ This launch file has the following arguments:
   The topic to view for the image stream.
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1243,7 +1253,7 @@ optional argument that specifies a `.rviz` file.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1294,7 +1304,7 @@ is available elsewhere on the net.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1357,7 +1367,7 @@ The launch file for this directory starts the ROS
 This launch file has the following argument:
 
 * robot_platform (Required):
-  The robot platofrm (e.g. "magin", "loki", etc.)
+  The robot platofrm (e.g. "magni", "loki", etc.)
 
 ### `n_teleop_twist_keyboard` Launch File Directory
 
@@ -1367,7 +1377,7 @@ will talk to either a PS3 or XBox game controller module.
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot platform (e.g. "magin", "loki", etc.)
+  The robot platform (e.g. "magni", "loki", etc.)
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
