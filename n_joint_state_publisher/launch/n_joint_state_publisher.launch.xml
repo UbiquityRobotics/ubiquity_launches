@@ -43,7 +43,7 @@
    env-loader="/tmp/env_loader.sh" />
 
   <!-- Launch the robot state publishter node: -->
-  <node machine="robot" name="$(arg node_name)"
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
    pkg="$(arg jsp)" type="$(arg jsp)">
     <param name="use_gui" value="$(arg use_gui)" />
     <param name="rate" value="$(arg rate)" />

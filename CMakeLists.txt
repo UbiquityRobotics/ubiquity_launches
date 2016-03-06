@@ -111,6 +111,10 @@ install(DIRECTORY n_keyboard_navigate/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_keyboard_navigate
   PATTERN ".svn" EXCLUDE)
 
+install(DIRECTORY n_kobuki_safety_controller/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_kobuki_safety_controller
+  PATTERN ".svn" EXCLUDE)
+
 install(DIRECTORY n_map_server/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_map_server
   PATTERN ".svn" EXCLUDE)

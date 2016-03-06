@@ -13,6 +13,7 @@
   <!-- Convenience Arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
   <arg name="nvs" value="navigation_velocity_smoother" />
+  <arg name="ksc" value="kobuki_safety_controller" />
 
   <!-- Optional arguments: -->
   <!-- Name of the map to use (without path nor extension) and initial position -->
@@ -45,15 +46,20 @@
     <arg name="smooth_cmd_vel_ptopic" value="/cmd_vel_mux/input/navi"/>
   </include>
 
-  <node pkg="nodelet" type="nodelet" name="kobuki_safety_controller"
-   args="load kobuki_safety_controller/SafetyControllerNodelet /mobile_base_nodelet_manager">
-    <remap from="kobuki_safety_controller/cmd_vel" to="/cmd_vel_mux/input/safety_controller"/>
-    <remap from="kobuki_safety_controller/events/bumper" to="/mobile_base/events/bumper"/>
-    <remap from="kobuki_safety_controller/events/cliff" to="/mobile_base/events/cliff"/>
-    <remap from="kobuki_safety_controller/events/wheel_drop" to="/mobile_base/events/wheel_drop"/>
-  </node>
+  <!-- Start the Kubuki Safety Controller Node: -->
+  <include file="$(arg ul)/n_$(arg ksc)/launch/n_$(arg ksc).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="machine_name" value="robot" />
+    <arg name="machine_host" value="$(arg robot_host)" />
+    <arg name="machine_user" value="$(arg robot_user)" />
 
-  <!-- Start move_base node: -->
+    <arg name="cmd_vel_ptopic" value="/cmd_vel_mux/input/safety_controller"/>
+    <arg name="events_bumper_ptopic" value="/mobile_base/events/bumper"/>
+    <arg name="events_cliff_ptopic" value="/mobile_base/events/cliff"/>
+    <arg name="events_wheel_drop_ptopic" value="/mobile_base/events/wheel_drop"/>
+  </include>
+
+  <!-- Start move_base Node: -->
   <include file="$(arg ul)/n_move_base/launch/n_move_base.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="machine_name" value="robot" />

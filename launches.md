@@ -112,6 +112,9 @@ The following launch file directories are available:
 * `n_keyboard_navigate`:
   Start keyboard navigation node (currently broken.)
 
+* `n_kobuki_safety_controller`:
+  Launch the Kobuki Safety Controller Node.
+
 * `n_map_server`:
   Start a ROS map_server node.
 
@@ -192,6 +195,7 @@ summary here
         * n_cmd_vel_mux
         * n_robot_state_publisher
       * n_navigation_velocity_smoother
+      * n_kobuki_safety_controller
       * n_move_base
       * n_map_server
       * n_amcl
@@ -603,6 +607,60 @@ This launch file has the following arguments:
 * global_frame_id (Optional, default: 'map'):
   The global TF frame id.
 
+* odom_model_type (Optional, default: 'diff'):
+
+* odom_alpha5 (Optional, default: '0.1'):
+
+* gui_publish_rate (Optional, default: '10.0'):
+
+* laser_max_beams (Optional, default: '60'):
+
+* laser_max_range (Optional, default: '12.0'):
+
+* min_particles (Optional, default: '500'):
+
+* max_particles (Optional, default: '2000'):
+
+* kld_err (Optional, default: '0.05'):
+
+* kld_z (Optional, default: '0.99'):
+
+* odom_alpha1 (Optional, default: '0.2'):
+
+* odom_alpha2 (Optional, default: '0.2'):
+
+* odom_alpha3 (Optional, default: '0.2'):
+
+* odom_alpha4 (Optional, default: '0.2'):
+
+* laser_z_hit (Optional, default: '0.5'):
+
+* laser_z_short (Optional, default: '0.05'):
+
+* laser_z_max (Optional, default: '0.05'):
+
+* laser_z_rand (Optional, default: '0.5'):
+
+* laser_sigma_hit (Optional, default: '0.2'):
+
+* laser_lambda_short (Optional, default: '0.1'):
+
+* laser_model_type (Optional, default: 'likelihood_field'):
+
+* laser_likelihood_max_dist (Optional, default: '2.0'):
+
+* update_min_d (Optional, default: '0.25'):
+
+* update_min_a (Optional, default: '0.2'):
+
+* resample_interval (Optional, default: '1'):
+
+* transform_tolerance (Optional, default: '1.0'):
+
+* recovery_alpha_slow (Optional, default: '0.0'):
+
+* recovery_alpha_fast (Optional, default: '0.0'):
+
 ### `n_bus_server` Launch File Directory
 
 The launch file for this directory starts the Ubiquity Robots
@@ -804,6 +862,42 @@ This launch file has the following arguments:
 
 * machine_name (Optional, default: 'viewer'):
   The machine name (i.e. "robot" or "viewer")
+
+### `n_kobuki_safety_controller` Launch File Directory
+
+This launch file will launch the
+[Kobuki Safety Controller](http://wiki.ros.org/kobuki_safety_controller)
+ROS node.  This node basically generates bumper, cliff, and wheel drop
+events that will cause the robot to stop in its tracks.
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magin", "loki", etc.)
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
+* machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
+
+* node_name (Optional, default: '$(arg ksc)'):
+  The name to assign to this node.
+
+* cmd_vel_ptopic (Optional, default: '$(arg node_name)/cmd_vel'):
+  The command velocity is published to this topic.
+
+* events_bumper_ptopic (Optional, default: '$(arg node_name)/events/bumper'):
+  The bumper events are published to this topic.
+
+* events_cliff_ptopic (Optional, default: '$(arg node_name)/events/cliff'):
+  The cliff events are published to this topic.
+
+* events_wheel_drop_ptopic (Optional, default: '$(arg node_name)/events/wheel_drop'):
+  The wheel drop events are published to this topic.
 
 ### `n_map_server` Launch File Directory
 
