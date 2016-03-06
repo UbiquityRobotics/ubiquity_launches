@@ -394,9 +394,10 @@ class Launch_File:
             if not name in argument_comments:
                 problems.append(
                   "Optional argument '{0}' is not documented".format(name))
-	    if name.endswith("_topic"):
+	    if name.endswith("_topic") and not name == "use_map_topic":
+		# "use_map_topic" is in the AMCL package:
 		problems.append(
-		  "Optional topic argument is neither _stopic nor _ptopic".format(name))
+		  "Optional topic argument '{0}' is neither _stopic nor _ptopic".format(name))
 
         # Output any *problems* if they exist:
         if len(problems) > 0:

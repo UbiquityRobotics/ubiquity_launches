@@ -29,7 +29,7 @@
   <arg name="odometry_stopic" default="$(arg node_name)/odometry" />
     <!--odometry_stopic: The topic to subscribe to look at to for the robot odometry. -->
   <arg name="robot_cmd_vel_stopic" default="$(arg node_name)/robot_cmd_vel" />
-    <!--robot_cmd_vel: The topic to subscribe to get end robot velocity commands. -->
+    <!--robot_cmd_vel_stopic: The topic to subscribe to get end robot velocity commands. -->
   <arg name="smooth_cmd_vel_ptopic" default="$(arg node_name)/smooth_cmd_vel" />
     <!--smooth_cmd_vel_ptopic: The topic that is published which has the
 	smoothed velocity commands. -->
@@ -45,7 +45,7 @@
     <!--decel_factor:  Deceleration/acceleration ratio. Useful to make deceleration
         more aggressive, for example to safely brake on robots with high inertia. -->
   <arg name="frequency" default="2.0" />
-    <!--frequencey: Output messages rate. The velocity smoother keeps it regardless incoming
+    <!--frequency: Output messages rate. The velocity smoother keeps it regardless incoming
       messages rate, interpolating whenever necessary. -->
   <arg name="robot_feedback" default="2" />
     <!--robot_feedback:  Specifies which topic to use as robot velocity feedback

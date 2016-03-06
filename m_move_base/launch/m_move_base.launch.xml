@@ -78,7 +78,7 @@
     <arg name="machine_host" value="$(arg robot_host)"/>
     <arg name="machine_user" value="$(arg robot_user)"/>
 
-    <arg name="scan_topic" value="scan" />
+    <arg name="scan_stopic" value="scan" />
     <arg name="use_map_topic" value="true" />
     <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
     <arg name="initial_pose_y" value="$(arg initial_pose_y)" />

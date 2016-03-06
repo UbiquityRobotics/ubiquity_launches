@@ -16,12 +16,12 @@
   <arg name="jsp" value="joint_state_publisher" />
 
   <!-- Optional Arguments: -->
-  <arg name="joint_states_topic" default="joint_states" />
-    <!--joint_states_topic: The topic to publish joint states on. -->
+  <arg name="joint_states_ptopic" default="joint_states" />
+    <!--joint_states_ptopic: The topic to publish joint states on. -->
   <arg name="node_name" default="n_$(arg jsp)" />
     <!--node_name: The name to assign to this node. -->
   <arg name="rate" default="10" />
-    <!--rate: The rate at which joint states are published. -->
+    <!--rate: The rate (in Hertz) at which joint states are published. -->
   <arg name="use_gui" default="False" />
     <!--use_gui: If "True", pops up a GUI window that allows the joints to be changed. -->
 
@@ -47,7 +47,7 @@
    pkg="$(arg jsp)" type="$(arg jsp)">
     <param name="use_gui" value="$(arg use_gui)" />
     <param name="rate" value="$(arg rate)" />
-    <remap from="joint_states" to="$(arg joint_states_topic)" />
+    <remap from="joint_states" to="$(arg joint_states_ptopic)" />
   </node>
 
 </launch>

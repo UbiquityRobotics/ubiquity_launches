@@ -18,8 +18,8 @@
     <!--node_name: The name to assign to this ROS node. -->
   <arg name="use_map_topic"   default="false" />
     <!--use_map_topic: `true` enable the use of the map topic. -->
-  <arg name="scan_topic"      default="scan" /> 
-    <!--scan_topic: The name of the LIDAR scan topic to subscribe to. -->
+  <arg name="scan_stopic"      default="scan" /> 
+    <!--scan_stopic: The name of the LIDAR scan topic to subscribe to. -->
   <arg name="initial_pose_x"  default="0.0" />
     <!--initial_pose_x: The initial X location of the robot. -->
   <arg name="initial_pose_y"  default="0.0" />
@@ -78,6 +78,6 @@
     <param name="initial_pose_x"            value="$(arg initial_pose_x)" />
     <param name="initial_pose_y"            value="$(arg initial_pose_y)" />
     <param name="initial_pose_a"            value="$(arg initial_pose_a)" />
-    <remap from="scan"                      to="$(arg scan_topic)" />
+    <remap from="scan"                      to="$(arg scan_stopic)" />
   </node>
 </launch>

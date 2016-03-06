@@ -582,7 +582,7 @@ This launch file has the following arguments:
 * use_map_topic (Optional, default: 'false'):
   `true` enable the use of the map topic.
 
-* scan_topic (Optional, default: 'scan'):
+* scan_stopic (Optional, default: 'scan'):
   The name of the LIDAR scan topic to subscribe to.
 
 * initial_pose_x (Optional, default: '0.0'):
@@ -763,14 +763,14 @@ This launch file has the following arguments:
 * machine_name (Optional, default: 'robot'):
   The machine name (i.e. "robot" or "viewer")
 
-* joint_states_topic (Optional, default: 'joint_states'):
+* joint_states_ptopic (Optional, default: 'joint_states'):
   The topic to publish joint states on.
 
 * node_name (Optional, default: 'n_$(arg jsp)'):
   The name to assign to this node.
 
 * rate (Optional, default: '10'):
-  The rate at which joint states are published.
+  The rate (in Hertz) at which joint states are published.
 
 * use_gui (Optional, default: 'False'):
   If "True", pops up a GUI window that allows the joints to be changed.
@@ -876,7 +876,7 @@ This launch file has the following arguments:
 * laser_topic (Optional, default: 'scan'):
   The laser topic to subscribe to.
 
-* custom_param_file (Optional, default: '$(find turtlebot_navigation)/param/dummy.yaml'):
+* custom_param_file (Optional, default: '$(arg yaml_dir)/dummy.yaml'):
   Not a clue.
 
 ### `n_navigation_velocity_smoother` Launch File Directory
@@ -1048,7 +1048,7 @@ This launch file has the following arguments:
   The machine name (i.e. "robot" or "viewer")
 
 * joint_states_stopic (Optional, default: 'joint_states'):
-  The joint states are obtained by subscribing to this topic.
+  Topic on which joint states are published.
 
 * node_name (Optional, default: 'n_$(arg rsp)'):
   The name of the ROS node.
