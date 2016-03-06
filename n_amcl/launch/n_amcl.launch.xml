@@ -33,6 +33,37 @@
   <arg name="global_frame_id" default="map" />
     <!--global_frame_id: The global TF frame id. -->
 
+  <arg name="odom_model_type"           default="diff" />
+  <arg name="odom_alpha5"               default="0.1" />
+  <arg name="gui_publish_rate"          default="10.0" />
+  <arg name="laser_max_beams"           default="60" />
+  <arg name="laser_max_range"           default="12.0" />
+  <arg name="min_particles"             default="500" />
+  <arg name="max_particles"             default="2000" />
+  <arg name="kld_err"                   default="0.05" />
+  <arg name="kld_z"                     default="0.99" />
+  <arg name="odom_alpha1"               default="0.2" />
+  <arg name="odom_alpha2"               default="0.2" />
+    <!-- translation std dev, m -->
+  <arg name="odom_alpha3"               default="0.2" />
+  <arg name="odom_alpha4"               default="0.2" />
+  <arg name="laser_z_hit"               default="0.5" />
+  <arg name="laser_z_short"             default="0.05" />
+  <arg name="laser_z_max"               default="0.05" />
+  <arg name="laser_z_rand"              default="0.5" />
+  <arg name="laser_sigma_hit"           default="0.2" />
+  <arg name="laser_lambda_short"        default="0.1" />
+  <arg name="laser_model_type"          default="likelihood_field" />
+    <!-- <param name="laser_model_type" default="beam"/> -->
+  <arg name="laser_likelihood_max_dist" default="2.0" />
+  <arg name="update_min_d"              default="0.25" />
+  <arg name="update_min_a"              default="0.2" />
+  <arg name="resample_interval"         default="1" />
+    <!-- Increase tolerance because the computer can get quite busy -->
+  <arg name="transform_tolerance"       default="1.0" />
+  <arg name="recovery_alpha_slow"       default="0.0" />
+  <arg name="recovery_alpha_fast"       default="0.0" />
+
   <!-- Remote robot machine -->
   <machine name="$(arg machine_name)"
    address="$(arg machine_host)" user="$(arg machine_user)"
@@ -41,43 +72,44 @@
   <node machine="$(arg machine_name)" name="$(arg node_name)"
    pkg="amcl" type="amcl">
     <param name="use_map_topic"             value="$(arg use_map_topic)" />
-    <!-- Publish scans from best pose at a max of 10 Hz -->
-    <param name="odom_model_type"           value="diff" />
-    <param name="odom_alpha5"               value="0.1" />
-    <param name="gui_publish_rate"          value="10.0" />
-    <param name="laser_max_beams"           value="60" />
-    <param name="laser_max_range"           value="12.0" />
-    <param name="min_particles"             value="500" />
-    <param name="max_particles"             value="2000" />
-    <param name="kld_err"                   value="0.05" />
-    <param name="kld_z"                     value="0.99" />
-    <param name="odom_alpha1"               value="0.2" />
-    <param name="odom_alpha2"               value="0.2" />
-    <!-- translation std dev, m -->
-    <param name="odom_alpha3"               value="0.2" />
-    <param name="odom_alpha4"               value="0.2" />
-    <param name="laser_z_hit"               value="0.5" />
-    <param name="laser_z_short"             value="0.05" />
-    <param name="laser_z_max"               value="0.05" />
-    <param name="laser_z_rand"              value="0.5" />
-    <param name="laser_sigma_hit"           value="0.2" />
-    <param name="laser_lambda_short"        value="0.1" />
-    <param name="laser_model_type"          value="likelihood_field" />
-    <!-- <param name="laser_model_type" value="beam"/> -->
-    <param name="laser_likelihood_max_dist" value="2.0" />
-    <param name="update_min_d"              value="0.25" />
-    <param name="update_min_a"              value="0.2" />
     <param name="odom_frame_id"             value="$(arg odom_frame_id)" /> 
     <param name="base_frame_id"             value="$(arg base_frame_id)" /> 
     <param name="global_frame_id"           value="$(arg global_frame_id)" />
-    <param name="resample_interval"         value="1" />
-    <!-- Increase tolerance because the computer can get quite busy -->
-    <param name="transform_tolerance"       value="1.0" />
-    <param name="recovery_alpha_slow"       value="0.0" />
-    <param name="recovery_alpha_fast"       value="0.0" />
     <param name="initial_pose_x"            value="$(arg initial_pose_x)" />
     <param name="initial_pose_y"            value="$(arg initial_pose_y)" />
     <param name="initial_pose_a"            value="$(arg initial_pose_a)" />
     <remap from="scan"                      to="$(arg scan_stopic)" />
+
+    <!-- Publish scans from best pose at a max of 10 Hz -->
+    <param name="odom_model_type"           value="$(arg odom_model_type)" />
+    <param name="odom_alpha5"               value="$(arg odom_alpha5)" />
+    <param name="gui_publish_rate"          value="$(arg gui_publish_rate)" />
+    <param name="laser_max_beams"           value="$(arg laser_max_beams)" />
+    <param name="laser_max_range"           value="$(arg laser_max_range)" />
+    <param name="min_particles"             value="$(arg min_particles)" />
+    <param name="max_particles"             value="$(arg max_particles)" />
+    <param name="kld_err"                   value="$(arg kld_err)" />
+    <param name="kld_z"                     value="$(arg kld_z)" />
+    <param name="odom_alpha1"               value="$(arg odom_alpha1)" />
+    <param name="odom_alpha2"               value="$(arg odom_alpha2)" />
+    <!-- translation std dev, m -->
+    <param name="odom_alpha3"               value="$(arg odom_alpha3)" />
+    <param name="odom_alpha4"               value="$(arg odom_alpha4)" />
+    <param name="laser_z_hit"               value="$(arg laser_z_hit)" />
+    <param name="laser_z_short"             value="$(arg laser_z_short)" />
+    <param name="laser_z_max"               value="$(arg laser_z_max)" />
+    <param name="laser_z_rand"              value="$(arg laser_z_rand)" />
+    <param name="laser_sigma_hit"           value="$(arg laser_sigma_hit)" />
+    <param name="laser_lambda_short"        value="$(arg laser_lambda_short)" />
+    <param name="laser_model_type"          value="$(arg laser_model_type)" />
+    <!-- <param name="laser_model_type" value="beam"/> -->
+    <param name="laser_likelihood_max_dist" value="$(arg laser_likelihood_max_dist)" />
+    <param name="update_min_d"              value="$(arg update_min_d)" />
+    <param name="update_min_a"              value="$(arg update_min_a)" />
+    <param name="resample_interval"         value="$(arg resample_interval)" />
+    <!-- Increase tolerance because the computer can get quite busy -->
+    <param name="transform_tolerance"       value="$(arg transform_tolerance)" />
+    <param name="recovery_alpha_slow"       value="$(arg recovery_alpha_slow)" />
+    <param name="recovery_alpha_fast"       value="$(arg recovery_alpha_fast)" />
   </node>
 </launch>
