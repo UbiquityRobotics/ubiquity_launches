@@ -13,12 +13,19 @@
   <arg name="machine_user" />
     <!--machine_user: The user account on the machine. -->
 
+  <!-- Convenience arguments -->
+  <arg name="ttk" value="teleop_twist_keyboard" />
+
+  <!-- Optional arguments: -->
+  <arg name="node_name" default="teleop" />
+    <!--node_name: The name to assigne to this node. -->
+
   <!-- This node can be run on viewer and robot, but is generally on viewer -->
   <machine name="$(arg machine_name)"
-    address="$(arg machine_host)" user="$(arg machine_user)"
-    env-loader="/tmp/env_loader.sh" />
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
 
-  <node name="teleop" machine="$(arg machine_name)"
-    pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
 
 </launch>

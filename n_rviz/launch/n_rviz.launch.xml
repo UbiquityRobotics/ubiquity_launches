@@ -17,6 +17,8 @@
   <arg name="ul" value="$(find ubiquity_launches)" />
 
   <!-- Optional arguments: -->
+  <arg name="node_name" default="rviz" />
+    <!--node_name: The name to assigne to this node. -->
   <arg name="rviz_file" default="$(arg ul)/n_rviz/rviz/robot_navigation.rviz"/>
     <!--rviz_file: A file that preconfigures rviz to show navigation
         information.-->
@@ -27,7 +29,7 @@
     env-loader="/tmp/env_loader.sh" />
   
   <!-- Launch rviz -->
-  <node name="rviz"
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
    pkg="rviz" type="rviz" args="-d $(arg rviz_file)"/>
 
 </launch>
