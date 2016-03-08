@@ -58,8 +58,8 @@ rosrun ubiquity_launches platform_probe
 EOF
 scp -q /tmp/platform.sh $ROBOT_USER@$ROBOT_HOST:/tmp
 ssh $ROBOT_HOST chmod +x /tmp/platform.sh
-PLATFORM=`ssh $ROBOT_HOST /tmp/platform.sh`
-#echo PLATFORM=$PLATFORM
+ROBOT_PLATFORM=`ssh $ROBOT_HOST /tmp/platform.sh`
+echo ROBOT_PLATFORM=$ROBOT_PLATFORM
 
 # Clear out file we use to indicate when the X11 channel is up:
 rm -f /tmp/x11_up
@@ -97,10 +97,11 @@ ssh $ROBOT_USER@$ROBOT_HOST 'chmod +x /tmp/env_loader.sh'
 # Now we can run the roslaunch command specifying both the PLATFORM
 # and ROBOT_HOST:
 echo roslaunch ubiquity_launches "$@" \
-    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER \
-    viewer_host:=$ROS_HOSTNAME viewer_user:=`whoami` robot_dir:=/
+    robot_platform:=$ROBOT_PLATFORM robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER \
+    viewer_host:=$ROS_HOSTNAME viewer_user:=`whoami` \
+    robot_dir:=$ROS_CATKIN_WS/src/ubiquity_$ROBOT_PLATFORM
 roslaunch      ubiquity_launches "$@" \
-    $PLATFORM robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER \
-    viewer_host:=$ROS_HOSTNAME viewer_user:=`whoami` robot_dir:=/
-
+    robot_platform:=$ROBOT_PLATFORM robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER \
+    viewer_host:=$ROS_HOSTNAME viewer_user:=`whoami` \
+    robot_dir:=$ROS_CATKIN_WS/src/ubiquity_$ROBOT_PLATFORM
 

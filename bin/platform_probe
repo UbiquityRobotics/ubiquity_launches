@@ -20,12 +20,12 @@ def main():
     #print("has_usb_serial={0}".format(has_usb_serial))
 
     # This is really kudgey (technical term) for now:
-    platform = "sim"
+    platform = "simulator"
     if is_raspberry_pi:
 	platform = "loki"
 	if has_usb_serial:
 	    platform = "magni"
-    print("robot_platform:={0}".format(platform))
+    print(platform)
 
 if __name__ == "__main__":
     main()

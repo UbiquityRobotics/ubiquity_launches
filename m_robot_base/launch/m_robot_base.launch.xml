@@ -19,9 +19,10 @@
 
   <!-- Convenience arguments -->
   <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="mrb" value="m_robot_base" />
 
   <!-- Dispatch to the appropriate platform specific launch file. -->
-  <include file="$(arg ul)/m_robot_base/launch/m_$(arg robot_platform)_base.launch.xml">
+  <include file="$(arg robot_dir)/$(arg mrb)/launch/$(arg mrb).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="robot_host" value="$(arg robot_host)"/>

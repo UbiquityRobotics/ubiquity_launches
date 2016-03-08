@@ -20,7 +20,7 @@
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
   <arg name="mb" value="move_base" />
-  <arg name="yaml_dir" value="$(arg ul)/n_$(arg mb)/params/$(arg robot_platform)" />
+  <arg name="yaml_dir" value="$(arg robot_dir)/n_$(arg mb)/params" />
 
   <!-- Optional arguments: -->
   <arg name="odom_frame_id" default="odom"/>
