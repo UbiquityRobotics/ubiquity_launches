@@ -6,6 +6,8 @@
   <!-- Required Arguments: -->
   <arg name="robot_platform" />
     <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
   <arg name="robot_host" />
     <!--robot_host: The DNS address for the robot. -->
   <arg name="robot_user" />
@@ -34,6 +36,7 @@
   <!-- Start the robot base: -->
   <include file="$(arg ul)/m_robot_base/launch/m_robot_base.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="robot_host" value="$(arg robot_host)" />
     <arg name="robot_user" value="$(arg robot_user)" />
     <arg name="viewer_host" value="$(arg viewer_host)"/>
@@ -43,6 +46,7 @@
   <!-- Start the navigation velocity smoother node. -->
   <include file="$(arg ul)/n_$(arg nvs)/launch/n_$(arg nvs).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="machine_name" value="robot" />
     <arg name="machine_host" value="$(arg robot_host)" />
     <arg name="machine_user" value="$(arg robot_user)" />
@@ -55,6 +59,7 @@
   <!-- Start the Kubuki Safety Controller Node: -->
   <include file="$(arg ul)/n_$(arg ksc)/launch/n_$(arg ksc).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="machine_name" value="robot" />
     <arg name="machine_host" value="$(arg robot_host)" />
     <arg name="machine_user" value="$(arg robot_user)" />
@@ -68,6 +73,7 @@
   <!-- Start move_base Node: -->
   <include file="$(arg ul)/n_move_base/launch/n_move_base.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="machine_name" value="robot" />
     <arg name="machine_host" value="$(arg robot_host)" />
     <arg name="machine_user" value="$(arg robot_user)" />
@@ -86,6 +92,7 @@
   <!-- Start the AMCL (Adaptive Monte Carlo Localization) system: -->
   <include file="$(arg ul)/n_amcl/launch/n_amcl.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
+    <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="machine_name" default="robot"/>
     <arg name="machine_host" value="$(arg robot_host)"/>
     <arg name="machine_user" value="$(arg robot_user)"/>

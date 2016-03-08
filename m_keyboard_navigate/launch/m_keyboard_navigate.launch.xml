@@ -6,6 +6,8 @@
   <!-- Requrired arguments: -->
   <arg name="robot_platform" />
     <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
   <arg name="robot_host" />
     <!--robot_host: The DNS address for the robot. -->
   <arg name="robot_user" />
@@ -23,6 +25,7 @@
   <!-- Launch the move_base_view nodes: -->
   <include file="$(arg ul)/$(arg mbv)/launch/$(arg mbv).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="robot_host" value="$(arg robot_host)" />
     <arg name="robot_user" value="$(arg robot_user)" />
     <arg name="viewer_host" value="$(arg viewer_host)"/>
@@ -32,6 +35,7 @@
   <!-- Launch the keyboard navigate node: -->
   <include file="$(arg ul)/$(arg kn)/launch/$(arg kn).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)"/>
+    <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="machine_name" value="viewer"/>
     <arg name="machine_host" value="$(arg viewer_host)"/>
     <arg name="machine_user" value="$(arg viewer_user)"/>

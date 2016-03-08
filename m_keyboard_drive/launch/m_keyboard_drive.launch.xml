@@ -8,6 +8,8 @@
   <!-- Requrired arguments: -->
   <arg name="robot_platform" />
     <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
   <arg name="robot_host" />
     <!--robot_host: The DNS address for the robot. -->
   <arg name="robot_user" />

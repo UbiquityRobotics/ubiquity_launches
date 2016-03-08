@@ -6,6 +6,8 @@
   <!-- Required arguments: -->
   <arg name="image" />
     <!--image: The topic to view for the image stream. -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
   <arg name="robot_platform" />
     <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
   <arg name="machine_name" default="viewer"/>

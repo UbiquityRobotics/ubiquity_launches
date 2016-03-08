@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2015 by Wayne C. Gramlich.  All rights reserved.
+# Copyright (c) 2015-2016 by Wayne C. Gramlich.  All rights reserved.
 
 # This program sweeps through the `ubiquity_launches` directory
 # and scans executables in the `bin` sub-directory and any launch
@@ -57,7 +57,7 @@ def main():
     launch_file_names.sort()
     executable_file_names.sort()
 
-    # Now process each *execubale_file_name*:
+    # Now process each *executable_file_name*:
     executable_files = []
     for executable_file_name in executable_file_names:
 	executable_file = Executable_File.file_parse(executable_file_name)
@@ -409,6 +409,9 @@ class Launch_File:
 	if not "robot_platform" in required_names:
 	    # Every launch file must have *robot_platform*:
 	    problems.append("No 'robot_platform' argument for '{0}'".format(base_name))
+	if not "robot_dir" in required_names:
+	    # Every launch file must have *robot_platform*:
+	    problems.append("No 'robot_dir' argument for '{0}'".format(base_name))
 	if base_name.startswith("m_"):
 	    # Every "m_*" launch file must have `robot_host`, `robot_user`, `viewer_host`,
 	    # and `viewer_user`:
