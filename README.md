@@ -142,7 +142,7 @@ of the architecture is:
 
 * Sharable: The launch files are shared among one another.
 
-* Platform Neutral: The launch files can be used for more than on
+* Platform Neutral: The launch files can be used for more than one
   robot platform.
 
 * Complete: Only one top level robot launch file is specified to
