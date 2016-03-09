@@ -4,7 +4,7 @@
 
 The `ubiquity_launches` repository provides a bunch of
 utilities for developing ROS code.  In particular, it
-provides, common list of programs to run robot softare
+provides a common list of programs to run robot softare
 on a robot simulator or one or more actual robots.
 
 The file [`launches.md`](launches.md) summarizes what is
@@ -15,7 +15,7 @@ what is going, please continue reading.
 
 All of the Ubiquity robots use
 [ROS](http://www.ros.org/) (Robot Operating System).
-ROS breaks a robot application into a multitude of ROS
+Under ROS, a robot application comprises a number of ROS
 nodes (i.e. processes) running on one or more processors
 that communicate with one another via internet protocols.
 
@@ -23,7 +23,7 @@ The usual method for teaching people to develop ROS robot
 applications is to point them at some ROS tutorials and say
 "go at it".  Unfortunately, this is a little bit dumping
 buckets of blood into shark infested waters and going for
-a little swim.  At Ubiquity Robotics, we want robot application
+a swim.  At Ubiquity Robotics, we want robot application
 developers to have a much less traumatic experience.  For
 this reason, we have invested a great deal of effort to
 make ROS robot application development as easy as possible.
@@ -36,8 +36,8 @@ and mouse.  Even if it did, it not particularly easy to
 walk around with the robot as it moves.  The more workable
 solution is to develop software on a stationary platform
 like a laptop or a desktop, and communicate with the robot
-via a wireless internet connection.  A further complication,
-is Ubiquity Robotics is using a Raspberry Pi 2 processor
+via a wireless internet connection.  A further complication
+is that Ubiquity Robotics is using a Raspberry Pi 2 processor
 with the ARM7 instruction set, whereas most laptops and
 desktops use the x86 instruction set.  We have to make sure
 that each machine gets the right instruction set.
@@ -45,7 +45,7 @@ that each machine gets the right instruction set.
 The Ubiquity Robotics application development environment
 assumes that there are two processors.  The robot processor
 is attached to the robot and the development processor is
-associated with either laptop or desktop computer.
+associated with either laptop or desktop computer. ROS must run on the development processor as well as on the robot.
 
 Ubiquity Robotics currently uses a
 [Raspberry Pi Foundation](https://www.raspberrypi.org/)
@@ -59,6 +59,10 @@ one of the USB port slots to provide wireless connectivity
 with the development processor through a commercial
 off-the-shelf WiFi router.
 
+ROS currently only runs under Ubuntu and its variants (e.g.
+Kubuntu, Xubuntu, Lubuntu, etc.)  No other operating system
+options are currently supported by the ROS community. Thus the development processor must run one of these.
+
 The development processor must be a 64-bit x86 hardware
 architecture processor.  You can either run some flavor
 of Ubuntu natively on the processor, or you can run a
@@ -68,11 +72,8 @@ to run the Ubuntu operating system.  Neither 32-bit
 processors nor other virtual machines (e.g. VMWare,  Parallels,
 etc.) are supported.
 
-ROS currently only runs under Ubuntu and its variants (e.g.
-Kubuntu, Xubuntu, Lubuntu, etc.)  No other operating system
-options are currently supported by the ROS community.
-To be consistent, the VirtualBox image that we recommend that
-you use has [Lubuntu](/http://lubuntu.net/) installed on it.
+To be consistent, the VirtualBox image that we recommend 
+has [Lubuntu](/http://lubuntu.net/) installed on it.
 We also install Lubuntu on the robot processor, just in case
 you choose to plug a monitor/keyboard/mouse into the RasPi2.
 Lubuntu is a very light weight window system that does not
@@ -145,8 +146,8 @@ of the architecture is:
   robot platform.
 
 * Complete: Only one top level robot launch file is specified to
-  start your robot and any ancillary visualization tools need for
-  the your robot application.
+  start a robot and any ancillary visualization tools needed for
+  a robot application.
 
 {Summary here}
 
