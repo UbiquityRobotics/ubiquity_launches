@@ -196,7 +196,7 @@ fi
 # Now make sure that we can securely login ourself:
 echo "We need to be able to ssh to ourselves without a password prompt"
 echo "If you get any prompts below, please type 'yes' or your password"
-echo "as appropritate:"
+echo "as appropriate:"
 echo ""
 ssh-copy-id `whoami`@`hostname`.local
 

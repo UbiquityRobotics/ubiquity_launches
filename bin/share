@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+ROBOT_HOST=`echo $ROS_MASTER_URI | sed -e s,http://,, | sed -e s,:11311,,`
+USER=`whoami`
+UID=`id -u $USER`
+GID=`id -g $USER`
+echo UID=$UID GID=$GID ROBOT_HOST=$ROBOT_HOST
+sshfs -o nonempty -o uid=$UID -o gid=$GID ubuntu@$ROBOT_HOST:/home/ubuntu/catkin_ws/src ~/catkin_ws/src 
