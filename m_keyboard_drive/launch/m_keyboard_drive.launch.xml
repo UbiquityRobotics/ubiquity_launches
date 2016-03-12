@@ -25,19 +25,20 @@
   <arg name="ttk" value="n_teleop_twist_keyboard" />
 
   <!-- Launch the robot_base nodes: -->
-  <include file="$(arg ul)/$(arg rb)/launch/$(arg rb).launch">
-    <arg name="robot_platform" value="$(arg robot_platform)"/>
-    <arg name="robot_host" value="$(arg robot_host)"/>
-    <arg name="robot_user" value="$(arg robot_user)"/>
-    <arg name="viewer_host" value="$(arg viewer_host)"/>
-    <arg name="viewer_user" value="$(arg viewer_user)"/>
+  <include file="$(arg ul)/$(arg rb)/launch/$(arg rb).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="viewer_host" value="$(arg viewer_host)" />
+    <arg name="viewer_user" value="$(arg viewer_user)" />
   </include>
 
   <include file="$(arg ul)/$(arg ttk)/launch/$(arg ttk).launch.xml">
-    <arg name="robot_platform" value="$(arg robot_platform)"/>
-    <arg name="machine_name" value="viewer"/>
-    <arg name="machine_host" value="$(arg viewer_host)"/>
-    <arg name="machine_user" value="$(arg viewer_user)"/>
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="machine_name" value="viewer" />
+    <arg name="machine_host" value="$(arg viewer_host)" />
+    <arg name="machine_user" value="$(arg viewer_user)" />
   </include>
 
 </launch>
