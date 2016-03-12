@@ -33,7 +33,8 @@
 
 # Extract robot URL from ROS_MASTER_URI environment varaible:
 ROBOT_HOST=`echo $ROS_MASTER_URI | sed -e s,http://,, | sed -e s,:11311,,`
-ROBOT_USER=`whoami`
+#ROBOT_USER=`whoami`
+ROBOT_USER=ubuntu
 #echo ROBOT_HOST=$ROBOT_HOST ROBOT_USER=$ROBOTUSER
 
 #ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test whoami' || \
