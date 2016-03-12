@@ -1,0 +1,97 @@
+<launch>
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "loki", "sim", "magni") to use. -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
+  <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
+  <arg name="viewer_host" default="localhost" />
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
+  <arg name="viewer_user" default="" />
+    <!--viewer_user: The user account on the display computer to use. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="cvm" value="cmd_vel_mux" />
+  <arg name="jsp" value="joint_state_publisher" />
+  <arg name="rsp" value="robot_state_publisher" />
+  <arg name="sr" value="stage_ros" />
+  <arg name="ul" value="$(find ubiquity_launches)" />
+
+  <!-- Optional arguments: -->
+  <arg name="base" default="kobuki" />
+    <!--base: The kind of robot base (e.g. "create", "kobuki", "Rhoomba", ...). -->
+  <arg name="stacks" default="hexagons" />
+    <!--stacks: The kind of stack on the robot (e.g. "circles", "hexagons"). -->
+  <arg name="3d_sensor" default="asus_xtion_pro" />
+    <!--3d_sensor: The kind of 3D sensor (e.g. "kinect, "asus_xtion_pro"). -->
+  <arg name="world_file" default="$(arg ul)/m_robot_base/maps/stage/maze.world" />
+    <!--world_file: The `.world` file to construct the robot simulation environment.
+        Note that the currently the world file must be in a in a directory called
+        `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
+        Good luck finding any useful documentation.  -->
+
+  <!-- Launch joint state publisher node: -->
+  <include file="$(arg ul)/n_$(arg jsp)/launch/n_$(arg jsp).launch.xml" >
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" value="robot" />
+    <arg name="machine_host" value="$(arg robot_host)" />
+    <arg name="machine_user" value="$(arg robot_user)" />
+  </include>
+
+  <!-- Launch topic relaying node: -->
+  <include file="$(arg ul)/n_relay/launch/n_relay.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" value="robot" />
+    <arg name="machine_host" value="$(arg robot_host)" />
+    <arg name="machine_user" value="$(arg robot_user)" />
+
+    <arg name="in_topic" value="cmd_vel"/>
+    <arg name="out_topic" value="cmd_vel_mux/input/teleop" />
+  </include>
+
+  <!-- Use simulator time to control everything: -->
+  <param name="/use_sim_time" value="true" />
+
+  <!-- Start the ROS Player/Stage robot simulator: -->
+  <include file="$(arg ul)/n_$(arg sr)/launch/n_$(arg sr).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" value="robot" />
+    <arg name="machine_host" value="$(arg robot_host)" />
+    <arg name="machine_user" value="$(arg robot_user)" />
+
+    <arg name="world_file" value="$(arg ul)/m_robot_base/maps/stage/maze.world" />
+    <arg name="base_watchdog_timeout" value="0.5" />
+    <arg name="cmd_vel_stopic" value="/mobile_base/commands/velocity"/>
+    <arg name="odom_ptopic" value="odom" />
+    <arg name="base_pose_ground_truth_ptopic" value="base_pose_ground_truth" />
+    <arg name="base_scan_ptopic" value="scan" />
+  </include>
+
+  <!-- Launch command velocity multiplexer node: -->
+  <include file="$(arg ul)/n_$(arg cvm)/launch/n_$(arg cvm).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)"/>
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" default="robot"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
+  </include>
+
+  <!-- Launch the robot state publisher: -->
+  <include file="$(arg ul)/n_$(arg rsp)/launch/n_$(arg rsp).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" value="robot" />
+    <arg name="machine_host" value="$(arg robot_host)" />
+    <arg name="machine_user" value="$(arg robot_user)" />
+
+    <arg name="publish_frequency" value="5.0" />
+    <arg name="robot_description_file" value="$(arg ul)/n_$(arg rsp)/urdf/sim.urdf" />
+  </include>
+
+</launch>
