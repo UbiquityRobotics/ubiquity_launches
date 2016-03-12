@@ -2,7 +2,7 @@
 
 ROBOT_HOST=`echo $ROS_MASTER_URI | sed -e s,http://,, | sed -e s,:11311,,`
 USER=`whoami`
-UID=`id -u $USER`
-GID=`id -g $USER`
-echo UID=$UID GID=$GID ROBOT_HOST=$ROBOT_HOST
-sshfs -o nonempty -o uid=$UID -o gid=$GID ubuntu@$ROBOT_HOST:/home/ubuntu/catkin_ws/src ~/catkin_ws/src 
+USER_ID=`id -u $USER`
+GROUP_ID=`id -g $USER`
+#echo USER_ID=$USER_ID GROUP_ID=$GROUP_ID ROBOT_HOST=$ROBOT_HOST
+sshfs -o nonempty -o uid=$USER_ID -o gid=$GROUP_ID ubuntu@$ROBOT_HOST:/home/ubuntu/catkin_ws/src ~/catkin_ws/src 
