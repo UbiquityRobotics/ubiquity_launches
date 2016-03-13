@@ -8,7 +8,8 @@
 ##        
 ##        rosrun ubiquity_launches roslauncher XXX.launch.xml
 ##
-## where `XXX.launch.xml` is structure launch file to be launched.
+## where `XXX.launch.xml` is a launch file in the ubiquity_launches package to
+## be launched.
 ##
 ## `roslauncher` does the following:
 ##
@@ -32,34 +33,51 @@
 
 # Extract robot URL from ROS_MASTER_URI environment varaible:
 ROBOT_HOST=`echo $ROS_MASTER_URI | sed -e s,http://,, | sed -e s,:11311,,`
-#echo ROBOT_HOST=$ROBOT_HOST
+#ROBOT_USER=`whoami`
+ROBOT_USER=ubuntu
+#echo ROBOT_HOST=$ROBOT_HOST ROBOT_USER=$ROBOTUSER
 
-ROBOT_USER=`whoami`
-
-ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test whoami' || ROBOT_USER='ubuntu'; ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test ubuntu'
-
+#ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test whoami' || \
+#  ROBOT_USER='ubuntu'; ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test ubuntu'
+#
 # rc=$?
 # if [[$rc != '0']]
 # 	then ROBOT_USER=ubuntu
-
 # 	ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test ubuntu'
 # 	rc=$?; if [[$rc != '0']]; then exit $rc; fi
 # fi
+
+# Figure out where the robot configuration stuff is:
+if [ "$ROBOT_HOST" = "$ROS_HOSTNAME" ] ; then
+    # We are on the same compute so we going to run the simulator:
+    ROBOT_DIR=`rospack find ubiquity_launches`/simulator
+else
+    # We have a remote robot, so we need to get the remote the robot directory:
+    FILE_NAME=.ros/ubiquity/robot_dir_name.txt
+    if ( scp -q $ROBOT_USER@$ROBOT_HOST:$FILE_NAME /tmp 2>/dev/null ) ; then
+	# We have a robot directory:
+	ROBOT_DIR=`cat /tmp/robot_dir_name.txt`
+    else
+	# We do not have a robot directory:
+	echo "The robot at $ROBUT_USER$ROBOT_HOST does not have a $FILE_NAME file."
+	exit 1
+    fi
+fi
 
 # This chunk of code probes the ROBOT_HOST to find out about its
 # platform.  This is done copying short script over to
 # ROBOT_HOST:/tmp/platform.sh, setting the execute bit for it, and
 # using `ssh` to remotely execute it:
-cat >/tmp/platform.sh<<EOF
-#!/bin/bash
-source /home/`whoami`/.profile
-echo \$ROS_PACKAGE_PATH > /tmp/ros_package_path
-rosrun ubiquity_launches platform_probe
-EOF
-scp -q /tmp/platform.sh $ROBOT_USER@$ROBOT_HOST:/tmp
-ssh $ROBOT_HOST chmod +x /tmp/platform.sh
-ROBOT_PLATFORM=`ssh $ROBOT_HOST /tmp/platform.sh`
-echo ROBOT_PLATFORM=$ROBOT_PLATFORM
+#cat >/tmp/platform.sh<<EOF
+##!/bin/bash
+#source /home/`whoami`/.profile
+#echo \$ROS_PACKAGE_PATH > /tmp/ros_package_path
+#rosrun ubiquity_launches platform_probe
+#EOF
+#scp -q /tmp/platform.sh $ROBOT_USER@$ROBOT_HOST:/tmp
+#ssh $ROBOT_HOST chmod +x /tmp/platform.sh
+#ROBOT_PLATFORM=`ssh $ROBOT_HOST /tmp/platform.sh`
+#echo ROBOT_PLATFORM=$ROBOT_PLATFORM
 
 # Clear out file we use to indicate when the X11 channel is up:
 rm -f /tmp/x11_up
@@ -82,6 +100,7 @@ while [ ! -s /tmp/x11up ] ;	\
     do sleep 1; 		\
     done
 
+# FIXME: We should use `$ROBOT_DIR/env_loader.sh` instead!!!
 # Lastly, we need to create an executable file called /tmp/env_loader.sh
 # over on ROBOT_HOST.  This file slurps in the ROS environment variables
 # from `~/.profile` and sets the `DISPLAY` environment variable:
@@ -94,14 +113,10 @@ EOF
 scp -q /tmp/env_loader.sh $ROBOT_USER@$ROBOT_HOST:/tmp
 ssh $ROBOT_USER@$ROBOT_HOST 'chmod +x /tmp/env_loader.sh'
 
-# Now we can run the roslaunch command specifying both the PLATFORM
-# and ROBOT_HOST:
-echo roslaunch ubiquity_launches "$@" \
-    robot_platform:=$ROBOT_PLATFORM robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER \
-    viewer_host:=$ROS_HOSTNAME viewer_user:=`whoami` \
-    robot_dir:=$ROS_CATKIN_WS/src/ubiquity_$ROBOT_PLATFORM
-roslaunch      ubiquity_launches "$@" \
-    robot_platform:=$ROBOT_PLATFORM robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER \
-    viewer_host:=$ROS_HOSTNAME viewer_user:=`whoami` \
-    robot_dir:=$ROS_CATKIN_WS/src/ubiquity_$ROBOT_PLATFORM
+# Now we can run the roslaunch with the appropriate arguments set:
+echo roslaunch ubiquity_launches "$@" viewer_host:=$ROS_HOSTNAME viewer_user:=$ROBOT_USER \
+    robot_platform:=none robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER robot_dir:=$ROBOT_DIR
+roslaunch      ubiquity_launches "$@" viewer_host:=$ROS_HOSTNAME viewer_user:=$ROBOT_USER \
+    robot_platform:=none robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER robot_dir:=$ROBOT_DIR
+
 
