@@ -6,23 +6,31 @@
 
   <!-- Required arguments: -->
   <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
   <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
   <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
   <arg name="machine_user" />
 
   <!-- Convenience arguments: -->
-  <arg name="root" value="$(find ubiquity_launches)" />
-  <arg name="node" value="bus_server" />
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="bs" value="bus_server" />
+
+  <!-- Optional arguments: -->
+  <arg name="node_name" value="n_$(arg bs)" />
 
   <machine name="$(arg machine_name)"
    address="$(arg machine_host)" user="$(arg machine_user)"
    env-loader="/tmp/env_loader.sh" />
 
-
   <!-- Run bus server node: -->
-  <node pkg="$(arg node)" type="$(arg node).py"
-   name="arduino" output="screen" machine="$(arg machine_name)">
+  <!-- FIXME: use $(arg node_name)!!! -->
+  <node name="arduino" machine="$(arg machine_name)"
+   pkg="$(arg bs)" type="$(arg bs).py" output="screen">
     <rosparam command="load"
-     file="$(arg root)/n_$(arg node)/params/$(arg robot_platform).yaml" />
+     file="$(arg robot_dir)/n_$(arg bs)/params/bus_server.yaml" />
   </node>
 </launch>

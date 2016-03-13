@@ -91,7 +91,7 @@
     <arg name="machine_user" value="$(arg robot_user)" />
 
     <arg name="publish_frequency" value="5.0" />
-    <arg name="robot_description_file" value="$(arg ul)/n_$(arg rsp)/urdf/sim.urdf" />
+    <arg name="robot_description_file" value="$(arg robot_dir)/n_$(arg rsp)/urdf/sim.urdf" />
   </include>
 
 </launch>

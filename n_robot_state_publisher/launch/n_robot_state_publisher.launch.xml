@@ -1,3 +1,4 @@
+
 <launch>
   <!--Summary: Launch the ROS `robot_state_publisher` node. -->
   <!--Overview: The launch file for this directory starts the ROS
@@ -34,7 +35,7 @@
   <arg name="use_tf_static" default="true"/>
     <!--use_tf_static: Set to true to use /tf_static latched static broadcaster. -->
   <arg name="robot_description_file"
-   default="$(arg ul)/n_$(arg rsp)/urdf/$(arg robot_platform).urdf" />
+   default="$(arg robot_dir)/n_$(arg rsp)/urdf/robot.urdf" />
     <!--robot_description_file: The name of a file that contains the robot
           structure in URDF format. -->
 
