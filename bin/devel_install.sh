@@ -48,7 +48,7 @@ fi
 if [ -f /etc/apt/sources.list.d/ubiquityrobotics-latest.list ] ; then
     echo "/etc/apt/sources.list already points to Ubiquity Robotics"
 else
-    echo "deb http://packages.ubiquityrobotics.com:8080/building/ubuntu trusty main" > /etc/apt/sources.list.d/ubiquityrobotics-latest.list
+    sudo echo "deb http://packages.ubiquityrobotics.com:8080/building/ubuntu trusty main" > /etc/apt/sources.list.d/ubiquityrobotics-latest.list
     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B5A652C1
 fi
 
@@ -192,6 +192,9 @@ if [ ! -f ~/.ssh/id_rsa ] ; then
     echo ""
     ssh-keygen -t rsa
 fi
+
+# Make sure ssh service is running:
+sudo service ssh restart
 
 # Now make sure that we can securely login ourself:
 echo "We need to be able to ssh to ourselves without a password prompt"

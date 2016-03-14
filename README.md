@@ -160,6 +160,10 @@ please do the following to set up the Ubiquity Robotics environment:
         sh ./devel_install.sh
         source ~/.bashrc
 
+If everything works, you should be able to run the simulator:
+
+        rosrun ubiquity_launches keyboard_navigate
+
 ### Bringing Up a Robot
 
 Now that you have your catkin workspace set up, we can start to
