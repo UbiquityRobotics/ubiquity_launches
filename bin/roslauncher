@@ -112,7 +112,7 @@ while [ ! -s /tmp/x11up ] ;	\
 # from `~/.profile` and sets the `DISPLAY` environment variable:
 cat >/tmp/env_loader.sh<<EOF
 #!/bin/bash
-source ~/.profile
+source ~/.bashrc
 export DISPLAY=\`cat /tmp/display\`
 exec "\$@"
 EOF
