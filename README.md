@@ -45,7 +45,8 @@ that each machine gets the right instruction set.
 The Ubiquity Robotics application development environment
 assumes that there are two processors.  The robot processor
 is attached to the robot and the development processor is
-associated with either laptop or desktop computer. ROS must run on the development processor as well as on the robot.
+associated with either laptop or desktop computer. ROS must
+run on the development processor as well as on the robot.
 
 Ubiquity Robotics currently uses a
 [Raspberry Pi Foundation](https://www.raspberrypi.org/)
@@ -61,16 +62,17 @@ off-the-shelf WiFi router.
 
 ROS currently only runs under Ubuntu and its variants (e.g.
 Kubuntu, Xubuntu, Lubuntu, etc.)  No other operating system
-options are currently supported by the ROS community. Thus the development processor must run one of these.
+options are currently supported by the ROS community. Thus,
+the development processor must run one of these.
 
 The development processor must be a 64-bit x86 hardware
 architecture processor.  You can either run some flavor
 of Ubuntu natively on the processor, or you can run a
 different operating system (e.g. Windows, MacOS, Solaris,
 etc.) and run [VirtualBox](https://www.virtualbox.org/)
-to run the Ubuntu operating system.  Neither 32-bit
-processors nor other virtual machines (e.g. VMWare,  Parallels,
-etc.) are supported.
+to run the Ubuntu operating system.  Neither 32-bit processors
+nor other virtual machines (e.g. VMWare,  Parallels, etc.)
+are supported.
 
 To be consistent, the VirtualBox image that we recommend 
 has [Lubuntu](/http://lubuntu.net/) installed on it.
@@ -166,6 +168,10 @@ If everything works, you should be able to run the simulator:
 
 ### Bringing Up a Robot
 
+> *Wayne: Random comment.  I am making a decision here that we are
+> going to change the default use and host name to `ros@robot`.
+> It seems way less confusing.*
+
 Now that you have your catkin workspace set up, we can start to
 connect to your robot.  Basically, you start with a preloaded
 micro-SD card that you plug into your Raspberry Pi 2.  (Remember,
@@ -177,12 +183,12 @@ have preloaded micro-SD card, please see the
    Now plug the micro-SD card into the RasPi2 and power it up.
    Wait for a minute or so and do the following:
 
-        ping -c 5 ubuntu.local
+        ping -c 5 robot.local
 
    If you development machine can contact the `ubuntu.local`, you will
-   get 6 line that look somewhat as follows:
+   get 6 lines that look somewhat as follows:
 
-        PING ubuntu.local (192.168.1.129) 56(84) bytes of data.
+        PING robot.local (192.168.1.129) 56(84) bytes of data.
         64 bytes from 192.168.1.129: icmp_seq=1 ttl=64 time=0.507 ms
         64 bytes from 192.168.1.129: icmp_seq=2 ttl=64 time=0.482 ms
         64 bytes from 192.168.1.129: icmp_seq=3 ttl=64 time=0.444 ms
@@ -190,33 +196,167 @@ have preloaded micro-SD card, please see the
         64 bytes from 192.168.1.129: icmp_seq=5 ttl=64 time=0.528 ms
 
    The internet address (`192.168.1.129`) will be different as will the
-   pint times (i.e. `0.507`, `0.482', etc.)  If you get the above,
+   ping times (i.e. `0.507`, `0.482', etc.)  If you get the above,
    you have a wired connection to your robot.
-
-2. The very first thing we will do is make it possible to log into
-   the robot without always being prompted for a password.  This is
-   done using:
-
 
 2. Now we get to use a program called `ssh` for Secure Shell,
    which allows us to connect to a shell program running on
-   another machine.  Please run the following command:
+   another machine.
 
-        ssh ubuntu@ubuntu.local
+   Please run the following command to connect to the `ros` account
+   on the RasPi2:
 
-    You will be prompted for a password. please enter `ubuntu` as
+        ssh ros@robot.local
+
+    You will be prompted for a password. please enter `rosrobot` as
     the password.
 
     Next it will print out some stuff like:
 
         Welcome to Ubuntu 14.04.4 LTS (GNU/Linux 3.18.0-25-rpi2 armv7l)
-        ubuntu@ubuntu:~$
+        ros@robot:~$
 
     You are now connected to the robot.
 
-3. The very first thing we will do is change the robot host name
-   and set up a 
+3. The very first thing we will do is change both the host name
+   and the account password.
 
+   Under linux, each machine is given a unique name (e.g. tobor,
+   my_robot, jerky, etc.) on your local network.  In addition,
+   Linux supports multiple user accounts on the machine.  Each
+   user account has its own password.  For the system image on
+   the micro-SD card that you plugged into the Raspi2, the initial
+   machine name is `robot` and the account name is `ros`.  We
+   need to change `robot` to something else and we need change
+   the password from `rosrobot` to something else.
+
+   First think of a new password.  You might as well pick a pretty
+   good password, since we are going to set things up so that you
+   do not have to type it in very often.  A good password usually
+   consists of a combination of upper and lower case letters
+   along with at least one digit and one puncutation character.
+   
+   In order to change the password, run the following command:
+
+        sudo passwd
+
+   You will be prompted for the original password (e.g. `rosrobot`)
+
+        [sudo] password for robot:
+
+   And you will type in the new password in twice.  The password
+   characters will not show on the screen as yout type them in:
+
+        Enter new UNIX password: 
+        Retype new UNIX password: 
+
+   If you get `Sorry, passwords do not match`, please try again.
+
+   You also need to pick a new name for the robot.  In this case
+   we recommend that you specify a robot name with all lower case
+   letters.  You will be typing this robot name occasionally, so
+   do not make it too hard on yourself.  In the command below,
+   replace `NEW_HOSTNAME` with the name you selected:
+
+        sudo echo "NEW_HOSTNAME" > /etc/hostname
+        hostname
+        # The new robot host name should print out; if not try again
+
+   Now reboot the robot:
+
+        sudo reboot
+
+   This will cause the robot to reboot.
+
+4. After wait for about a minute, please repeat the steps 1 and 2
+   to log into the robot using your `NEW_HOSTNAME`:
+
+        ping -c 5 NEW_HOSTNAME.local
+        ssh ubuntu@NEW_HOSTNAME.local
+        Password:
+	# Type in the new password.
+
+5. We are going to set up secure shell on the robot.  There are two
+   steps here.  First, we will generate public/private key pair
+   for your robot. Second, we will make it so that you can run
+   `ssh` between your machine and itself without prompting you
+   for a password.  This is called a recursive ssh and it does
+   occasionally happen.
+
+   First, we will create the public/private key pair:
+
+        ssh-keygen -t rsa
+
+   Second, we will make sure that we can do the recursive call to `ssh`:
+
+        ssh-copy-id ros@NEW_HOSTNAME.local
+        # You will prompted for your new password
+
+   Now we verify that we can do the recursive `ssh`:
+
+        ssh ros@NEW_HOSTNAME.local
+
+   If you are prompted for a password, something has gone wrong and you
+   should restart this step from the beginning.
+
+   If you did not get prompted for a password, you succeeded and you can
+   simply type the following command to close out the `ssh` connection:
+
+        exit
+
+6. Now we need to log out from robot and do two more `ssh` configuration
+   on your desktop/laptop.  The purpose of this configuration is to make
+   for sure that `ssh` is not always prompting you for passwords.
+
+   First, we exit the robot:
+
+        exit
+
+   Now we generate a public/private key pair for you laptop/desktop:
+
+        ssh-keygen -t rsa
+
+   Now we make sure that we can recursivly connecto to ourselves.
+   Notice thae we are using accent graves (i.e. back qutoes (\`)
+   rather than single quotes (') in the command below
+
+        ssh-copy-id `whoami`@`hostname`.local
+
+   If you get prompted for a password, provide the password for your
+   desktop/laptop.
+
+   Now verify that you can recursively `ssh` from desktop/laptop,
+   to itself.
+
+        ssh `hostname`.local
+
+   If you are not prompted for a password, you succeeded.  If you are
+   prompted for a password, something went wrong and you need to try
+   the `ssh-copy-id` command again.  Type:
+
+        exit
+
+   To close the recursive connection.
+
+   We are almost done.  Now we want to be able to log into your
+   robot without a password.  Do the following:
+
+        ssh-copy-id ros@NEW_HOSTNAME.local
+
+   where `NEW_HOSTNAME` is the hostname you picked for your robot.
+   If you are prompted for a password, use the new password you
+   created for the robot.
+
+   Verify that you can login into the robot without a password.
+
+        ssh ros@NEW_HOSTNAME.local
+
+   As usual, you do not want to be promted for a password.  Type
+   the following command to disconnect.
+
+        exit
+
+That covers the initial setup for now.
 
 ### Initial setup:
 
@@ -238,6 +378,12 @@ secure shell.
         # You will probably be prompted for the `ubuntu` account
         # password (usually `ubuntu`).  When done it will print
         # out `hello`.
+
+
+## Notes
+
+What follows are some notes that the people at Ubiquty Robots need
+to remind them of what to do....
 
 
 ### Creating the Catkin Work Spaces
