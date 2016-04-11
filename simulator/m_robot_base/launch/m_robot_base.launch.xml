@@ -19,6 +19,7 @@
   <arg name="rsp" value="robot_state_publisher" />
   <arg name="sr" value="stage_ros" />
   <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="sim" value="$(arg ul)/simulator" />
 
   <!-- Optional arguments: -->
   <arg name="base" default="kobuki" />
@@ -58,7 +59,7 @@
   <param name="/use_sim_time" value="true" />
 
   <!-- Start the ROS Player/Stage robot simulator: -->
-  <include file="$(arg ul)/n_$(arg sr)/launch/n_$(arg sr).launch.xml">
+  <include file="$(arg sim)/n_$(arg sr)/launch/n_$(arg sr).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="machine_name" value="robot" />
