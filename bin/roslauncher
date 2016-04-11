@@ -48,17 +48,23 @@ echo VIEWER_USER=$VIEWER_USER VIEWER_HOST=$VIEWER_HOST ROBOT_USER=$ROBOT_USER RO
 # 	rc=$?; if [[$rc != '0']]; then exit $rc; fi
 # fi
 
+
+PLATFORM_FILE_NAME=/home/$ROBOT_USER/.ros/ubiquity/robot_package_name.txt
 # Figure out where the robot configuration stuff is:
 if [ "$ROBOT_HOST" = "$ROS_HOSTNAME" ] ; then
-    # We are on the same compute so we going to run the simulator:
-    ROBOT_DIR=`rospack find ubiquity_launches`/simulator
-    ROBOT_HOST=$VIEWER_HOST
-    ROBOT_USER=$VIEWER_USER
+    if [ -f $PLATFORM_FILE_NAME]; then
+        ROBOT_PKG=`cat /tmp/robot_package_name.txt`
+        ROBOT_DIR=`rospack find $ROBOT_PKG`
+    else
+        # We are going to run the simulator:
+        ROBOT_DIR=`rospack find ubiquity_launches`/simulator
+        ROBOT_HOST=$VIEWER_HOST
+        ROBOT_USER=$VIEWER_USER
+    fi
 else
     # We have a remote robot, so we need to get the remote the robot directory:
-    FILE_NAME=/home/$ROBOT_USER/.ros/ubiquity/robot_package_name.txt
-    echo "( scp -q $ROBOT_USER@$ROBOT_HOST:$FILE_NAME /tmp 2>/dev/null )"
-    if ( scp -q $ROBOT_USER@$ROBOT_HOST:$FILE_NAME /tmp 2>/dev/null ) ; then
+    echo "( scp -q $ROBOT_USER@$ROBOT_HOST:$PLATFORM_FILE_NAME /tmp 2>/dev/null )"
+    if ( scp -q $ROBOT_USER@$ROBOT_HOST:$PLATFORM_FILE_NAME /tmp 2>/dev/null ) ; then
 	# We have a robot directory, be sure to convert `~` into `/home/$VIEWER_USER`:
 	ROBOT_PKG=`cat /tmp/robot_package_name.txt`
     ROBOT_DIR=`rospack find $ROBOT_PKG`
