@@ -34,6 +34,8 @@
     <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="machine_host" value="$(arg viewer_host)"/>
     <arg name="machine_user" value="$(arg viewer_user)"/>
+
+    <arg name="rviz_file" value="$(arg ul)/n_rviz/rviz/robot_navigation.rviz"/>
   </include>
 
 </launch>
