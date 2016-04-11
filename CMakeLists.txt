@@ -54,8 +54,8 @@ install(DIRECTORY m_move_base_view/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_move_base_view
   PATTERN ".svn" EXCLUDE)
 
-install(DIRECTORY m_raspicam_raw/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_raspicam_raw
+install(DIRECTORY m_raspicam/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_raspicam
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY m_raspicam_view/

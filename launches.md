@@ -60,7 +60,7 @@ The following launch file directories are available:
 * `m_move_base_view`:
   Set up a robot base for navigation with viewing via RViz.
 
-* `m_raspicam_raw`:
+* `m_raspicam`:
   Start nodes needed to support the Raspberry Pi camera.
 
 * `m_raspicam_view`:
@@ -192,7 +192,7 @@ This program will start the Raspberry Pi camera attached to your
 robot.  It does not bring up a viewer.  If you want the viewer as
 well, please use the `raspicam_view` program instead.
 
-* m_raspicam_raw
+* m_raspicam
   * n_raspicam
     * n_rosservice_call
   * n_image_uncompress
@@ -210,7 +210,7 @@ to view a reasonably real-time image coming out of the Raspberry Pi
 camera.
 
 * m_raspicam_view
-  * m_raspicam_raw
+  * m_raspicam
     * n_raspicam
       * n_rosservice_call
     * n_image_uncompress
@@ -388,7 +388,7 @@ This launch file has the following arguments:
 * viewer_user (Optional, default: ''):
   The user account on the display computer to use.
 
-### `m_raspicam_raw` Launch File Directory
+### `m_raspicam` Launch File Directory
 
 The launch file for this directory starts the
 Raspberry Pi camera node and a node that uncompress the output that

@@ -6,4 +6,4 @@
 ##  robot.  It does not bring up a viewer.  If you want the viewer as
 ##  well, please use the `raspicam_view` program instead.
 
-rosrun ubiquity_launches roslauncher m_raspicam_raw.launch.xml
+rosrun ubiquity_launches roslauncher m_raspicam.launch.xml
