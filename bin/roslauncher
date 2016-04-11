@@ -53,7 +53,7 @@ PLATFORM_FILE_NAME=/home/$ROBOT_USER/.ros/ubiquity/robot_package_name.txt
 # Figure out where the robot configuration stuff is:
 if [ "$ROBOT_HOST" = "$ROS_HOSTNAME" ] ; then
     if [ -f $PLATFORM_FILE_NAME ]; then
-        ROBOT_PKG=`cat /tmp/robot_package_name.txt`
+        ROBOT_PKG=`cat $PLATFORM_FILE_NAME`
         ROBOT_DIR=`rospack find $ROBOT_PKG`
     else
         # We are going to run the simulator:
