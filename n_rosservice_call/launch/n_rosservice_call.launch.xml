@@ -1,0 +1,41 @@
+<launch>
+  <!--Summary: Call a ROS service at startup. -->
+  <!--Overview: Sometimes you need to perform a call to a ROS service at
+      startup.  This module allows you to specify ROS service name and
+      additional arguments at startup.
+  -->
+
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+  <arg name="service_name" />
+    <!--service_name: The name of the ROS service to call. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="rsc" value="rosservice_call" />
+
+  <!-- Optional arguments: -->
+  <arg name="node_name" default="n_$(arg rsc)" />
+    <!--node_name: The name of the node. -->
+  <arg name="service_arguments" default="" />
+    <!--service_arguments: Additional arguments to `rosservice call` -->
+
+  <!-- Define the robot machine: -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- Run the sleep_forever program with respawn set to true. -->
+  <node name="$(arg node_name)" machine="$(arg machine_name)"
+   pkg="ubiquity_launches" type="$(arg rsc)"
+   args="$(arg service_name) $(arg service_arguments)" />
+</launch>

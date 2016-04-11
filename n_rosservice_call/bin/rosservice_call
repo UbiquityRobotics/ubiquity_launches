@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+echo "Calling rosservice call $@"
+echo "Calling rosservice call $@" >> /tmp/rosservice.log
+
+# Perform the rosservice call; make sure to wait for the service to show up first:
+rosservice call --wait "$@"
+
+# 1 billion seconds is 31+ years.  That is close enough to forever:
+sleep 1000000000

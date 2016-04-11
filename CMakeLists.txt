@@ -29,6 +29,8 @@ install(PROGRAMS
   bin/raspicam_view
   bin/robot_base
   bin/roslauncher
+  bin/share
+  bin/unshare
   bin/yaml2launch.py
 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -143,6 +145,10 @@ install(DIRECTORY n_robot_state_publisher/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_robot_state_publisher
   PATTERN ".svn" EXCLUDE)
 
+install(DIRECTORY n_rosservice_call/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_rosservice_call
+  PATTERN ".svn" EXCLUDE)
+
 install(DIRECTORY n_rqt_image_view/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_rqt_image_view
   PATTERN ".svn" EXCLUDE)
@@ -177,5 +183,9 @@ install(DIRECTORY rviz_local_costmap/
 
 install(DIRECTORY rviz_sonar/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz_sonar
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY simulator/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/simulator
   PATTERN ".svn" EXCLUDE)
 

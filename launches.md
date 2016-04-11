@@ -43,6 +43,10 @@ The following executables are available in `bin`:
 
 * `roslauncher`: Helper program to launch ROS launch files.
 
+* `share`: 
+
+* `unshare`: 
+
 * `yaml2launch.py`: An experimental program to convert a `.yaml` into a `.launch.xml` file.
 
 The following launch file directories are available:
@@ -79,8 +83,6 @@ The following launch file directories are available:
 
 * `m_robot_base`:
   Set up a robot base for operation.
-
-* m_robot_base: (No Summary Available)
 
 * `n_amcl`:
   Launch the Adaptive Monte Carlo Localization node.
@@ -136,6 +138,9 @@ The following launch file directories are available:
 * `n_robot_state_publisher`:
   Launch the ROS `robot_state_publisher` node.
 
+* `n_rosservice_call`:
+  Call a ROS service at startup.
+
 * `n_rqt_image_view`:
   Run `rqt_image_view` to view camera output on a screen.
 
@@ -163,6 +168,8 @@ The following launch file directories are available:
 * `rviz_sonar`:
   Show sonars in RViz.
 
+* simulator: (No Summary Available)
+
 ## Executables
 
 ### `devel_install.sh` Executable:
@@ -174,11 +181,6 @@ summary here
 
 * m_keyboard_drive
   * m_robot_base
-    * n_joint_state_publisher
-    * n_relay
-    * n_stage_ros
-    * n_cmd_vel_mux
-    * n_robot_state_publisher
   * n_teleop_twist_keyboard
 
 ### `keyboard_navigate` Executable:
@@ -189,11 +191,6 @@ summary here
   * m_move_base_view
     * m_move_base
       * m_robot_base
-        * n_joint_state_publisher
-        * n_relay
-        * n_stage_ros
-        * n_cmd_vel_mux
-        * n_robot_state_publisher
       * n_navigation_velocity_smoother
       * n_kobuki_safety_controller
       * n_move_base
@@ -271,11 +268,6 @@ camera.
 
 
 * m_robot_base
-  * n_joint_state_publisher
-  * n_relay
-  * n_stage_ros
-  * n_cmd_vel_mux
-  * n_robot_state_publisher
 
 ### `roslauncher` Executable:
 
@@ -285,7 +277,8 @@ This program is typically embedded in a short shell script that looks as follows
 
 rosrun ubiquity_launches roslauncher XXX.launch.xml
 
-where `XXX.launch.xml` is structure launch file to be launched.
+where `XXX.launch.xml` is a launch file in the ubiquity_launches package to
+be launched.
 
 `roslauncher` does the following:
 
@@ -303,6 +296,13 @@ the current computer.
 
 * It starts the top level launch file (e.g. `XXX.launch.xml`
 in the example above.
+!/bin/bash
+
+### `share` Executable:
+
+
+### `unshare` Executable:
+
 
 ### `yaml2launch.py` Executable:
 
@@ -352,6 +352,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * robot_host (Required):
   The DNS address for the robot.
 
@@ -374,6 +377,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * robot_host (Required):
   The DNS address for the robot.
 
@@ -395,6 +401,9 @@ This launch file has the following arguments:
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * robot_host (Required):
   The DNS address for the robot.
@@ -430,6 +439,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "loki", "sim", "magni") to use.
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * robot_host (Required):
   The DNS address for the robot.
 
@@ -453,6 +465,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * robot_host (Required):
   The DNS address for the robot.
 
@@ -475,6 +490,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * robot_host (Required):
   The DNS address for the robot.
 
@@ -495,6 +513,9 @@ This launch file has the following arguments:
 
 * robot_platform (Required):
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * robot_host (Required):
 
 * robot_user (Required):
@@ -511,6 +532,9 @@ Magni robot platform.
 This launch file has the following arguments:
 
 * robot_platform (Required):
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * robot_host (Required):
 
@@ -530,24 +554,8 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
-* robot_host (Required):
-  The DNS address for the robot.
-
-* robot_user (Required):
-  The user account on the robot to use.
-
-* viewer_host (Optional, default: 'localhost'):
-  The DNS address for the viewer machine with a display.
-
-* viewer_user (Optional, default: ''):
-  The user account on the display computer to use.
-
-### `m_robot_base` Launch File Directory
-
-This launch file has the following arguments:
-
-* robot_platform (Required):
-  The robot platform (e.g. "loki", "sim", "magni") to use.
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * robot_host (Required):
   The DNS address for the robot.
@@ -560,21 +568,6 @@ This launch file has the following arguments:
 
 * viewer_user (Optional, default: ''):
   The user account on the display computer to use.
-
-* base (Optional, default: 'kobuki'):
-  The kind of robot base (e.g. "create", "kobuki", "Rhoomba", ...).
-
-* stacks (Optional, default: 'hexagons'):
-  The kind of stack on the robot (e.g. "circles", "hexagons").
-
-* 3d_sensor (Optional, default: 'asus_xtion_pro'):
-  The kind of 3D sensor (e.g. "kinect, "asus_xtion_pro").
-
-* world_file (Optional, default: '$(arg ul)/m_robot_base/maps/stage/maze.world'):
-  The `.world` file to construct the robot simulation environment.
-  Note that the currently the world file must be in a in a directory called
-  `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
-  Good luck finding any useful documentation.
 
 ### `n_amcl` Launch File Directory
 
@@ -585,6 +578,9 @@ This launch file has the following arguments:
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -733,12 +729,18 @@ package that interfaces to the robot serial port.
 This launch file has the following arguments:
 
 * robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
 
 * machine_user (Required):
 
 * machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
 
 ### `n_camera` Launch File Directory
 
@@ -782,6 +784,9 @@ This launch file has the following arguments:
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -857,6 +862,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
 
@@ -874,6 +882,9 @@ This launch file has the following arguments:
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -917,6 +928,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
 
@@ -937,6 +951,9 @@ This launch file has the following arguments:
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -971,6 +988,9 @@ This launch file has the following arguments:
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1009,6 +1029,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
 
@@ -1045,6 +1068,9 @@ This launch file has the following arguments:
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1104,6 +1130,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
 
@@ -1161,6 +1190,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
 
@@ -1195,6 +1227,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
 
@@ -1219,9 +1254,42 @@ This launch file has the following arguments:
 * use_tf_static (Optional, default: 'true'):
   Set to true to use /tf_static latched static broadcaster.
 
-* robot_description_file (Optional, default: '$(arg ul)/n_$(arg rsp)/urdf/$(arg robot_platform).urdf'):
+* robot_description_file (Optional, default: '$(arg robot_dir)/n_$(arg rsp)/urdf/robot.urdf'):
   The name of a file that contains the robot
   structure in URDF format.
+
+### `n_rosservice_call` Launch File Directory
+
+Sometimes you need to perform a call to a ROS service at
+startup.  This module allows you to specify ROS service name and
+additional arguments at startup.
+
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
+* service_name (Required):
+  The name of the ROS service to call.
+
+* machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
+
+* node_name (Optional, default: 'n_$(arg rsc)'):
+  The name of the node.
+
+* service_arguments (Optional, default: ''):
+  Additional arguments to `rosservice call`
 
 ### `n_rqt_image_view` Launch File Directory
 
@@ -1232,6 +1300,9 @@ This launch file has the following arguments:
 
 * image (Required):
   The topic to view for the image stream.
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
@@ -1255,6 +1326,9 @@ This launch file has the following arguments:
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
 
@@ -1263,6 +1337,9 @@ This launch file has the following arguments:
 
 * machine_name (Optional, default: 'viewer'):
   The machine name (i.e. "robot" or "viewer")
+
+* node_name (Optional, default: 'rviz'):
+  The name to assigne to this node.
 
 * rviz_file (Optional, default: '$(arg ul)/n_rviz/rviz/robot_navigation.rviz'):
   A file that preconfigures rviz to show navigation
@@ -1305,6 +1382,9 @@ This launch file has the following arguments:
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
 
 * machine_host (Required):
   The DNS machine name (e.g. "ubuntu.local")
@@ -1376,6 +1456,9 @@ will talk to either a PS3 or XBox game controller module.
 
 This launch file has the following arguments:
 
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
 
@@ -1387,6 +1470,9 @@ This launch file has the following arguments:
 
 * machine_name (Optional, default: 'viewer'):
   The machine name (i.e. "robot" or "viewer")
+
+* node_name (Optional, default: 'teleop'):
+  The name to assigne to this node.
 
 ### `rviz_local_costmap` Launch File Directory
 
@@ -1407,4 +1493,41 @@ This launch file has the following argument:
 
 * robot_platform (Required):
   The robot platform (e.g. "magni", "loki", etc.)
+
+### `simulator` Launch File Directory
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "loki", "sim", "magni") to use.
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* robot_host (Required):
+  The DNS address for the robot.
+
+* robot_user (Required):
+  The user account on the robot to use.
+
+* viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
+
+* viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
+
+* base (Optional, default: 'kobuki'):
+  The kind of robot base (e.g. "create", "kobuki", "Rhoomba", ...).
+
+* stacks (Optional, default: 'hexagons'):
+  The kind of stack on the robot (e.g. "circles", "hexagons").
+
+* 3d_sensor (Optional, default: 'asus_xtion_pro'):
+  The kind of 3D sensor (e.g. "kinect, "asus_xtion_pro").
+
+* world_file (Optional, default: '$(arg ul)/m_robot_base/maps/stage/maze.world'):
+  The `.world` file to construct the robot simulation environment.
+  Note that the currently the world file must be in a in a directory called
+  `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
+  Good luck finding any useful documentation.
 

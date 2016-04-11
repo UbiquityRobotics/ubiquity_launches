@@ -356,6 +356,7 @@ class Launch_File:
 	      isinstance(include[0], str) and isinstance(include[1], str)
 
 	# Load up *self*:
+	self.in_nested_write = False	# True marks in nested write
 	self.name = name		# Launch file base name
 	self.argument_comments = argument_comments # All `<!-- ... -->` comments
 	self.requireds = requireds	# Required arguments
@@ -637,16 +638,21 @@ class Launch_File:
 	assert isinstance(indent, int)
 	assert isinstance(launch_files_table, dict)
 
-	md_file.write("{0}* {1}\n".format(indent * "  ", self.name))
-	for include in self.includes:
-	    assert isinstance(include, tuple) and len(include) == 2
-	    launch_name = include[0]
-	    if launch_name in launch_files_table:
-		launch_file = launch_files_table[launch_name]
-		launch_file.nested_write(md_file, indent + 1, launch_files_table)
-	    else:
-		md_file.write("{0}* {1} (not found)\n".
-		  format((indent + 1) * "  ", launch_name))
+	if not self.in_nested_write:
+	    self.in_nested_write = True
+
+	    md_file.write("{0}* {1}\n".format(indent * "  ", self.name))
+	    for include in self.includes:
+		assert isinstance(include, tuple) and len(include) == 2
+		launch_name = include[0]
+		if launch_name in launch_files_table:
+		    launch_file = launch_files_table[launch_name]
+		    launch_file.nested_write(md_file, indent + 1, launch_files_table)
+		else:
+		    md_file.write("{0}* {1} (not found)\n".
+		      format((indent + 1) * "  ", launch_name))
+
+	    self.in_nested_write = False
 
     def section_write(self, md_file):
 	""" *Launch_File*: Write out the section for the *Launch_File* object
