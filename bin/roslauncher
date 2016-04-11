@@ -56,11 +56,12 @@ if [ "$ROBOT_HOST" = "$ROS_HOSTNAME" ] ; then
     ROBOT_USER=$VIEWER_USER
 else
     # We have a remote robot, so we need to get the remote the robot directory:
-    FILE_NAME=/home/$ROBOT_USER/.ros/ubiquity/robot_dir_name.txt
+    FILE_NAME=/home/$ROBOT_USER/.ros/ubiquity/robot_package_name.txt
     echo "( scp -q $ROBOT_USER@$ROBOT_HOST:$FILE_NAME /tmp 2>/dev/null )"
     if ( scp -q $ROBOT_USER@$ROBOT_HOST:$FILE_NAME /tmp 2>/dev/null ) ; then
 	# We have a robot directory, be sure to convert `~` into `/home/$VIEWER_USER`:
-	ROBOT_DIR=`cat /tmp/robot_dir_name.txt | sed "s,~,/home/$VIEWER_USER,"`
+	ROBOT_PKG=`cat /tmp/robot_package_name.txt`
+    ROBOT_DIR=`rospack find $ROBOT_PKG`
     else
 	# We do not have a robot directory:
 	echo "The robot at $ROBOT_USER@$ROBOT_HOST does not have a $FILE_NAME file."
