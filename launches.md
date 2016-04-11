@@ -75,9 +75,6 @@ The following launch file directories are available:
 * `n_bus_server`:
   Launch a node to control the serial port.
 
-* `n_camera`:
-  Bring up a Raspberry Pi camera via GStreamer.
-
 * `n_cmd_vel_mux`:
   
 
@@ -639,40 +636,6 @@ This launch file has the following arguments:
 
 * machine_name (Optional, default: 'robot'):
   The machine name (i.e. "robot" or "viewer")
-
-### `n_camera` Launch File Directory
-
-The launch file for this directory starts the camera node
-using the ROS [`gscam`](http://wiki.ros.org/gscam) package.
-This launch file is **depricated**.  You should use `n_raspicam`
-launch file directory instead.
-
-This launch file has the following arguments:
-
-* robot_platform (Required):
-  The robot base to use (e.g. "Magni" and "Loki".)
-
-* WIDTH (Optional, default: '1280'):
-  The width of the image in pixels.
-
-* HEIGHT (Optional, default: '960'):
-  The height of the image in pixels.
-
-* FPS (Optional, default: '30/1'):
-  Frame rate in frames per second. (must be an integer.)
-
-* camera_node (Optional, default: 'camera_node'):
-  The name of the camera node.
-
-* calibration_file (Optional, default: '$(arg robot_platform).yaml'):
-  The `.yaml` for camera calibration.
-
-* respawn (Optional, default: 'false'):
-  If `true` automatically respawn the node if it fails;
-  otherwise just let it fail.
-
-* DEVICE (Optional, default: '/dev/video0'):
-  The device file to access for the camera.
 
 ### `n_cmd_vel_mux` Launch File Directory
 
