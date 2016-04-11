@@ -147,12 +147,6 @@ The following launch file directories are available:
 * `n_teleop_twist_keyboard`:
   Launches the ROS `teleop_twist_joy/teleop_node` node.
 
-* `rviz_local_costmap`:
-  Show local costmap in RViz.
-
-* `rviz_sonar`:
-  Show sonars in RViz.
-
 * simulator: (No Summary Available)
 
 * `simulator`:
@@ -1267,15 +1261,15 @@ This launch file has the following arguments:
 * machine_user (Required):
   The user account on the machine.
 
+* rviz_file (Required):
+  A file that preconfigures rviz to show navigation
+  information.
+
 * machine_name (Optional, default: 'viewer'):
   The machine name (i.e. "robot" or "viewer")
 
 * node_name (Optional, default: 'rviz'):
   The name to assigne to this node.
-
-* rviz_file (Optional, default: '$(arg ul)/n_rviz/rviz/robot_navigation.rviz'):
-  A file that preconfigures rviz to show navigation
-  information.
 
 ### `n_sleep_forever` Launch File Directory
 
@@ -1335,26 +1329,6 @@ This launch file has the following arguments:
 
 * node_name (Optional, default: 'teleop'):
   The name to assigne to this node.
-
-### `rviz_local_costmap` Launch File Directory
-
-The launch file for this directory starts the ROS RViz
-in a mode that shows a local costmap.
-
-This launch file has the following argument:
-
-* robot_platform (Required):
-  The robot platform (e.g. "magni", "loki", etc.)
-
-### `rviz_sonar` Launch File Directory
-
-This launch file directory will launch RViz so that it
-is showing the results of the sonars.
-
-This launch file has the following argument:
-
-* robot_platform (Required):
-  The robot platform (e.g. "magni", "loki", etc.)
 
 ### `simulator` Launch File Directory
 

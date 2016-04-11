@@ -170,14 +170,6 @@ install(DIRECTORY n_teleop_twist_keyboard/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_teleop_twist_keyboard
   PATTERN ".svn" EXCLUDE)
 
-install(DIRECTORY rviz_local_costmap/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz_local_costmap
-  PATTERN ".svn" EXCLUDE)
-
-install(DIRECTORY rviz_sonar/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz_sonar
-  PATTERN ".svn" EXCLUDE)
-
 install(DIRECTORY simulator/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/simulator
   PATTERN ".svn" EXCLUDE)
