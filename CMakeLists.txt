@@ -21,13 +21,10 @@ install(PROGRAMS
   bin/keyboard_navigate
   bin/loki_joystick_teleop
   bin/loki_local_costmap
-  bin/loki_raspicam90
   bin/loki_rviz_local_costmap
   bin/loki_rviz_sonar
-  bin/platform_probe
   bin/raspicam
   bin/raspicam_view
-  bin/robot_base
   bin/roslauncher
   bin/share
   bin/unshare

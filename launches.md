@@ -27,19 +27,13 @@ The following executables are available in `bin`:
 
 * `loki_local_costmap`: Cause Loki to collect local costmap.
 
-* `loki_raspicam90`: Run Loki camera at 90 frames per second.
-
 * `loki_rviz_local_costmap`: Show Loki local costmap in RViz.
 
 * `loki_rviz_sonar`: Show the Loki sonars in RViz
 
-* `platform_probe`: Return the kind of platform the current computer connected to.
-
 * `raspicam`: Fire up a Raspberry Pi Camera on a Raspberry Pi processor.
 
 * `raspicam_view`: Start the Raspberry Pi camera and show its output on the screen.
-
-* `robot_base`: Run Robot Base Stack
 
 * `roslauncher`: Helper program to launch ROS launch files.
 
@@ -74,12 +68,6 @@ The following launch file directories are available:
 
 * `m_raspicam_view`:
   Start all the nodes to view output of Raspberry Pi camera.
-
-* `m_robot_base`:
-  Start loki base nodes.
-
-* `m_robot_base`:
-  Start the Magni base nodes.
 
 * `m_robot_base`:
   Set up a robot base for operation.
@@ -212,10 +200,6 @@ joystick nodes and the fiducial detection and slam nodes.
 The file is focused on generating a local cost map for viewing
 using the `loki_rviz_local_costmap` program.
 
-### `loki_raspicam90` Executable:
-
-This program will start the raspicam node at 90 frames per second.
-
 ### `loki_rviz_local_costmap` Executable:
 
 This program is run on the laptop/desktop and brings up RViz
@@ -225,16 +209,6 @@ in a mode that shows the robot, sonar sensors and local cost map.
 
 This program is run on the laptop/desktop and brings up RViz
 in a mode that shows the robot sonar sensors.
-
-### `platform_probe` Executable:
-
-The `roslauncher1` program needs to be able to query a computer
-find out what kind of robot it is.  This program will return a
-string of the form:
-
-platform:=PLATFORM_NAME
-
-where PLATFORM_NAME is one of `sim`, `loki`, `botvac`, or `magni`.
 
 ### `raspicam` Executable:
 
@@ -265,11 +239,6 @@ camera.
       * n_rosservice_call
     * n_image_uncompress
   * n_rqt_image_view
-
-### `robot_base` Executable:
-
-
-* m_robot_base
 
 ### `roslauncher` Executable:
 
@@ -506,45 +475,6 @@ This launch file has the following arguments:
 
 * viewer_user (Optional, default: ''):
   The user account on the display computer to use.
-
-### `m_robot_base` Launch File Directory
-
-This launch file launches the core Loki stack
-
-This launch file has the following arguments:
-
-* robot_platform (Required):
-
-* robot_dir (Required):
-  The robot launch files and parameters directory.
-
-* robot_host (Required):
-
-* robot_user (Required):
-
-* viewer_host (Optional, default: 'localhost'):
-
-* viewer_user (Optional, default: ''):
-
-### `m_robot_base` Launch File Directory
-
-This node fires up the various nodes to operate the
-Magni robot platform.
-
-This launch file has the following arguments:
-
-* robot_platform (Required):
-
-* robot_dir (Required):
-  The robot launch files and parameters directory.
-
-* robot_host (Required):
-
-* robot_user (Required):
-
-* viewer_host (Optional, default: 'localhost'):
-
-* viewer_user (Optional, default: ''):
 
 ### `m_robot_base` Launch File Directory
 
