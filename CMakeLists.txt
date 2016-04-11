@@ -162,10 +162,6 @@ install(DIRECTORY n_spawner/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_spawner
   PATTERN ".svn" EXCLUDE)
 
-install(DIRECTORY n_stage_ros/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_stage_ros
-  PATTERN ".svn" EXCLUDE)
-
 install(DIRECTORY n_teleop_twist_joy/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_teleop_twist_joy
   PATTERN ".svn" EXCLUDE)

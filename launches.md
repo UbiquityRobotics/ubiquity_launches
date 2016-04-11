@@ -141,9 +141,6 @@ The following launch file directories are available:
 * `n_spawner`:
   Runs the ROS spawn node.
 
-* `n_stage_ros`:
-  Launches stage robot simulation envirnoment for ROS.
-
 * `n_teleop_twist_joy`:
   Launch the ROS `teleop_twist_joy` node.
 
@@ -157,6 +154,9 @@ The following launch file directories are available:
   Show sonars in RViz.
 
 * simulator: (No Summary Available)
+
+* `simulator`:
+  Launches stage robot simulation envirnoment for ROS.
 
 ## Executables
 
@@ -1301,76 +1301,6 @@ This launch file has the following arguments:
 * node_name (Optional, default: 'n_$(arg node)'):
   The name to assign to the node.
 
-### `n_stage_ros` Launch File Directory
-
-Stage is an environment for simulating robot operating
-in a simulated 2D environment.  This node starts up the ROS
-[stage_ros](http://wiki.ros.org/stage_ros) node to perform this simulation.
-The
-[Stage Manual](http://playerstage.sourceforge.net/doc/Stage-3.2.1/modules.html)
-is available elsewhere on the net.
-
-This launch file has the following arguments:
-
-* robot_platform (Required):
-  The robot platform (e.g. "magni", "loki", etc.)
-
-* robot_dir (Required):
-  The robot launch files and parameters directory.
-
-* machine_host (Required):
-  The DNS machine name (e.g. "ubuntu.local")
-
-* machine_user (Required):
-  The user account on the machine.
-
-* world_file (Required):
-  The `.world` file to construct the robot simulation environment.
-  Note that the currently the world file must be in a in a directory called
-  `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
-  Good luck finding any useful documentation.
-
-* machine_name (Optional, default: 'robot'):
-  The machine name (i.e. "robot" or "viewer")
-
-* node_name (Optional, default: 'n_$(arg sr)'):
-  The name to assign to this node.
-
-* rate (Optional, default: '10'):
-  The rate at which joint states are published.
-
-* use_gui (Optional, default: 'False'):
-  If "True", pops up a GUI window that allows the joints to be changed.
-
-* cmd_vel_stopic (Optional, default: 'cmd_vel'):
-  The velocity command to drive the roboto position in the model.
-
-* odom_ptopic (Optional, default: 'odom'):
-  Odometry from the position model is published to this topic.
-
-* base_scan_ptopic (Optional, default: 'base_scan'):
-  Laser scan information is published to this topic.
-
-* base_pose_ground_truth_ptopic (Optional, default: 'base_pose_ground_truth'):
-  Ground truth pose information is publishde to this topic.
-
-* image_ptopic (Optional, default: 'image'):
-  A visual camera imageis published to this topic.
-
-* depth_ptopic (Optional, default: 'depth'):
-  A depth camera image is published to this topic.
-
-* camera_info_ptopic (Optional, default: 'camera_info'):
-  Camera calibration information is published to this topic.
-
-* base_watchdog_timeout (Optional, default: '0.2'):
-  The time in seconds after receiving the last command on
-  the `cmd_vel` topic before the robot stops.
-
-* is_depth_canonical (Optional, default: 'true'):
-  Specifies whether to depth image should use a canonical
-  (32FC1) or OpenNI (16UC1) representation.
-
 ### `n_teleop_twist_joy` Launch File Directory
 
 The launch file for this directory starts the ROS
@@ -1462,4 +1392,74 @@ This launch file has the following arguments:
   Note that the currently the world file must be in a in a directory called
   `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
   Good luck finding any useful documentation.
+
+### `simulator` Launch File Directory
+
+Stage is an environment for simulating robot operating
+in a simulated 2D environment.  This node starts up the ROS
+[stage_ros](http://wiki.ros.org/stage_ros) node to perform this simulation.
+The
+[Stage Manual](http://playerstage.sourceforge.net/doc/Stage-3.2.1/modules.html)
+is available elsewhere on the net.
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
+* world_file (Required):
+  The `.world` file to construct the robot simulation environment.
+  Note that the currently the world file must be in a in a directory called
+  `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
+  Good luck finding any useful documentation.
+
+* machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
+
+* node_name (Optional, default: 'n_$(arg sr)'):
+  The name to assign to this node.
+
+* rate (Optional, default: '10'):
+  The rate at which joint states are published.
+
+* use_gui (Optional, default: 'False'):
+  If "True", pops up a GUI window that allows the joints to be changed.
+
+* cmd_vel_stopic (Optional, default: 'cmd_vel'):
+  The velocity command to drive the roboto position in the model.
+
+* odom_ptopic (Optional, default: 'odom'):
+  Odometry from the position model is published to this topic.
+
+* base_scan_ptopic (Optional, default: 'base_scan'):
+  Laser scan information is published to this topic.
+
+* base_pose_ground_truth_ptopic (Optional, default: 'base_pose_ground_truth'):
+  Ground truth pose information is publishde to this topic.
+
+* image_ptopic (Optional, default: 'image'):
+  A visual camera imageis published to this topic.
+
+* depth_ptopic (Optional, default: 'depth'):
+  A depth camera image is published to this topic.
+
+* camera_info_ptopic (Optional, default: 'camera_info'):
+  Camera calibration information is published to this topic.
+
+* base_watchdog_timeout (Optional, default: '0.2'):
+  The time in seconds after receiving the last command on
+  the `cmd_vel` topic before the robot stops.
+
+* is_depth_canonical (Optional, default: 'true'):
+  Specifies whether to depth image should use a canonical
+  (32FC1) or OpenNI (16UC1) representation.
 
