@@ -35,7 +35,7 @@
     <arg name="machine_host" value="$(arg viewer_host)"/>
     <arg name="machine_user" value="$(arg viewer_user)"/>
 
-    <arg name="rviz_file" value="$(arg ul)/n_rviz/rviz/robot_navigation.rviz"/>
+    <arg name="rviz_file" value="$(find ubiquity_launches)/n_rviz/rviz/robot_navigation.rviz"/>
   </include>
 
 </launch>
