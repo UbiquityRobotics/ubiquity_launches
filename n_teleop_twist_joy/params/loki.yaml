@@ -1,3 +1,0 @@
-# Loki Specific arguments:
-scale_linear: .25  # Meter/Sec.
-scale_rotate: .5   # Radian/Sec.

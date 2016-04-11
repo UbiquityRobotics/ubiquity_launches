@@ -48,9 +48,6 @@ The following launch file directories are available:
 * `m_fiducial_slam`:
   Start Fiduical SLAM (Simultaneous Localication And Mapping)
 
-* `m_joystick_teleop`:
-  Start joystick remote control nodes.
-
 * `m_keyboard_drive`:
   Launch a robot in a mode that can be driven from a keyboard.
 
@@ -96,9 +93,6 @@ The following launch file directories are available:
 * `n_joint_state_publisher`:
   Launches joint_state_publisher node.
 
-* `n_joy`:
-  Connect to a joystick node.
-
 * `n_keyboard_navigate`:
   Start keyboard navigation node (currently broken.)
 
@@ -107,9 +101,6 @@ The following launch file directories are available:
 
 * `n_map_server`:
   Start a ROS map_server node.
-
-* `n_motor_node`:
-  Start Magni motor controller software node.
 
 * `n_move_base`:
   Run the ROS move_base node.
@@ -137,12 +128,6 @@ The following launch file directories are available:
 
 * `n_sleep_forever`:
   Start a process that sleeps for forever.
-
-* `n_spawner`:
-  Runs the ROS spawn node.
-
-* `n_teleop_twist_joy`:
-  Launch the ROS `teleop_twist_joy` node.
 
 * `n_teleop_twist_keyboard`:
   Launches the ROS `teleop_twist_joy/teleop_node` node.
@@ -291,19 +276,6 @@ This launch file has the following arguments:
 * mapping_mode (Optional, default: 'false'):
   Set to `true` to force mapping and `false` to disable
   mapping.
-
-### `m_joystick_teleop` Launch File Directory
-
-The launch file for this directory fires off the joystick
-nodes to support the wireless PS2/XBox game controller for
-driving the robot around.  This launch file requires a
-`robot_platform` argument to specify which robot platform is being
-used (e.g `loki`, `magni`, etc.)
-
-This launch file has the following argument:
-
-* robot_platform (Required):
-  The robot platform (e.g. "magni", "loki", etc.)
 
 ### `m_keyboard_drive` Launch File Directory
 
@@ -833,15 +805,6 @@ This launch file has the following arguments:
 * use_gui (Optional, default: 'False'):
   If "True", pops up a GUI window that allows the joints to be changed.
 
-### `n_joy` Launch File Directory
-
-This library launch directory will launch a node that
-starts the ROS [joy](http://wiki.ros.org/joy) node.  This node
-interfaces to a joystick device (e.g. XBox360 controller, PS3
-controller, etc.)
-
-This launch file has no arguments.
-
 ### `n_keyboard_navigate` Launch File Directory
 
 The launch file for this directory starts a
@@ -933,16 +896,6 @@ This launch file has the following arguments:
 
 * node_name (Optional, default: 'n_$(arg node)'):
   The ROS node name.
-
-### `n_motor_node` Launch File Directory
-
-This library launch file starts the Magni motor controller
-node that controls the robot base via a serial port.
-
-This launch file has the following argument:
-
-* node_name (Optional, default: 'n_$(arg node)'):
-  The name to assign to the node.
 
 ### `n_move_base` Launch File Directory
 
@@ -1280,30 +1233,6 @@ program, it has the side-effect of starting `roscore` and keeping
 
 
 This launch file has no arguments.
-
-### `n_spawner` Launch File Directory
-
-This launch file directory will start a node that
-runs the ROS [spawner](http://wiki.ros.org/controller_manager) node
-provides a hard realtime loop to control a robot mechanism.
-
-This launch file has the following arguments:
-
-* arguments (Required):
-  The arguments to pass into the spawner.
-
-* node_name (Optional, default: 'n_$(arg node)'):
-  The name to assign to the node.
-
-### `n_teleop_twist_joy` Launch File Directory
-
-The launch file for this directory starts the ROS
-[`teleop_twist_joy`](http://wiki.ros.org/teleop_twist_joy) node.
-
-This launch file has the following argument:
-
-* robot_platform (Required):
-  The robot platofrm (e.g. "magni", "loki", etc.)
 
 ### `n_teleop_twist_keyboard` Launch File Directory
 

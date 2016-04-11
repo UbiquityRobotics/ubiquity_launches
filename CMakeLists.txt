@@ -38,10 +38,6 @@ install(DIRECTORY m_fiducial_slam/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_fiducial_slam
   PATTERN ".svn" EXCLUDE)
 
-install(DIRECTORY m_joystick_teleop/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_joystick_teleop
-  PATTERN ".svn" EXCLUDE)
-
 install(DIRECTORY m_keyboard_drive/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_keyboard_drive
   PATTERN ".svn" EXCLUDE)
@@ -102,10 +98,6 @@ install(DIRECTORY n_joint_state_publisher/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_joint_state_publisher
   PATTERN ".svn" EXCLUDE)
 
-install(DIRECTORY n_joy/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_joy
-  PATTERN ".svn" EXCLUDE)
-
 install(DIRECTORY n_keyboard_navigate/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_keyboard_navigate
   PATTERN ".svn" EXCLUDE)
@@ -116,10 +108,6 @@ install(DIRECTORY n_kobuki_safety_controller/
 
 install(DIRECTORY n_map_server/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_map_server
-  PATTERN ".svn" EXCLUDE)
-
-install(DIRECTORY n_motor_node/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_motor_node
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_move_base/
@@ -156,14 +144,6 @@ install(DIRECTORY n_rviz/
 
 install(DIRECTORY n_sleep_forever/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_sleep_forever
-  PATTERN ".svn" EXCLUDE)
-
-install(DIRECTORY n_spawner/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_spawner
-  PATTERN ".svn" EXCLUDE)
-
-install(DIRECTORY n_teleop_twist_joy/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_teleop_twist_joy
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_teleop_twist_keyboard/
