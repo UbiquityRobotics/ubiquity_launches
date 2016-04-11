@@ -80,4 +80,15 @@
    output="screen"
    args="compressed in:=/$(arg node)/camera/image_slow raw out:=$(arg output_prefix)/image_raw" />
 
+  <include 
+   file="$(arg ul)/n_$(arg rsc)/launch/n_$(arg rsc).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" value="$(arg machine_name)" />
+    <arg name="machine_host" value="$(arg machine_host)" />
+    <arg name="machine_user" value="$(arg machine_user)" />
+    <arg name="service_name" value="/n_raspicam/camera/start_capture" />
+
+  </include>
+
 </launch>
