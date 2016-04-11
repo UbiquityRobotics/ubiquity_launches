@@ -244,6 +244,7 @@ well, please use the `raspicam_view` program instead.
 
 * m_raspicam_raw
   * n_raspicam
+    * n_rosservice_call
   * n_image_uncompress
 
 ### `raspicam_view` Executable:
@@ -261,6 +262,7 @@ camera.
 * m_raspicam_view
   * m_raspicam_raw
     * n_raspicam
+      * n_rosservice_call
     * n_image_uncompress
   * n_rqt_image_view
 
@@ -1145,7 +1147,7 @@ This launch file has the following arguments:
 * camera_frame_id (Optional, default: ''):
   The name of the ROS TF camera frame.
 
-* camera_info_url (Optional, default: 'file://$(arg root)/n_$(arg node)/params/$(arg robot_platform).yaml'):
+* camera_info_url (Optional, default: 'file://$(arg ul)/n_$(arg node)/params/$(arg robot_platform).yaml'):
   The URL for the camera `.yaml` file.
 
 * camera_name (Optional, default: 'raspicam'):
