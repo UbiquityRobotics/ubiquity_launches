@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+rosrun ubiquity_launches roslauncher m_sonar_costmap.launch.xml
