@@ -151,7 +151,383 @@ of the architecture is:
   start a robot and any ancillary visualization tools needed for
   a robot application.
 
-{Summary here}
+The launch files are structured to make it relatively easy to
+add a new robot platform without having to rewrite dozens of
+launch file.  We call this launch file architecture the *Unified
+Launch File Architecture*.
+
+The Unified Launch file architecture is based out of a ROS package
+called `ubiquity_launches`.  (Note, this ROS package may be renamed
+to `unified_launches` at some point in the future.)
+
+The basic structure of the unified launch files is as follows:
+
+* There is a `bin` directory that contains a bunch of common
+  robot configurations (e.g. `keyboard_drive`, `keyboard_navigate`,
+  etc.)  These programs are run by:
+
+        rosrun ubiquity_launches PROGRAM_NAME
+
+  where `PROGRAM_NAME` is the name of the program.
+
+* Inside each of these programs is a call to common piece of code
+  called `roslauncher`.  The `roslauncher` program does the following:
+
+  * It reads the `ROS_MASTER_URI` environment variable to determine
+    the DNS (Domain Naming Service) for the Robot.
+
+  * It accesses the robot to determine a ROS package that contains
+    all of the configuration information for the robot (e.g. `loki_robot`,
+    `magni_robot`, `botvac_robot`, etc.)
+
+  * It sets up X11 forwarding between the robot and the desktop/laptop
+    computer you are starting the ROS launch on.  X11 is the underlying
+    network window system used by Linux and it allows programs to display
+    content on windows remote from the robot.
+
+  * It starts the top level ROS launch file passing in a bunch of arguments
+    that specify where everything is (e.g. the robot DNS name, the name
+    of the robot configuration package, etc.)  Some of these nodes are
+    started on your desktop/laptop.
+
+* The launch files a partitioned into directories that start with `m_*
+  and `n_*`.  Launch files that launch multiple ROS nodes and launch
+  that start with `n_*` launch a single ROS node.
+
+In order for unified launch files to work, there is a requirement that
+your robot and your desktop/laptop both have the same modules loaded
+into their respective `~/catkin_ws/src` directories.
+
+## ROS Launch File Issues
+
+There are several issues about ROS launch files that need to
+be discussed:
+
+* The `<arg>` tag is used heavily and needs to be fully understood.
+
+* Launch file parameterization allows the same launch files
+  to be used for different robot platforms and configurations.
+
+### The `<arg>` Tag
+
+Some documentation for ROS launch files can be seen by following
+the hypertext links below:
+
+* [ROS Launch Overview](http://wiki.ros.org/roslaunch) provides an
+  overview of the ROS launch file architecture.
+
+* [ROS launch XML file format](http://wiki.ros.org/roslaunch/XML)
+  provides documentation of the XML format used for writing
+  ROS launch files.
+
+* [ROS launch `<arg>` tag](http://wiki.ros.org/roslaunch/XML/arg)
+  is the documentation for the `<arg ... >` tag.
+
+The `<arg>` tag is singled out because it is used in the
+launch files to pass robot platform information, such as the robot type.
+If you do not understand the `<arg>`, you will not understand
+the launch files.
+
+The `<arg>` tag has three forms:
+
+* `<arg name="required" />`: This specifies a launch file input name.
+  Think of this as an argument variable for routine.
+
+* `<arg name="optional" default="value" />`: This specifies a launch
+  file input name with a default value that will be used if not
+  is specified at "call" time.
+
+* `<arg name="foo" value="bar" />`: This form has two different usages.
+  When at the level immediately inside of a `<launch> ... </launch>`
+  pair, this form defines a convenience value that can be used to
+  improve overall legibility.  Think of this as a kind of macro
+  definition.  The second form occurs immediately inside of a
+  `<include> ... </include>` pair.  This form is like passing arguments
+  into a routine call.
+
+Huh? What is going on here?  Let's do some examples!  Here is
+a chunk of Python code that defines a routine:
+
+        def n_fiducial_slam(robot_base, fiducial_size=".150"):
+          short = "a somewhat long string"
+
+This function is named `n_fiducial_slam` and has two arguments --
+`robot_base` and `fiducial_size`.  `robot_base` is a required
+argument which if not present at routine call time will cause
+a run-time error.  `fiducial_size` is an optional argument that
+does not need to specified in the routine call, but it can be
+specified if you want.  `short` is a local variable that can
+be used to reduce typing.  The corresponding launch file syntax is:
+
+        <launch>
+          <!-- Required arguments: -->
+          <arg name="robot_base" />
+          
+          <!-- Optional arguments: -->
+          <arg name="fiducial_size" default=".200" />
+          
+          <!-- Convenience arguments: -->
+          <arg name="short value="a somewhat long string" />
+          
+          ...
+          
+        </launch>
+
+The `<include> ... </include>` tag pair is how one launch
+file accesses another launch file.  It is similar to a
+routine call.  In python, the following line:
+
+        n_fiducial_detect("loki", fiducial_size=".200")
+
+would be written in launch file syntax as:
+
+        ...
+        
+        <include file=".../n_fiducial_detect.launch">
+          <arg name="robot_base" value="loki" />
+          <arg name="fiducial_size" value=".200" />
+        </include>
+        
+        ...
+
+Now that you know how to set an argument, the only other
+issue is how to access it.  That is done using substitution
+arguments.  The syntax is:
+
+        $(arg name)
+
+where `name` is the argument name.  Using the "call" example
+above, the following string:
+
+        "base=$(arg robot_base) size=$(arg fiducial_size) short='$(arg short)'"
+
+would expand to:
+
+        "base=loki size=.200 short='a somewhat long string'"
+
+The substitution syntax can only occur inside of XML attribute
+strings.
+
+Finally, you pass arguments into launch files from the `roslaunch`
+command via the following syntax:
+
+        roslaunch ubiquity_launches n_fiducial_detect robot_base:="magni"
+
+The `:=` is detected and conceptually converted into an `<arg>` tag.
+The line above would be represented in a launch file as:
+
+        <include file="$(find ubiquity_launches)/n_fiducial_detect.launch">
+          <arg name="robot_base" value="magni" />
+        </include>
+
+Hopefully this explanation of the `<arg>` tag is a little
+more informative that the official ROS documentation.
+
+### Launch File Parameterization
+
+The goal of a robot launch repository is to provide
+high quality launch files that work across multiple
+robot platforms and configurations.  It would be
+possible to build monolithic launch files that do not
+use any `<include>` directives.  The reason for not
+doing that is because you would have lots of replicated
+text across multiple launch files.  Fixing a problem
+in one launch file would have to be manually propagated
+to all the other launch files.  This would be a maintenance
+nightmare.
+
+The solution is to break the launch files into a number
+of smaller launch files and create the robot configuration
+via composition as described in the
+[roslaunch Architecture](http://wiki.ros.org/roslaunch/Architecture).
+
+To get additional reuse, the launch files need to be
+parameterized such that the same launch file can be
+used for multiple robots.
+
+For example, the most common parameter is the robot base name.
+This is called the `robot_base` parameter and it expected to be
+given a robot base name (e.g. `loki`, `magni`, `botvac`, etc.)
+This argument is used to select between different parameter
+files (e.g. `loki.yaml` vs. `magni.yaml`, or `loki.urdf` vs.
+`magni.urdf`, etc.)
+
+### Basic File Structure:
+
+There are two primary files in this repository -- short
+shell scripts and the launch files.
+
+The shell scripts are kept in the `bin` directory and usually
+consist of only a few lines and look as follows:
+
+        #!/usr/bin/env bash
+        rosrun ubiquity_launches roslauncher m_TOP_LEVEL.launch.xml
+
+where:
+
+* `m_TOP_LEVEL.launch.xml` is the ROS launch file that will launch all
+  of the ROS nodes needed.
+
+The structure of a unified `*.launch.xml` file is basically as follows:
+
+        <launch>
+          <!--Summary: {One line summary of what launch file does.} -->
+          <!--Overview: {A multi-line summary of what the
+              launch file does. -->
+          
+          <!-- Required Arguments: -->
+          <arg name="required_argument_name1" />
+            <!--required_argument_name1: {Summary of what argument is used for.} -->
+          <arg name="required_argument_name2" />
+            <!--required_argument_name2: {Summary of what argument is used for.} -->
+          ...
+          
+          <!-- Convenience Arguments: -->
+          <arg name="root" value="$(find ubiquity_launches)" />
+          <arg name="convenience_argument_name1" value="value1" />
+          <arg name="convenience_argument_name2" value="value2" />
+          ...
+          
+          <!-- Option arguments: -->
+          <arg name="optional_argument_name1" default="default_value1" />
+            <!--optional_argument_name1: {Summary of optional argument 1.} -->
+          <arg name="optional_argument_name2" default="default_value2" />
+            <!--optional_argument_name2: {Summary of optional argument 2.} -->
+          ...
+
+          <!-- Machine information: -->
+          <machine name="..." address="..." user="..." env-loader="..." />
+
+          <!-- Includes: -->
+          <include file="...">
+            <arg name="arg1" value="value1" />
+            <arg name="arg2" value="value2" />
+            ...
+          </include>
+          ...
+          
+          <!-- Node -->
+          <node pkg="package_name" type="executable_name"
+           name="ros_node_name" ... >
+            <!-- Optional env, remap, rosparam, and param tags -->
+          </node>
+        </launch>
+
+The structure of the `m_*.launch.xml` file differs somewhat from an
+`n_*.launch.xml`.  The detailed structure of an `m_*.launch.xml`
+file is shown below:
+
+        <launch>
+          <!--Summary: {One line summary.} -->
+          <!--Overview: {Multi-line overview. -->
+        
+          <!-- Required Arguments: -->
+          <arg name="robot_dir" />
+            <!--robot_dir: The robot launch files and parameters directory. -->
+          <arg name="robot_host" />
+            <!--robot_host: The DNS address for the robot. -->
+          <arg name="robot_user" />
+            <!--robot_user: The user account on the robot to use. -->
+          <arg name="viewer_host" />
+            <!--viewer_host: The DNS address for the viewer machine with a display. -->
+          <arg name="viewer_user" default=""/>
+            <!--viewer_user: The user account on the viewer computer to use. -->
+        
+There are five arguments that are present in all `m_*.launch files`:
+
+* `robot_dir`: This is the directory of the package that contains all of the
+   robot configuration.  For the Loki robot, this directory location
+   ROS `loki_robot` package (e.g. `rospack find loki_robot`.)
+
+* `robot_host`: This is the DNS address of the robot in the form of
+  `ROBOT_HOSTNAME.local`, where `ROBOT_HOSTNAME` is the host name of
+  the robot.
+
+* `robot_user`: This is the robot machine user account name (usually `ros`.)
+
+* `remote_host`: This is the DNS address of the remote host that will
+  run viewer programs (e.g. `rviz`, `rqt_image_view`, etc.) and
+  control programs.
+
+* `remote_user`: This is the remote machine user account name (usually something
+  other than `ros`, like `wayne`, `rohan`, `alan`, etc.)
+
+The convenience arguments usually contain `ul` which is the location
+of the ROS `ubiquity_launches` package:
+
+          <!-- Convenience Arguments: -->
+          <arg name="ul" value="$(find ubiquity_launches)" />
+          ...
+        
+Some `m_*.launch.xml` files have optional arguments and some do not:
+
+          <!-- Optional arguments: -->
+          <arg name="optional_name1..." default="..." />
+            <!--optional_name1: {Description of optional_name1.} -->
+          ...
+        
+The rest of an `m_*.launch.xml` file consists of `<include ...>`
+directives.
+
+The call to another `m_*.launch.xml` directory almost
+always looks as follows:
+
+          <include file="$(arg_ul)/m_MLAUNCH_NAME/launch/m_MLAUNCH_NAME.launch.xml">
+            <arg name="robot_dir" value="$(arg robot_dir)" />
+            <arg name="robot_host" value="$(arg robot_host)" />
+            <arg name="robot_user" value="$(arg robot_user)" />
+            <arg name="remote_host" value="$(arg remote_host)" />
+            <arg name="remote_user" value="$(arg remote_user)" />
+          </include>
+
+where `MLAUNCH_NAME` is the base name of the `m_*.launch.xml` file that
+is being included.  Notice that the 5 standard arguments thar are passed in
+are passed down to the next level down `m_.launch.xml` file.
+
+There are two flavors of `n_*.launch.xml` file depending upon whether
+the node is meant to be started on the remote machine (i.e. your
+desktop/laptop) or on the robot.
+
+The XML for a remote `n_*.launch.xml` file looks as follows:
+
+          <include file $(arg_ul)/n_NLAUNCH_NAME/launch/n_NLAUNCH_NAME.launch.xml">
+            <arg name="robot_dir" value="$(arg robot_dir)" />
+            <arg name="machine_name" value="remote" />
+            <arg name="machine_host" value="$(arg remote_host)" />
+            <arg name="machine_user" value="$(arg remote_user)" />
+            <!-- Additional node specific arguments go here -->
+          </include>
+
+where `NLAUNCH_NAME` is the base name of the `n_*.launch.xml` file that
+is being included.
+
+The XML for a robot `n_*.launch.xml` file looks as follows:
+
+          <include file $(arg_ul)/n_NLAUNCH_NAME/launch/n_NLAUNCH_NAME.launch.xml">
+            <arg name="robot_dir" value="$(arg robot_dir)" />
+            <arg name="machine_name" value="robot" />
+            <arg name="machine_host" value="$(arg robot_host)" />
+            <arg name="machine_user" value="$(arg robot_user)" />
+            <!-- Additional node specific arguments go here -->
+          </include>
+
+where `NLAUNCH_NAME` is the base name of the `n_*.launch.xml` file that
+is being included.
+
+All `n_*.launch.xml` files have both a `<machine ...>` tag and a `<node ...>` tag.
+They look as follows:
+
+          <machine name="$(arg machine_name)"
+           address="$(arg machine_host)" user="$(arg machine_user)"
+           env-loader="/tmp/env_loader.sh" />
+
+          <node name="$(arg node_name)" machine="($arg machine_name)"
+           pkg="...." type="..." ...>
+            <param name="..." value="..." />
+            ...
+          </node>
+
+
 
 ## Development Environment Details
 
@@ -274,7 +650,7 @@ have preloaded micro-SD card, please see the
         ping -c 5 NEW_HOSTNAME.local
         ssh ubuntu@NEW_HOSTNAME.local
         Password:
-	# Type in the new password.
+        # Type in the new password.
 
 5. We are going to set up secure shell on the robot.  There are two
    steps here.  First, we will generate public/private key pair
