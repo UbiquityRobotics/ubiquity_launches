@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-## Summary: Show Loki local costmap in RViz.
-## Overview:
-##  This program is run on the laptop/desktop and brings up RViz
-##  in a mode that shows the robot, sonar sensors and local cost map.
-
-roslaunch ubiquity_launches rviz_local_costmap.launch robot_base:=loki

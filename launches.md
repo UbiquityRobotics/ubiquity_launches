@@ -23,14 +23,6 @@ The following executables are available in `bin`:
 
 * `keyboard_navigate`: Start the keyboard driver for the robot.
 
-* `loki_joystick_teleop`: Run Loki with a joystick.
-
-* `loki_local_costmap`: Cause Loki to collect local costmap.
-
-* `loki_rviz_local_costmap`: Show Loki local costmap in RViz.
-
-* `loki_rviz_sonar`: Show the Loki sonars in RViz
-
 * `raspicam`: Fire up a Raspberry Pi Camera on a Raspberry Pi processor.
 
 * `raspicam_view`: Start the Raspberry Pi camera and show its output on the screen.
@@ -162,29 +154,6 @@ summary here
       * n_amcl
     * n_rviz
   * n_keyboard_navigate
-
-### `loki_joystick_teleop` Executable:
-
-This program is run on the robot and starts up a Loki platform
-with a PS3/XBox game controller to control robot motion.
-
-### `loki_local_costmap` Executable:
-
-This program is run on the robot and starts up a Loki platform
-that starts up robot that is running the both the PS3/XBox
-joystick nodes and the fiducial detection and slam nodes.
-The file is focused on generating a local cost map for viewing
-using the `loki_rviz_local_costmap` program.
-
-### `loki_rviz_local_costmap` Executable:
-
-This program is run on the laptop/desktop and brings up RViz
-in a mode that shows the robot, sonar sensors and local cost map.
-
-### `loki_rviz_sonar` Executable:
-
-This program is run on the laptop/desktop and brings up RViz
-in a mode that shows the robot sonar sensors.
 
 ### `raspicam` Executable:
 

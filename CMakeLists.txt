@@ -19,10 +19,6 @@ install(PROGRAMS
   bin/devel_install.sh
   bin/keyboard_drive
   bin/keyboard_navigate
-  bin/loki_joystick_teleop
-  bin/loki_local_costmap
-  bin/loki_rviz_local_costmap
-  bin/loki_rviz_sonar
   bin/raspicam
   bin/raspicam_view
   bin/roslauncher

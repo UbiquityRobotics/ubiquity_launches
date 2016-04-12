@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-## Summary: Show the Loki sonars in RViz
-## Overview:
-##  This program is run on the laptop/desktop and brings up RViz
-##  in a mode that shows the robot sonar sensors.
-
-roslaunch ubiquity_launches rviz_sonar.launch robot_base:=loki
