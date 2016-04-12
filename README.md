@@ -414,9 +414,8 @@ The structure of a unified `*.launch.xml` file is basically as follows:
         </launch>
 
 The structure of the `m_*.launch.xml` file differs somewhat from an
-`n_*.launch.xml`.  The `m_*.launch.xml` file 
-
-The detailed structure of an `m_*.launch.xml` file is like this:
+`n_*.launch.xml`.  The detailed structure of an `m_*.launch.xml`
+file is shown below:
 
         <launch>
           <!--Summary: {One line summary.} -->
@@ -434,7 +433,7 @@ The detailed structure of an `m_*.launch.xml` file is like this:
           <arg name="viewer_user" default=""/>
             <!--viewer_user: The user account on the viewer computer to use. -->
         
-There five arguments that are present in all `m_*.launch files`:
+There are five arguments that are present in all `m_*.launch files`:
 
 * `robot_dir`: This is the directory of the package that contains all of the
    robot configuration.  For the Loki robot, this directory location
@@ -514,6 +513,21 @@ The XML for a robot `n_*.launch.xml` file looks as follows:
 
 where `NLAUNCH_NAME` is the base name of the `n_*.launch.xml` file that
 is being included.
+
+All `n_*.launch.xml` files have both a `<machine ...>` tag and a `<node ...>` tag.
+They look as follows:
+
+          <machine name="$(arg machine_name)"
+           address="$(arg machine_host)" user="$(arg machine_user)"
+           env-loader="/tmp/env_loader.sh" />
+
+          <node name="$(arg node_name)" machine="($arg machine_name)"
+           pkg="...." type="..." ...>
+            <param name="..." value="..." />
+            ...
+          </node>
+
+
 
 ## Development Environment Details
 
