@@ -372,14 +372,14 @@ The structure of a unified `*.launch.xml` file is basically as follows:
 
         <launch>
           <!--Summary: {One line summary of what launch file does.} -->
-	  <!--Overview: {A multi-line summary of what the
+          <!--Overview: {A multi-line summary of what the
               launch file does. -->
           
           <!-- Required Arguments: -->
           <arg name="required_argument_name1" />
-	    <!--required_argument_name1: {Summary of what argument is used for.} -->
+            <!--required_argument_name1: {Summary of what argument is used for.} -->
           <arg name="required_argument_name2" />
-	    <!--required_argument_name2: {Summary of what argument is used for.} -->
+            <!--required_argument_name2: {Summary of what argument is used for.} -->
           ...
           
           <!-- Convenience Arguments: -->
@@ -388,15 +388,15 @@ The structure of a unified `*.launch.xml` file is basically as follows:
           <arg name="convenience_argument_name2" value="value2" />
           ...
           
-	  <!-- Option arguments: -->
+          <!-- Option arguments: -->
           <arg name="optional_argument_name1" default="default_value1" />
-	    <!--optional_argument_name1: {Summary of optional argument 1.} -->
+            <!--optional_argument_name1: {Summary of optional argument 1.} -->
           <arg name="optional_argument_name2" default="default_value2" />
-	    <!--optional_argument_name2: {Summary of optional argument 2.} -->
+            <!--optional_argument_name2: {Summary of optional argument 2.} -->
           ...
 
-	  <!-- Machine information: -->
-	  <machine name="..." address="..." user="..." env-loader="..." />
+          <!-- Machine information: -->
+          <machine name="..." address="..." user="..." env-loader="..." />
 
           <!-- Includes: -->
           <include file="...">
@@ -465,7 +465,7 @@ Some `m_*.launch.xml` files have optional arguments and some do not:
           <!-- Optional arguments: -->
           <arg name="optional_name1..." default="..." />
             <!--optional_name1: {Description of optional_name1.} -->
-	  ...
+          ...
         
 The rest of an `m_*.launch.xml` file consists of `<include ...>`
 directives.
@@ -473,7 +473,7 @@ directives.
 The call to another `m_*.launch.xml` directory almost
 always looks as follows:
 
-	  <include file="$(arg_ul)/m_MLAUNCH_NAME/launch/m_MLAUNCH_NAME.launch.xml">
+          <include file="$(arg_ul)/m_MLAUNCH_NAME/launch/m_MLAUNCH_NAME.launch.xml">
             <arg name="robot_dir" value="$(arg robot_dir)" />
             <arg name="robot_host" value="$(arg robot_host)" />
             <arg name="robot_user" value="$(arg robot_user)" />
@@ -492,11 +492,11 @@ desktop/laptop) or on the robot.
 The XML for a remote `n_*.launch.xml` file looks as follows:
 
           <include file $(arg_ul)/n_NLAUNCH_NAME/launch/n_NLAUNCH_NAME.launch.xml">
-	    <arg name="robot_dir" value="$(arg robot_dir)" />
+            <arg name="robot_dir" value="$(arg robot_dir)" />
             <arg name="machine_name" value="remote" />
             <arg name="machine_host" value="$(arg remote_host)" />
             <arg name="machine_user" value="$(arg remote_user)" />
-	    <!-- Additional node specific arguments go here -->
+            <!-- Additional node specific arguments go here -->
           </include>
 
 where `NLAUNCH_NAME` is the base name of the `n_*.launch.xml` file that
@@ -505,11 +505,11 @@ is being included.
 The XML for a robot `n_*.launch.xml` file looks as follows:
 
           <include file $(arg_ul)/n_NLAUNCH_NAME/launch/n_NLAUNCH_NAME.launch.xml">
-	    <arg name="robot_dir" value="$(arg robot_dir)" />
+            <arg name="robot_dir" value="$(arg robot_dir)" />
             <arg name="machine_name" value="robot" />
             <arg name="machine_host" value="$(arg robot_host)" />
             <arg name="machine_user" value="$(arg robot_user)" />
-	    <!-- Additional node specific arguments go here -->
+            <!-- Additional node specific arguments go here -->
           </include>
 
 where `NLAUNCH_NAME` is the base name of the `n_*.launch.xml` file that
@@ -636,7 +636,7 @@ have preloaded micro-SD card, please see the
         ping -c 5 NEW_HOSTNAME.local
         ssh ubuntu@NEW_HOSTNAME.local
         Password:
-	# Type in the new password.
+        # Type in the new password.
 
 5. We are going to set up secure shell on the robot.  There are two
    steps here.  First, we will generate public/private key pair
