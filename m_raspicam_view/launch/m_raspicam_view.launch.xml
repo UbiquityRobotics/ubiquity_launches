@@ -26,7 +26,7 @@
    address="$(arg robot_host)" user="$(arg robot_user)"
    env-loader="/tmp/env_loader.sh" />
 
-  <!-- Start m_raspicam_raw node: -->
+  <!-- Start m_raspicam node: -->
   <include
    file="$(arg root)/m_raspicam/launch/m_raspicam.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />

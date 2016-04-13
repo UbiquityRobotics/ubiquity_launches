@@ -26,31 +26,21 @@
         mapping. -->
 
   <!-- Convenience arguments: -->
-  <arg name="root" value="$(find ubiquity_launches)" />
-  <arg name="jst" value="joystick_teleop" />
-  <arg name="cam" value="raspicam" />
-  <arg name="ms"  value="map_server" />
+  <arg name="ul" value="$(find ubiquity_launches)" />
   <arg name="mb"  value="move_base" />
   <arg name="fd"  value="fiducial_detect" />
   <arg name="fs"  value="fiducial_slam" />
 
-  <!-- Basic joystick teleop enabled base -->
-  <include
-   file="$(arg root)/m_$(arg jst)/launch/m_$(arg jst).launch" >
-    <arg name="robot_platform" value="$(arg robot_platform)" />
-  </include>
-
   <!-- Camera -->
   <include
-   file="$(arg root)/n_$(arg cam)/launch/n_$(arg cam).launch" >
-    <arg name="robot_platform" value="$(arg robot_platform)"/>
-    <arg name="width" value="1280" />
-    <arg name="height" value="960" />
+   file="$(arg root)/m_raspicam/launch/m_raspicam.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="viewer_host" value="$(arg viewer_host)" />
+    <arg name="viewer_user" value="$(arg viewer_user)" />
   </include>
-
-  <!-- map node -->
-  <include
-   file="$(arg root)/n_$(arg ms)/launch/n_$(arg ms).launch.xml" />
 
   <!-- Fiducial detection -->
   <include
