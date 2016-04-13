@@ -24,9 +24,9 @@
   <!-- namespace for camera input -->
   <arg name="camera" default="/camera"/>
     <!--camera: The ROS topic to subscribe for for camera images. -->
-  <arg name="image" default="image_rect"/>
+  <arg name="image" default="image/compressed"/>
     <!--image: The ROS sub-topic to fetch the rectangular image from. -->
-  <arg name="fiducial_len" default="0.2"/>
+  <arg name="fiducial_len" default="0.145"/>
     <!--fiducial_len: The length of one fiducial edge in meters. -->
   <arg name="undistort_points" default="false"/>
     <!--undistort_points: If `true`, the points will be undistorted
@@ -39,7 +39,7 @@
 
   <node pkg="fiducial_detect" machine="$(arg machine_name)" 
     name="fiducial_detect" type="fiducial_detect" output="screen" respawn="true">
-    
+
     <param name="tag_height" value="$(env HOME)/.ros/fiducials/Tag_Heights.xml" />
     <param name="data_directory" value="$(env HOME)/.ros/fiducials" />
     <param name="map_frame" value="odom" />
