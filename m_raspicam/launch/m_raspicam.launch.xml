@@ -54,7 +54,7 @@
     args="compressed in:=/$(arg node)/camera/image_slow raw out:=$(arg output_prefix)/image_raw" /> -->
 
   <include 
-   file="$(arg ul)/n_$(arg rsc)/launch/n_$(arg rsc).launch.xml">
+   file="$(arg root)/n_rosservice_call/launch/n_rosservice_call.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="machine_name" value="robot"/>

@@ -18,7 +18,6 @@
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
   <arg name="node" value="raspicam" />
-  <arg name="rsc" value="rosservice_call" />
 
   <!-- Optional arguments: -->
   <arg name="camera_frame_id" default="" />
