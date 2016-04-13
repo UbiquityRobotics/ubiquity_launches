@@ -61,8 +61,8 @@
     <param name="srrc_publishing_mode" value="$(arg srrc_publishing_mode)" />
     <param name="tf_prefex"            value="$(arg tf_prefix)" />
     <param name="width"                value="$(arg width)" />
-    <remap from="/$(arg node)/camera/camera_info" to="$(arg output_prefix)/camera_info"/>
-    <!-- FIXME: should use a republisher so both topics are valid -->
+    <remap from="/n_raspicam/camera/camera_info" to="$(arg output_prefix)/camera_info"/>
+    <remap from="/n_raspicam/camera/image/compressed" to="$(arg output_prefix)/image/compressed"/>
   </node>
 
 </launch>
