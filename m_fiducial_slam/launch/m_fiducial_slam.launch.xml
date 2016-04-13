@@ -33,7 +33,7 @@
 
   <!-- Camera -->
   <include
-   file="$(arg root)/m_raspicam/launch/m_raspicam.launch.xml">
+   file="$(arg ul)/m_raspicam/launch/m_raspicam.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="robot_host" value="$(arg robot_host)" />
@@ -44,7 +44,7 @@
 
   <!-- Fiducial detection -->
   <include
-   file="$(arg root)/n_$(arg fd)/launch/n_$(arg fd).launch.xml">
+   file="$(arg ul)/n_$(arg fd)/launch/n_$(arg fd).launch.xml">
     <arg name="camera" value="/camera"/>
     <arg name="image" value="image/compressed"/>
     <!-- default fiducal_len = 0.145 mjWall 0.09  mjGar 0.135 wayne .200 -->
@@ -60,7 +60,7 @@
 
   <!-- Fiducial slam -->
   <include
-   file="$(arg root)/n_$(arg fs)/launch/n_$(arg fs).launch.xml">
+   file="$(arg ul)/n_$(arg fs)/launch/n_$(arg fs).launch.xml">
     <arg name="mapping_mode" value="$(arg mapping_mode)"/>
     <arg name="camera_frame" value="camera_pose"/>
     <arg name="map_frame" value="map"/>
