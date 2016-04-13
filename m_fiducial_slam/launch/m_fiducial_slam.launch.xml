@@ -75,7 +75,7 @@
   </include>
 
   <!-- move_base node -->
-  <include
-   file="$(arg root)/n_$(arg mb)/launch/n_$(arg mb).launch.xml" />
+<!--   <include
+   file="$(arg root)/n_$(arg mb)/launch/n_$(arg mb).launch.xml" /> -->
 
 </launch>
