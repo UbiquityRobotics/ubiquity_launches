@@ -8,7 +8,17 @@
 
   <!-- Required arguments: -->
   <arg name="robot_platform" />
-    <!--robot_platform: The robot base (e.g. "magni", "loki", etc.) to use. -->
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
+  <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
+  <arg name="viewer_host" default="localhost" />
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
+  <arg name="viewer_user" default="" />
+    <!--viewer_user: The user account on the display computer to use. -->
 
   <!-- Optional arguments: -->
   <arg name="mapping_mode" default="false" />
