@@ -29,6 +29,8 @@
     <arg name="machine_name" value="robot"/>
     <arg name="machine_host" value="$(arg robot_host)"/>
     <arg name="machine_user" value="$(arg robot_user)"/>
+    
+    <arg name="output_prefix" default = "/camera" />
   </include>
   
   <!-- Start n_image_uncompress node: -->
