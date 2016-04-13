@@ -9,6 +9,18 @@
       It will in images from an image topic and genarate a topic
       that contains information about each fiducial in the image. -->
 
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
   <!-- namespace for camera input -->
   <arg name="camera" default="/camera"/>
     <!--camera: The ROS topic to subscribe for for camera images. -->
@@ -20,8 +32,14 @@
     <!--undistort_points: If `true`, the points will be undistorted
         otherwise they will be left distorted. -->
 
-  <node pkg="fiducial_detect" name="fiducial_detect"
-    type="fiducial_detect" output="screen" respawn="true">
+  <machine name="$(arg machine_name)"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
+
+
+  <node pkg="fiducial_detect" machine="$(arg machine_name)" 
+    name="fiducial_detect" type="fiducial_detect" output="screen" respawn="true">
+    
     <param name="tag_height" value="$(env HOME)/.ros/fiducials/Tag_Heights.xml" />
     <param name="data_directory" value="$(env HOME)/.ros/fiducials" />
     <param name="map_frame" value="odom" />
