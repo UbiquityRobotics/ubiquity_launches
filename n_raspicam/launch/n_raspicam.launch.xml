@@ -53,7 +53,8 @@
    pkg="raspicam" type="raspicam_node"
    output="screen">
     <param name="camera_frame_id"      value="$(arg camera_frame_id)" />
-    <param name="camera_info_url"      value="$(arg camera_info_url)" />
+    <!-- <param name="camera_info_url"      value="$(arg camera_info_url)" /> -->
+    <param name="camera_info_url" value="file://$(find fiducial_detect)/camera_info/loki2.yaml"/>
     <param name="camera_name"          value="$(arg camera_name)" />
     <param name="framerate"            value="$(arg framerate)" />
     <param name="height"               value="$(arg height)" />
