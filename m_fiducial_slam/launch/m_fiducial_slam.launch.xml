@@ -30,6 +30,16 @@
   <arg name="mb"  value="move_base" />
   <arg name="fd"  value="fiducial_detect" />
   <arg name="fs"  value="fiducial_slam" />
+  <arg name="rb" value="m_robot_base" />
+
+  <include file="$(arg ul)/$(arg rb)/launch/$(arg rb).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="viewer_host" value="$(arg viewer_host)" />
+    <arg name="viewer_user" value="$(arg viewer_user)" />
+  </include>
 
   <!-- Camera -->
   <include
