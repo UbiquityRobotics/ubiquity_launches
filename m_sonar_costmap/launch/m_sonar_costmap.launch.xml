@@ -21,9 +21,9 @@
     <include file="$(arg ul)/n_$(arg mb)/launch/n_$(arg mb).launch.xml">
         <arg name="robot_platform" value="$(arg robot_platform)" />
         <arg name="robot_dir" value="$(arg robot_dir)" />
-        <arg name="machine_name" value="robot" />
-        <arg name="machine_host" value="$(arg robot_host)" />
-        <arg name="machine_user" value="$(arg robot_user)" />
+        <arg name="machine_name" value="viewer" />
+        <arg name="machine_host" value="$(arg viewer_host)" />
+        <arg name="machine_user" value="$(arg viewer_user)" />
 
         <arg name="global_frame_id" default="odom"/>
         <arg name="base_frame_id" default="base_link"/>
