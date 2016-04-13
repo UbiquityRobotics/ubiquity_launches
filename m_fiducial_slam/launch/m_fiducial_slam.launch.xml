@@ -46,10 +46,16 @@
   <include
    file="$(arg root)/n_$(arg fd)/launch/n_$(arg fd).launch.xml">
     <arg name="camera" value="/camera"/>
-    <arg name="image" value="image_raw"/>
+    <arg name="image" value="image/compressed"/>
     <!-- default fiducal_len = 0.145 mjWall 0.09  mjGar 0.135 wayne .200 -->
-    <arg name="fiducial_len" value="0.200"/>
+    <arg name="fiducial_len" value="0.145"/>
     <arg name="undistort_points" value="true"/>
+
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" value="robot"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
   </include>
 
   <!-- Fiducial slam -->
