@@ -32,7 +32,7 @@
   </include>
   
   <!-- Start n_image_uncompress node: -->
-  <include file="$(arg root)/n_image_uncompress/launch/n_image_uncompress.launch.xml">
+<!--   <include file="$(arg root)/n_image_uncompress/launch/n_image_uncompress.launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="machine_name" value="robot"/>
@@ -40,6 +40,6 @@
     <arg name="machine_user" value="$(arg robot_user)"/>
 
     <arg name="camera_name" value="$(arg node)/camera" />
-  </include>
+  </include> -->
 
 </launch>
