@@ -66,6 +66,12 @@
     <arg name="map_frame" value="map"/>
     <arg name="odom_frame" value="odom"/>
     <arg name="pose_frame" value="base_link"/>
+
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" value="robot"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
   </include>
 
   <!-- move_base node -->
