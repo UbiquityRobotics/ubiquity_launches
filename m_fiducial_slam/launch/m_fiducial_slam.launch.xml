@@ -75,7 +75,7 @@
     <arg name="camera_frame" value="/camera_pose"/>
     <arg name="map_frame" value="/map"/>
     <arg name="odom_frame" value="/odom"/>
-    <arg name="pose_frame" value="/base_link"/>s
+    <arg name="pose_frame" value="/base_link"/>
 
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_dir" value="$(arg robot_dir)" />
