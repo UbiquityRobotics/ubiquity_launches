@@ -5,6 +5,19 @@
       a map of fiducial locations and fiducial orientations.  Furthermore,
       node will generate a best estimate of the robot location based
       on the fiducial map. -->
+
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
   <arg name="camera_frame"/>
     <!--camera_frame: The name of the TF camera frame. -->
   <arg name="map_frame"/>
@@ -19,8 +32,13 @@
     <!--mapping_mode: Set to `true` to enable mapping and `false` to
         disable mapping. -->
 
-  <node type="fiducial_slam.py" pkg="fiducial_slam"
-   output="screen" name="fiducial_slam">
+  <machine name="$(arg machine_name)"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
+
+  <node type="fiducial_slam.py" machine="$(arg machine_name)"
+    pkg="fiducial_slam" output="screen" name="fiducial_slam">
+    
     <param name="map_file" value="$(env HOME)/.ros/slam/map.txt" />
     <param name="obs_file" value="$(env HOME)/.ros/slam/obs.txt" />
     <param name="trans_file" value="$(env HOME)/.ros/slam/trans.txt" />
