@@ -38,8 +38,7 @@
 
 
   <node pkg="fiducial_detect" machine="$(arg machine_name)" 
-    name="fiducial_detect" type="fiducial_detect" output="screen" respawn="true"
-    launch-prefix="perf record">
+    name="fiducial_detect" type="fiducial_detect" output="screen" respawn="true">
 
     <param name="tag_height" value="~/.ros/fiducials/Tag_Heights.xml" />
     <param name="data_directory" value="~/.ros/fiducials" />
