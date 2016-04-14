@@ -1,0 +1,48 @@
+<launch>
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
+  <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
+  <arg name="viewer_host" default="localhost" />
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
+  <arg name="viewer_user" default="" />
+    <!--viewer_user: The user account on the display computer to use. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="ttk" value="n_teleop_twist_keyboard" />
+
+  <!-- Remote robot machine -->
+  <machine name="robot"
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- Start fiducial stuff: -->
+  <include
+   file="$(arg root)/m_fiducial_slam/launch/m_fiducial_slam.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="viewer_host" value="$(arg viewer_host)" />
+    <arg name="viewer_user" value="$(arg viewer_user)" />
+  </include>
+  
+  <!-- Start rviz node: -->
+  <include
+   file="$(find fiducial_detect)/launch/fiducial_rviz.launch">
+  </include>
+
+  <include file="$(arg root)/$(arg ttk)/launch/$(arg ttk).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="machine_name" value="viewer" />
+    <arg name="machine_host" value="$(arg viewer_host)" />
+    <arg name="machine_user" value="$(arg viewer_user)" />
+  </include>
+
+</launch>
