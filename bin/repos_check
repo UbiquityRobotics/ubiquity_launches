@@ -1,0 +1,11 @@
+#!/bin/sh
+
+ROBOT_HOST=`echo $ROS_MASTER_URI | sed -e s,http://,, | sed -e s,:11311,,`
+if [ "$ROBOT_HOST" = "$ROS_HOSTNAME" ] ; then
+    echo "Everything is on the same computer, so everything is OK."
+else
+    ssh ubuntu@$ROBOT_HOST "(cd ~/catkin_ws/src ; ubiquity_main/mgit symbolic-ref --short HEAD)" > /tmp/robot_branches.txt
+    (cd ~/catkin_ws/src ; ubiquity_main/mgit symbolic-ref --short HEAD) > /tmp/local_branches.txt
+    echo "diff /tmp/local_branches.txt /tmp/robot_branches.txt"
+    diff /tmp/local_branches.txt /tmp/robot_branches.txt
+fi
