@@ -17,8 +17,46 @@
   <arg name="viewer_user" default=""/>
     <!--viewer_user: The user account to use on the viewer processor. -->
 
+  <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />
   <arg name="ksc" value="kobuki_safety_controller" />
+
+  <!-- Optional arguments: -->
+  <arg name="initial_pose_x" default="2.0"/>
+    <!--initial_pose_x: Initial X position of robot in simultion. -->
+  <arg name="initial_pose_y" default="2.0"/>
+    <!--initial_pose_y: Initial Y position of robot in simultion. -->
+  <arg name="initial_pose_a" default="0.0"/>
+    <!--initial_pose_a: Initial angular position of robot in simultion (radians). -->
+
+  <!-- Start the Kubuki Safety Controller Node: -->
+  <include file="$(arg ul)/n_$(arg ksc)/launch/n_$(arg ksc).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" value="robot" />
+    <arg name="machine_host" value="$(arg robot_host)" />
+    <arg name="machine_user" value="$(arg robot_user)" />
+
+    <arg name="cmd_vel_ptopic" value="/cmd_vel_mux/input/safety_controller"/>
+    <arg name="events_bumper_ptopic" value="/mobile_base/events/bumper"/>
+    <arg name="events_cliff_ptopic" value="/mobile_base/events/cliff"/>
+    <arg name="events_wheel_drop_ptopic" value="/mobile_base/events/wheel_drop"/>
+  </include>
+
+  <!-- Start the AMCL (Adaptive Monte Carlo Localization) system: -->
+  <include file="$(arg ul)/n_amcl/launch/n_amcl.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)"/>
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="machine_name" default="robot"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
+
+    <arg name="scan_stopic" value="scan" />
+    <arg name="use_map_topic" value="true" />
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
+  </include>
 
 </launch>
 
