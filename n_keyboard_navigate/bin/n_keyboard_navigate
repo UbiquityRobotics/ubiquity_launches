@@ -137,10 +137,10 @@ while not rospy.is_shutdown():
 	    # Help:
 	    print(
 	      "Commands are:\n" +
-	      "  g x y [angle] - Go to (x, y) with an final orientation of angle"
-	      "  m waypoint - move to waypoint"
-	      "  r waypoint - remember waypoint" +
-	      "  ? - This help message\n")
+	      "  g x y [angle] - Go to (x, y) with an final orientation of angle\n"
+	      "  m waypoint - move to waypoint\n"
+	      "  w waypoint - remember waypoint\n" +
+	      "  ? - This help message")
 	else:
 	    # Let user now *command* is not recognized:
 	    print("Unrecognized command: '{0}'".format(command))

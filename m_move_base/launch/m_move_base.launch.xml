@@ -104,4 +104,14 @@
     <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
   </include>
 
+  <!-- Start any nodes that are specific to the robot platform: -->
+  <include file="$(arg robot_dir)/m_move_base/launch/m_move_base.launch.xml" >
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="viewer_host" value="$(arg viewer_host)"/>
+    <arg name="viewer_user" value="$(arg viewer_user)"/>
+  </include>
+
 </launch>

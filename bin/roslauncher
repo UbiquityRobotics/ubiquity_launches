@@ -70,7 +70,7 @@ else
     ROBOT_DIR=`rospack find $ROBOT_PKG`
     else
 	# We do not have a robot directory:
-	echo "The robot at $ROBOT_USER@$ROBOT_HOST does not have a $FILE_NAME file."
+	echo "The robot at $ROBOT_USER@$ROBOT_HOST does not have a $PLATFORM_FILE_NAME file."
 	exit 1
     fi
 fi

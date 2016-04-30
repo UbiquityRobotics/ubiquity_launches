@@ -1,0 +1,24 @@
+<launch>
+  <!--Summary: Start all additional nodes needed for move_base node for the simulator. -->
+  <!--Overview: This launch file launches all additional nodes needed for the
+      move_base node on the simulator.  -->
+
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: Robot platform name (e.g. loki, magni, etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="robot_host" />
+    <!--robot_host: The host name for robot processor. -->
+  <arg name="robot_user" />
+    <!--robot_user: The user account to use on the robot processor. -->
+  <arg name="viewer_host" default="localhost"/>
+    <!--viewer_host: The host name for viewer processor. -->
+  <arg name="viewer_user" default=""/>
+    <!--viewer_user: The user account to use on the viewer processor. -->
+
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="ksc" value="kobuki_safety_controller" />
+
+</launch>
+
