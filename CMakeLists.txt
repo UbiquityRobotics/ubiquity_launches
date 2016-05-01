@@ -17,18 +17,30 @@ catkin_package()
 #############
 install(PROGRAMS
   bin/devel_install.sh
+  bin/fiducial_map
+  bin/fiducial_map_view
   bin/keyboard_drive
   bin/keyboard_navigate
   bin/raspicam
   bin/raspicam_view
+  bin/repos_check
   bin/roslauncher
   bin/share
+  bin/sonar_costmap
   bin/unshare
   bin/yaml2launch.py
 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+
+install(DIRECTORY m_fiducial_map/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_fiducial_map
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY m_fiducial_map_view/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_fiducial_map_view
+  PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY m_fiducial_slam/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_fiducial_slam
@@ -60,6 +72,10 @@ install(DIRECTORY m_raspicam_view/
 
 install(DIRECTORY m_robot_base/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_robot_base
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY m_sonar_costmap/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_sonar_costmap
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_amcl/
@@ -136,6 +152,10 @@ install(DIRECTORY n_rviz/
 
 install(DIRECTORY n_sleep_forever/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_sleep_forever
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY n_static_transform_publisher/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_static_transform_publisher
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_teleop_twist_keyboard/

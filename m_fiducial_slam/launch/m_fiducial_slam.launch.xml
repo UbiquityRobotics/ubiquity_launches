@@ -1,10 +1,6 @@
 <launch>
   <!--Summary: Start Fiduical SLAM (Simultaneous Localication And Mapping) -->
-  <!--Overview: The launch file for this directory fires off the fiducial
-  slam subsystem.  This causes the `move_base` node to be
-  loaded so that local cost maps can be generated.
-  This launch file requires a `robot_platform` argument to specify
-  which robot base is being used (e.g `loki`, `magni`, etc.) -->
+  <!--Overview: Start the fiducial slam nodes (only.) -->
 
   <!-- Required arguments: -->
   <arg name="robot_platform" />
@@ -58,7 +54,7 @@
     <arg name="camera" value="/camera"/>
     <arg name="image" value="image/compressed"/>
     <!-- default fiducal_len = 0.145 mjWall 0.09  mjGar 0.135 wayne .200 -->
-    <arg name="fiducial_len" value="0.145"/>
+    <arg name="fiducial_len" value="0.200"/>
     <arg name="undistort_points" value="true"/>
 
     <arg name="robot_platform" value="$(arg robot_platform)" />

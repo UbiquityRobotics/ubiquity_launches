@@ -1,0 +1,62 @@
+<launch>
+  <!--Summary: Start Fiduical SLAM (Simultaneous Localication And Mapping) -->
+  <!--Overview: The launch file for this directory fires off the fiducial
+      slam nodes in conjunction with the robot base node and the  keyboard
+      teleop node . -->
+
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
+  <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
+  <arg name="viewer_host" default="localhost" />
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
+  <arg name="viewer_user" default="" />
+    <!--viewer_user: The user account on the display computer to use. -->
+
+  <!-- Optional arguments: -->
+  <arg name="mapping_mode" default="true" />
+    <!--mapping_mode: Set to `true` to force mapping and `false`
+        to disable mapping. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="fs"  value="fiducial_slam" />
+  <arg name="rb" value="robot_base" />
+  <arg name="ttk" value="teleop_twist_keyboard" />
+
+  <!-- Start the robot base nodes: -->
+  <include file="$(arg ul)/m_$(arg rb)/launch/m_$(arg rb).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="viewer_host" value="$(arg viewer_host)" />
+    <arg name="viewer_user" value="$(arg viewer_user)" />
+  </include>
+
+  <!-- Start the fiducial slam nodes: -->
+  <include file="$(arg ul)/m_$(arg_fs)/launch/m_$(arg fs).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_dir" value="$(arg robot_dir)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="viewer_host" value="$(arg viewer_host)" />
+    <arg name="viewer_user" value="$(arg viewer_user)" />
+
+    <arg name="mapping_mode" value="$(arg mapping_mode)" />
+  </include>
+
+  <!-- Start the keyboard teleop node: -->
+  <include file="$(arg ul)/$(arg ttk)/launch/$(arg ttk).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="machine_name" value="viewer" />
+    <arg name="machine_host" value="$(arg viewer_host)" />
+    <arg name="machine_user" value="$(arg viewer_user)" />
+  </include>
+
+</launch>

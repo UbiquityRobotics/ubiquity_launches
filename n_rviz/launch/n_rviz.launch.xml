@@ -15,8 +15,7 @@
   <arg name="machine_user" />
     <!--machine_user: The user account on the machine. -->
   <arg name="rviz_file"/>
-    <!--rviz_file: A file that preconfigures rviz to show navigation
-        information.-->
+    <!--rviz_file: A file that preconfigures what rviz will show. -->
 
   <!-- Convenience arguments: -->
   <arg name="ul" value="$(find ubiquity_launches)" />

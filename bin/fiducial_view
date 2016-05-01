@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-rosrun ubiquity_launches roslauncher m_fiducial_slam_view.launch.xml

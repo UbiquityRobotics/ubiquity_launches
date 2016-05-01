@@ -1,4 +1,8 @@
 <launch>
+  <!--Summary: Starts the robot in fiducial slam mapping mode with rviz viewer. -->
+  <!--Overview: Start the robot with the fiducial slam nodes, robot base nodes,
+      they keyboard teleop node, and the rviz node.  -->
+
   <!-- Required arguments: -->
   <arg name="robot_platform" />
     <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
@@ -14,17 +18,12 @@
     <!--viewer_user: The user account on the display computer to use. -->
 
   <!-- Convenience arguments: -->
-  <arg name="root" value="$(find ubiquity_launches)" />
-  <arg name="ttk" value="n_teleop_twist_keyboard" />
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="fs" value="fiducial_slam" />
+  <arg name="fmv" value="fiducial_map_view" />
 
-  <!-- Remote robot machine -->
-  <machine name="robot"
-   address="$(arg robot_host)" user="$(arg robot_user)"
-   env-loader="/tmp/env_loader.sh" />
-
-  <!-- Start fiducial stuff: -->
-  <include
-   file="$(arg root)/m_fiducial_slam/launch/m_fiducial_slam.launch.xml">
+  <!-- Start fiducial slam nodes: -->
+  <include file="$(arg ul)/m_$(arg fs)/launch/m_$(arg fs).launch.xml">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="robot_dir" value="$(arg robot_dir)" />
     <arg name="robot_host" value="$(arg robot_host)" />
@@ -34,15 +33,14 @@
   </include>
   
   <!-- Start rviz node: -->
-  <include
-   file="$(find fiducial_detect)/launch/fiducial_rviz.launch">
-  </include>
-
-  <include file="$(arg root)/$(arg ttk)/launch/$(arg ttk).launch.xml">
+  <include file="$(arg ul)/n_rviz/launch/n_rviz.launch.xml" >
+    "$(robot_dir)/m_$(arg fmv)/rviz/$(arg fmv).rviz">
     <arg name="robot_platform" value="$(arg robot_platform)" />
     <arg name="machine_name" value="viewer" />
     <arg name="machine_host" value="$(arg viewer_host)" />
     <arg name="machine_user" value="$(arg viewer_user)" />
+
+    <arg name="rviz_file" value="$(arg robot_dir)/m_$(arg fmv)/rviz/$(arg fmv).rviz" />
   </include>
 
 </launch>

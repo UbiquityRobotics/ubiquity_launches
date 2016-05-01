@@ -19,6 +19,10 @@ The following executables are available in `bin`:
 
 * `devel_install.sh`: 
 
+* `fiducial_map`: 
+
+* `fiducial_map_view`: 
+
 * `keyboard_drive`: Start the keyboard driver for the robot.
 
 * `keyboard_navigate`: Start the keyboard driver for the robot.
@@ -27,15 +31,25 @@ The following executables are available in `bin`:
 
 * `raspicam_view`: Start the Raspberry Pi camera and show its output on the screen.
 
+* `repos_check`: 
+
 * `roslauncher`: Helper program to launch ROS launch files.
 
 * `share`: 
+
+* `sonar_costmap`: 
 
 * `unshare`: 
 
 * `yaml2launch.py`: An experimental program to convert a `.yaml` into a `.launch.xml` file.
 
 The following launch file directories are available:
+
+* `m_fiducial_map`:
+  Start Fiduical SLAM (Simultaneous Localication And Mapping)
+
+* `m_fiducial_map_view`:
+  Starts the robot in fiducial slam mapping mode with rviz viewer.
 
 * `m_fiducial_slam`:
   Start Fiduical SLAM (Simultaneous Localication And Mapping)
@@ -60,6 +74,8 @@ The following launch file directories are available:
 
 * `m_robot_base`:
   Set up a robot base for operation.
+
+* m_sonar_costmap: (No Summary Available)
 
 * `n_amcl`:
   Launch the Adaptive Monte Carlo Localization node.
@@ -118,8 +134,14 @@ The following launch file directories are available:
 * `n_sleep_forever`:
   Start a process that sleeps for forever.
 
+* `n_static_transform_publisher`:
+  Launch the ROS `static transform_publisher` node.
+
 * `n_teleop_twist_keyboard`:
   Launches the ROS `teleop_twist_joy/teleop_node` node.
+
+* `simulator`:
+  Start all additional nodes needed for move_base node for the simulator.
 
 * simulator: (No Summary Available)
 
@@ -130,6 +152,33 @@ The following launch file directories are available:
 
 ### `devel_install.sh` Executable:
 
+
+### `fiducial_map` Executable:
+
+
+* m_fiducial_map
+  * m_robot_base
+  * m_fiducial_slam
+    * m_robot_base
+    * m_raspicam
+      * n_raspicam
+      * n_rosservice_call
+    * n_fiducial_detect
+    * n_fiducial_slam
+  * teleop_twist_keyboard (not found)
+
+### `fiducial_map_view` Executable:
+
+
+* m_fiducial_map_view
+  * m_fiducial_slam
+    * m_robot_base
+    * m_raspicam
+      * n_raspicam
+      * n_rosservice_call
+    * n_fiducial_detect
+    * n_fiducial_slam
+  * n_rviz
 
 ### `keyboard_drive` Executable:
 
@@ -148,10 +197,8 @@ summary here
     * m_move_base
       * m_robot_base
       * n_navigation_velocity_smoother
-      * n_kobuki_safety_controller
       * n_move_base
       * n_map_server
-      * n_amcl
     * n_rviz
   * n_keyboard_navigate
 
@@ -163,8 +210,7 @@ well, please use the `raspicam_view` program instead.
 
 * m_raspicam
   * n_raspicam
-    * n_rosservice_call
-  * n_image_uncompress
+  * n_rosservice_call
 
 ### `raspicam_view` Executable:
 
@@ -181,9 +227,11 @@ camera.
 * m_raspicam_view
   * m_raspicam
     * n_raspicam
-      * n_rosservice_call
-    * n_image_uncompress
+    * n_rosservice_call
   * n_rqt_image_view
+
+### `repos_check` Executable:
+
 
 ### `roslauncher` Executable:
 
@@ -217,6 +265,13 @@ in the example above.
 ### `share` Executable:
 
 
+### `sonar_costmap` Executable:
+
+
+* m_sonar_costmap
+  * n_move_base
+  * m_robot_base
+
 ### `unshare` Executable:
 
 
@@ -226,18 +281,84 @@ This is an experimental program that does not work yet.  Please move along.
 
 ## Launch File Directories
 
-### `m_fiducial_slam` Launch File Directory
+### `m_fiducial_map` Launch File Directory
 
 The launch file for this directory fires off the fiducial
-slam subsystem.  This causes the `move_base` node to be
-loaded so that local cost maps can be generated.
-This launch file requires a `robot_platform` argument to specify
-which robot base is being used (e.g `loki`, `magni`, etc.)
+slam nodes in conjunction with the robot base node and the  keyboard
+teleop node .
 
 This launch file has the following arguments:
 
 * robot_platform (Required):
-  The robot base (e.g. "magni", "loki", etc.) to use.
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* robot_host (Required):
+  The DNS address for the robot.
+
+* robot_user (Required):
+  The user account on the robot to use.
+
+* viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
+
+* viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
+
+* mapping_mode (Optional, default: 'true'):
+  Set to `true` to force mapping and `false`
+  to disable mapping.
+
+### `m_fiducial_map_view` Launch File Directory
+
+Start the robot with the fiducial slam nodes, robot base nodes,
+they keyboard teleop node, and the rviz node.
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* robot_host (Required):
+  The DNS address for the robot.
+
+* robot_user (Required):
+  The user account on the robot to use.
+
+* viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
+
+* viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
+
+### `m_fiducial_slam` Launch File Directory
+
+Start the fiducial slam nodes (only.)
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* robot_host (Required):
+  The DNS address for the robot.
+
+* robot_user (Required):
+  The user account on the robot to use.
+
+* viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
+
+* viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
 
 * mapping_mode (Optional, default: 'false'):
   Set to `true` to force mapping and `false` to disable
@@ -323,15 +444,6 @@ This launch file has the following arguments:
 * map_file (Optional, default: '$(arg ul)/m_robot_base/maps/stage/maze.world'):
   The stage `.world` file to use.
 
-* initial_pose_x (Optional, default: '2.0'):
-  Initial X position of robot in simultion.
-
-* initial_pose_y (Optional, default: '2.0'):
-  Initial Y position of robot in simultion.
-
-* initial_pose_a (Optional, default: '0.0'):
-  Initial angular position of robot in simultion (radians).
-
 ### `m_move_base_view` Launch File Directory
 
 Run the nodes to required to navigate a robot platform along
@@ -412,6 +524,28 @@ This launch file has the following arguments:
 
 Launches all the nodes needed to bring up basic driving
 of a robot platform.
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* robot_host (Required):
+  The DNS address for the robot.
+
+* robot_user (Required):
+  The user account on the robot to use.
+
+* viewer_host (Optional, default: 'localhost'):
+  The DNS address for the viewer machine with a display.
+
+* viewer_user (Optional, default: ''):
+  The user account on the display computer to use.
+
+### `m_sonar_costmap` Launch File Directory
 
 This launch file has the following arguments:
 
@@ -639,13 +773,28 @@ that contains information about each fiducial in the image.
 
 This launch file has the following arguments:
 
+* robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
+* machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
+
 * camera (Optional, default: '/camera'):
   The ROS topic to subscribe for for camera images.
 
-* image (Optional, default: 'image_rect'):
+* image (Optional, default: 'image/compressed'):
   The ROS sub-topic to fetch the rectangular image from.
 
-* fiducial_len (Optional, default: '0.2'):
+* fiducial_len (Optional, default: '0.145'):
   The length of one fiducial edge in meters.
 
 * undistort_points (Optional, default: 'false'):
@@ -661,6 +810,18 @@ on the fiducial map.
 
 This launch file has the following arguments:
 
+* robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
 * camera_frame (Required):
   The name of the TF camera frame.
 
@@ -671,6 +832,9 @@ This launch file has the following arguments:
   The name of the pose frame.
 
 * pose_frame (Required):
+
+* machine_name (Optional, default: 'robot'):
+  The machine name (i.e. "robot" or "viewer")
 
 * mapping_mode (Optional, default: 'false'):
   Set to `true` to enable mapping and `false` to
@@ -1062,7 +1226,7 @@ This launch file has the following arguments:
 * publish_frequency (Optional, default: '50.0'):
   The frequency at which to publish
 
-* use_tf_static (Optional, default: 'true'):
+* use_tf_static (Optional, default: 'false'):
   Set to true to use /tf_static latched static broadcaster.
 
 * robot_description_file (Optional, default: '$(arg robot_dir)/n_$(arg rsp)/urdf/robot.urdf'):
@@ -1147,8 +1311,7 @@ This launch file has the following arguments:
   The user account on the machine.
 
 * rviz_file (Required):
-  A file that preconfigures rviz to show navigation
-  information.
+  A file that preconfigures what rviz will show.
 
 * machine_name (Optional, default: 'viewer'):
   The machine name (i.e. "robot" or "viewer")
@@ -1165,6 +1328,55 @@ program, it has the side-effect of starting `roscore` and keeping
 
 
 This launch file has no arguments.
+
+### `n_static_transform_publisher` Launch File Directory
+
+This node publishes a static (i.e. unchanging) tf transform
+with a fixed update period.
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  The robot platform (e.g. "magni", "loki", etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* machine_host (Required):
+  The DNS machine name (e.g. "ubuntu.local")
+
+* machine_user (Required):
+  The user account on the machine.
+
+* from_tf_name (Required):
+
+* to_tf_name (Required):
+
+* machine_name (Optional, default: 'viewer'):
+  The machine name (i.e. "robot" or "viewer")
+
+* node_name (Optional, default: 'n_$(arg stp)'):
+
+* dx (Optional, default: '0.0'):
+  The translate distance from `from_tf_name` to `to_tf_name` along the X axis.
+
+* dy (Optional, default: '0.0'):
+  The translate distance from `from_tf_name` to `to_tf_name` along the Y axis.
+
+* dz (Optional, default: '0.0'):
+  The translate distance from `from_tf_name` to `to_tf_name` along the Z axis.
+
+* roll (Optional, default: '0.0'):
+  The twist rotation along the X axis from `from_tf_name` to `to_tf_name`.
+
+* pitch (Optional, default: '0.0'):
+  The twist rotation along the Y axis from `from_tf_name` to `to_tf_name`.
+
+* yaw (Optional, default: '0.0'):
+  The twist rotation along the Z axis from `from_tf_name` to `to_tf_name`.
+
+* period (Optional, default: '100'):
+  The refresh period between tf updates in milliseconds.
 
 ### `n_teleop_twist_keyboard` Launch File Directory
 
@@ -1190,6 +1402,40 @@ This launch file has the following arguments:
 
 * node_name (Optional, default: 'teleop'):
   The name to assigne to this node.
+
+### `simulator` Launch File Directory
+
+This launch file launches all additional nodes needed for the
+move_base node on the simulator.
+
+This launch file has the following arguments:
+
+* robot_platform (Required):
+  Robot platform name (e.g. loki, magni, etc.)
+
+* robot_dir (Required):
+  The robot launch files and parameters directory.
+
+* robot_host (Required):
+  The host name for robot processor.
+
+* robot_user (Required):
+  The user account to use on the robot processor.
+
+* viewer_host (Optional, default: 'localhost'):
+  The host name for viewer processor.
+
+* viewer_user (Optional, default: ''):
+  The user account to use on the viewer processor.
+
+* initial_pose_x (Optional, default: '2.0'):
+  Initial X position of robot in simultion.
+
+* initial_pose_y (Optional, default: '2.0'):
+  Initial Y position of robot in simultion.
+
+* initial_pose_a (Optional, default: '0.0'):
+  Initial angular position of robot in simultion (radians).
 
 ### `simulator` Launch File Directory
 
