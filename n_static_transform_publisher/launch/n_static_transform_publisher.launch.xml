@@ -1,0 +1,56 @@
+
+<launch>
+  <!--Summary: Launch the ROS `static transform_publisher` node. -->
+  <!--Overview: This node publishes a static (i.e. unchanging) tf transform
+      with a fixed update period. -->
+
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="viewer" />
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+  <arg name="from_tf_name" />
+  <arg name="to_tf_name" />
+
+  <!-- Convenience arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="stp" value="static_transform_publisher" />
+
+  <!-- Optional arguments: -->
+  <arg name="node_name" default="n_$(arg stp)" />
+  <arg name="dx" default="0.0" />
+    <!--dx: The translate distance from `from_tf_name` to `to_tf_name` along the X axis. -->
+  <arg name="dy" default="0.0"  />
+    <!--dy: The translate distance from `from_tf_name` to `to_tf_name` along the Y axis. -->
+  <arg name="dz" default="0.0"  />
+    <!--dz: The translate distance from `from_tf_name` to `to_tf_name` along the Z axis. -->
+  <arg name="roll" default="0.0"  />
+    <!--roll: The twist rotation along the X axis from `from_tf_name` to `to_tf_name`. -->
+  <arg name="pitch" default="0.0"  />
+    <!--pitch: The twist rotation along the Y axis from `from_tf_name` to `to_tf_name`. -->
+  <arg name="yaw" default="0.0"  />
+    <!--yaw: The twist rotation along the Z axis from `from_tf_name` to `to_tf_name`. -->
+  <arg name="period" default="100"  />
+    <!--period: The refresh period between tf updates in milliseconds. -->
+
+  <!-- Some more convenince arguments used in <node ...> below: -->
+  <arg name="translate" value="$(arg dx) $(arg dy) $(arg dz)" />
+  <arg name="twist" value="$(arg yaw) $(arg pitch) $(arg roll)" />
+
+  <!-- Define the machine to run on: -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- Launch the static_transform_publisher node:  -->
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="tf" type="$(arg stp)"
+   args="$(arg translate) $(arg twist) $(arg from_tf) $(arg to_tf) $(arg period)" />
+
+</launch>
