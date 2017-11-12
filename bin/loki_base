@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-## Summary: Run Loki Base Stack
-##Overview:
-##  This program is run on the robot and starts up a Loki platform
-##  with the basic stack for running the robot
-roslaunch ubiquity_launches m_loki_base.launch robot_base:=loki

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+##Summary: Start the Raspberry Pi camera and show its output on the screen.
+##Overview:
+##  This program will start the Raspberry Pi camera on the robot and
+##  show the resulting images on the laptop/desktop machine.  This program
+##  uses `rqt_image_view` view the image.  Due to race conditions, the
+##  the `rqt_image_view` program may come up before all image topics
+##  are present.  When this happens please click on the refresh button
+##  (a green clockwise arrow) to update the available image topics.
+##  Please select the topic entitled `/n_raspicam/image/camera/compressed`
+##  to view a reasonably real-time image coming out of the Raspberry Pi
+##  camera.
+
+# Use `rosrun` to find `roslauncher` which does all the heavy lifting:
+rosrun ubiquity_launches roslauncher m_raspicam_view.launch.xml

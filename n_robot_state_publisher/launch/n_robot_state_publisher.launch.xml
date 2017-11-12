@@ -1,25 +1,59 @@
+
 <launch>
   <!--Summary: Launch the ROS `robot_state_publisher` node. -->
   <!--Overview: The launch file for this directory starts the ROS
       [`robot_state_publisher`](http://wiki.ros.org/robot_state_publisher)
       node.  This launch file selects the `.urdf` file based upon
-      the `robot_base` argument.  The URDF files are stored in
-      `...n_robot_state_publisher/urdf/{robot_base}.urf`. -->
+      the `robot_platform` argument.  The URDF files are stored in
+      `...n_robot_state_publisher/urdf/{robot_platform}.urf`. -->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: The name of the robot base (e.g. "magni", "loki", etc." -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="viewer" />
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
 
   <!-- Convenience arguments: -->
-  <arg name="root" value="$(find ubiquity_launches)" />
-  <arg name="node"  value="robot_state_publisher" />
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="rsp"  value="robot_state_publisher" />
 
   <!-- Optional arguments: -->
-  <arg name="node_name" default="n_$(arg node)" />
+  <arg name="joint_states_stopic" default="joint_states" />
+    <!--joint_states_stopic: Topic on which joint states are published. -->
+  <arg name="node_name" default="n_$(arg rsp)" />
     <!--node_name: The name of the ROS node. -->
+  <arg name="tf_prefix" default="" />
+    <!--tf_prefix: The text to prepend to each TF name. -->
+  <arg name="publish_frequency" default="50.0" />
+    <!--publish_frequency: The frequency at which to publish -->
+  <arg name="use_tf_static" default="true"/>
+    <!--use_tf_static: Set to true to use /tf_static latched static broadcaster. -->
+  <arg name="robot_description_file"
+   default="$(arg robot_dir)/n_$(arg rsp)/urdf/robot.urdf" />
+    <!--robot_description_file: The name of a file that contains the robot
+          structure in URDF format. -->
+
+  <!-- Define the machine to run on: -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- For some reason we have to set the `robot_description` parameter out here
+       rather than inside the `<node ... >...</node>`.  This works.  -->
+  <param name="robot_description" textfile="$(arg robot_description_file)" />
 
   <!-- Launch the robot state publisher:  -->
-  <param name="robot_description"
-   textfile="$(arg root)/n_$(arg node)/urdf/$(arg robot_base).urdf" />
-  <node name="$(arg node_name)" pkg="$(arg node)" type="state_publisher" />
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="$(arg rsp)" type="state_publisher">
+    <remap from="joint_states" to="$(arg joint_states_stopic)" />
+    <param name="tf_prefix" value="$(arg tf_prefix)" />
+    <param name="publish_frequency" value="$(arg publish_frequency)" />
+    <param name="use_tf_static" value="$(arg use_tf_static)" />
+  </node>
 </launch>

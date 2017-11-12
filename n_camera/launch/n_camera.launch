@@ -6,8 +6,8 @@
       launch file directory instead. -->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: The robot base to use (e.g. "Magni" and "Loki".) -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot base to use (e.g. "Magni" and "Loki".) -->
 
   <!-- Optional arguments: -->
   <arg name="WIDTH" default="1280"/>  <!--  Default 640 -->
@@ -18,7 +18,7 @@
      <!--FPS: Frame rate in frames per second. (must be an integer.) -->
   <arg name="camera_node" default="camera_node" />
      <!--camera_node:  The name of the camera node. -->
-  <arg name="calibration_file" default="$(arg robot_base).yaml" />
+  <arg name="calibration_file" default="$(arg robot_platform).yaml" />
      <!--calibration_file: The `.yaml` for camera calibration. -->
   <arg name="respawn" default="false" />
      <!--respawn: If `true` automatically respawn the node if it fails;

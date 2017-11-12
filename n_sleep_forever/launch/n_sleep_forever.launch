@@ -1,0 +1,13 @@
+<launch>
+  <!--Summary: Start a process that sleeps for forever. -->
+  <!--Overview: The `robot_upstart` package will run a service that
+      runs a ROS `.launch` file at start up.  By running this 
+      program, it has the side-effect of starting `roscore` and keeping
+      `roscore` running.
+  -->
+
+  <!-- Run the sleep_forever program with respawn set to true. -->
+  <node name="n_sleep_forever"
+   pkg="ubiquity_launches" type="sleep_forever"
+   respaen="true" />
+</launch>

@@ -1,0 +1,50 @@
+<launch>
+  <!--Summary: Launch the Kobuki Safety Controller Node. -->
+  <!--Overview: This launch file will launch the
+      [Kobuki Safety Controller](http://wiki.ros.org/kobuki_safety_controller)
+      ROS node.  This node basically generates bumper, cliff, and wheel drop
+      events that will cause the robot to stop in its tracks. -->
+
+  <!-- Required Arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
+  <!-- Convenience Arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="ksc" value="kobuki_safety_controller" />
+
+  <!-- Optional Arguments: -->
+  <arg name="node_name" default="$(arg ksc)" />
+    <!--node_name: The name to assign to this node. -->
+  <arg name="cmd_vel_ptopic" default="$(arg node_name)/cmd_vel" />
+    <!--cmd_vel_ptopic: The command velocity is published to this topic. -->
+  <arg name="events_bumper_ptopic" default="$(arg node_name)/events/bumper" />
+    <!--events_bumper_ptopic: The bumper events are published to this topic. -->
+  <arg name="events_cliff_ptopic" default="$(arg node_name)/events/cliff" />
+    <!--events_cliff_ptopic: The cliff events are published to this topic. -->
+  <arg name="events_wheel_drop_ptopic" default="$(arg node_name)/events/wheel_drop" />
+    <!--events_wheel_drop_ptopic: The wheel drop events are published to this topic. -->
+
+  <!-- Define the robot machine: -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- Launch the Kobuki Safety Controller node: -->
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="nodelet" type="nodelet"
+   args="load $(arg ksc)/SafetyControllerNodelet /mobile_base_nodelet_manager">
+    <remap from="$(arg node_name)/cmd_vel" to="$(arg cmd_vel_ptopic)"/>
+    <remap from="$(arg node_name)/events/bumper" to="$(arg events_bumper_ptopic)"/>
+    <remap from="$(arg node_name)/events/cliff" to="$(arg events_cliff_ptopic)"/>
+    <remap from="$(arg node_name)/events/wheel_drop" to="$(arg events_wheel_drop_ptopic)"/>
+  </node>
+</launch>

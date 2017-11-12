@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+## Summary: Run Robot Base Stack
+rosrun ubiquity_launches roslauncher m_robot_base.launch

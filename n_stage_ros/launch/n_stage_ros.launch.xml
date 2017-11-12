@@ -1,0 +1,78 @@
+<launch>
+  <!--Summary: Launches stage robot simulation envirnoment for ROS. -->
+  <!--Overview: Stage is an environment for simulating robot operating
+      in a simulated 2D environment.  This node starts up the ROS
+      [stage_ros](http://wiki.ros.org/stage_ros) node to perform this simulation.
+      The
+      [Stage Manual](http://playerstage.sourceforge.net/doc/Stage-3.2.1/modules.html)
+      is available elsewhere on the net. -->
+
+  <!-- Required Arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+  <arg name="world_file" />
+    <!--world_file: The `.world` file to construct the robot simulation environment.
+        Note that the currently the world file must be in a in a directory called
+        `.../maps/stage/` which need a bunch of .png files, .yaml files, etc.
+        Good luck finding any useful documentation.  -->
+
+  <!-- Convenience arguments: -->
+  <arg name="sr" value="stage_ros" />
+
+  <!-- Optional Arguments: -->
+  <arg name="node_name" default="n_$(arg sr)" />
+    <!--node_name: The name to assign to this node. -->
+  <arg name="rate" default="10" />
+    <!--rate: The rate at which joint states are published. -->
+  <arg name="use_gui" default="False" />
+    <!--use_gui: If "True", pops up a GUI window that allows the joints to be changed. -->
+  <arg name="cmd_vel_stopic" default="cmd_vel" />
+    <!--cmd_vel_stopic: The velocity command to drive the roboto position in the model. -->>
+  <arg name="odom_ptopic" default="odom" />
+    <!--odom_ptopic: Odometry from the position model is published to this topic. -->
+  <arg name="base_scan_ptopic" default="base_scan" />
+    <!--base_scan_ptopic: Laser scan information is published to this topic. -->
+  <arg name="base_pose_ground_truth_ptopic" default="base_pose_ground_truth" />
+    <!--base_pose_ground_truth_ptopic: Ground truth pose information is publishde to this topic. -->
+  <arg name="image_ptopic" default="image" />
+    <!--image_ptopic: A visual camera imageis published to this topic. -->
+  <arg name="depth_ptopic" default="depth" />
+    <!--depth_ptopic: A depth camera image is published to this topic. -->
+  <arg name="camera_info_ptopic" default="camera_info" />
+    <!--camera_info_ptopic: Camera calibration information is published to this topic. -->
+  <arg name="base_watchdog_timeout" default="0.2" />
+    <!--base_watchdog_timeout: The time in seconds after receiving the last command on
+        the `cmd_vel` topic before the robot stops. -->
+  <arg name="is_depth_canonical" default="true" />
+    <!--is_depth_canonical: Specifies whether to depth image should use a canonical
+        (32FC1) or OpenNI (16UC1) representation. -->
+
+  <!-- Machine configuration: -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- FIXME: Figure what the issue is with the depth topic. -->
+  <!-- Launch stageros node to simulate a robot and a robot environement: -->
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="$(arg sr)" type="stageros" args="$(arg world_file)">
+    <remap from="cmd_vel" to="$(arg cmd_vel_stopic)" />
+    <remap from="odom" to="$(arg odom_ptopic)" />
+    <remap from="base_pose_ground_truth" to="$(arg base_pose_ground_truth_ptopic)"/>
+    <remap from="base_scan" to="$(arg base_scan_ptopic)"/>
+    <remap from="image" to="$(arg image_ptopic)" />
+    <!-- <remap from="depth" to="$(arg depth_ptopic)" /> -->
+    <remap from="camera_info" to="$(arg camera_info_ptopic)" />
+    <param name="base_watchdog_timeout" value="$(arg base_watchdog_timeout)" />
+    <param name="is_depth_canonical" value="$(arg is_depth_canonical)" />
+ </node>
+
+</launch>

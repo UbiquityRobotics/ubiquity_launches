@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>ubiquity_launches</name>
-  <version>0.1.1</version>
+  <version>0.2.1</version>
   <description>Robot Configurations</description>
 
   <maintainer email="wayne@gramlich.net">Wayne Gramlich</maintainer>

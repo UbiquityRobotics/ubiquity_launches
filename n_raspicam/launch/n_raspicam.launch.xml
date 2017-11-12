@@ -1,0 +1,82 @@
+<launch>
+  <!--Summary: Start a node to read the Raspberry Pi camera. -->
+  <!--Overview: This launch file directory is responsible for
+      launching a node to read images from the Raspberry Pi camera.-->
+
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="node" value="raspicam" />
+
+  <!-- Optional arguments: -->
+  <arg name="camera_frame_id" default="" />
+    <!--camera_frame_id: The name of the ROS TF camera frame. -->
+  <arg name="camera_info_url"
+   default="file://$(arg root)/n_$(arg node)/params/$(arg robot_platform).yaml" />
+    <!--camera_info_url: The URL for the camera `.yaml` file. -->
+  <arg name="camera_name" default="raspicam" />
+    <!--camera_name: The name of the camera topic. -->
+  <arg name="framerate" default="30"/>
+    <!--framerate: The frame rate between 15 and 90 as an integer. -->
+  <arg name="height" default="480" />
+    <!--height: The image height in pixels.-->
+  <arg name="quality" default="20" />
+    <!--quality: The image quality after compression wher 1 is low
+        quality and 100 is high quality. -->
+  <arg name="srrc_publishing_mode" default="0" />
+    <!--srrc_publishing_mode: (Not a clue what this argument does!)-->
+  <arg name="tf_prefix" default="" />
+    <!--tf_prefix: A prefix for the various ROS TF frame identifiers. -->
+  <arg name="width" default="640" />
+    <!--width: The image width in pixels. -->
+  <arg name="output_prefix" default = "/camera" />
+    <!--output_prefix: The prefix for the output topics of this node. -->
+
+  <!-- Remote robot machine -->
+  <machine name="$(arg machine_name)"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
+
+  <!-- Start raspicam_node: -->
+  <node name="n_$(arg node)" machine="$(arg machine_name)"
+   pkg="raspicam" type="raspicam_node"
+   output="screen">
+    <param name="camera_frame_id"      value="$(arg camera_frame_id)" />
+    <param name="camera_info_url"      value="$(arg camera_info_url)" />
+    <param name="camera_name"          value="$(arg camera_name)" />
+    <param name="framerate"            value="$(arg framerate)" />
+    <param name="height"               value="$(arg height)" />
+    <param name="quality"              value="$(arg quality)" />
+    <param name="srrc_publishing_mode" value="$(arg srrc_publishing_mode)" />
+    <param name="tf_prefex"            value="$(arg tf_prefix)" />
+    <param name="width"                value="$(arg width)" />
+    <remap from="/$(arg node)/camera/camera_info" to="$(arg output_prefix)/camera_info"/>
+    <!-- FIXME: should use a republisher so both topics are valid -->
+  </node>
+
+  <node name="throttle" machine="$(arg machine_name)"
+   type="throttle" pkg="topic_tools"
+   output="screen"
+   args="messages /$(arg node)/camera/image/compressed 1.0 /$(arg node)/camera/image_slow/compressed"/>
+
+  <!-- 
+       republish as uncompressed - this will go away once the fiducial_detect
+       node can deal with compressed streams
+  -->
+  <node name="republish" machine="$(arg machine_name)"
+   pkg="image_transport" type="republish"
+   output="screen"
+   args="compressed in:=/$(arg node)/camera/image_slow raw out:=$(arg output_prefix)/image_raw" />
+
+</launch>

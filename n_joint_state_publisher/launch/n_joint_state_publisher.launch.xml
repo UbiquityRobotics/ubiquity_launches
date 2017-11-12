@@ -1,0 +1,55 @@
+<launch>
+  <!--Summary: Launches joint_state_publisher node. -->
+  <!--Overview: This will launch a joint_state_publisher node.  -->
+
+  <!-- Required Arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="jsp" value="joint_state_publisher" />
+
+  <!-- Optional Arguments: -->
+  <arg name="joint_states_ptopic" default="joint_states" />
+    <!--joint_states_ptopic: The topic to publish joint states on. -->
+  <arg name="node_name" default="n_$(arg jsp)" />
+    <!--node_name: The name to assign to this node. -->
+  <arg name="rate" default="10" />
+    <!--rate: The rate (in Hertz) at which joint states are published. -->
+  <arg name="use_gui" default="False" />
+    <!--use_gui: If "True", pops up a GUI window that allows the joints to be changed. -->
+
+  <!--FIXME: Add the following parameters:
+    robot_description
+    dependent_joints
+    source_list
+    use_mimic_tags
+    zeros
+    use_smallest_joint_limits
+    publish_default_positions
+    publish_default_velocities
+    publish_default_efforts
+  -->
+
+  <!-- Define the robot machine: -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- Launch the robot state publishter node: -->
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="$(arg jsp)" type="$(arg jsp)">
+    <param name="use_gui" value="$(arg use_gui)" />
+    <param name="rate" value="$(arg rate)" />
+    <remap from="joint_states" to="$(arg joint_states_ptopic)" />
+  </node>
+
+</launch>

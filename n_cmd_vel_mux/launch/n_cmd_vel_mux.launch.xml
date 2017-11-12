@@ -1,0 +1,37 @@
+<launch>
+  <!--Summary: -->
+  <!--Overview: -->
+
+  <!-- Required Arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="viewer"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
+  <!-- Convenience Arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+  <arg name="cvm" value="cmd_vel_mux" />
+  <arg name="yaml_dir" value="$(arg robot_dir)/n_$(arg cvm)/param" />
+
+  <machine name="$(arg machine_name)"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
+
+  <node machine="$(arg machine_name)" name="mobile_base_nodelet_manager"
+  pkg="nodelet" type="nodelet" args="manager"/>
+
+  <node  machine="$(arg machine_name)" name="cmd_vel_mux"
+    pkg="nodelet" type="nodelet"
+    args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+
+    <param name="yaml_cfg_file" value="$(arg yaml_dir)/mux.yaml"/>
+    <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
+  </node>
+
+</launch>

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+##Summary: Fire up a Raspberry Pi Camera on a Raspberry Pi processor.
+##Overview:
+##  This program will start the Raspberry Pi camera attached to your
+##  robot.  It does not bring up a viewer.  If you want the viewer as
+##  well, please use the `raspicam_view` program instead.
+
+rosrun ubiquity_launches roslauncher m_raspicam_raw.launch.xml

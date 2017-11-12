@@ -1,0 +1,146 @@
+#!/usr/bin/env python
+
+# This program drives uses the move_base interace to move a robot around
+# and remember waypoint names:
+
+import rospy
+import actionlib
+from geometry_msgs.msg import Quaternion, Pose, Point, Twist
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from tf.transformations import quaternion_from_euler
+from math import pi
+
+# Name this node:
+rospy.init_node("keyboard_drive")
+
+# Connect to the *cmd_vel_publisher*:
+#cmd_vel_publisher = rospy.Publisher(
+# "/cmd_vel_mux/input/navi", Twist, queue_size = 1)
+
+# Set the standard sleep duration for this node to 0.2 seconds:
+rospy.sleep(0.2)
+
+# Set the poll rate to 10 times per second:
+rate = rospy.Rate(10)
+
+# Define a couple of *Twist* objects:
+#move_twist = Twist()
+#stop_twist = Twist()
+
+# Connect to the move base navigation system:
+move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
+move_base.wait_for_server()
+
+# Initialize *x*, *y*, *angle* and the *waypoints* dictionary:
+x = 0.0
+y = 0.0
+angle = 0.0
+waypoints = {}
+
+# Process *command*'s until we quit:
+while not rospy.is_shutdown():
+    # Get at *command* and star processing:
+    command = raw_input("Command: ")
+    if len(command) == 0:
+	# Empty command, just go around again:
+	pass
+    else:
+	# Parse *command* into a *command_character* and *command_arguments*:
+	command_character = command[0].lower()
+	command_arguments = command[1:].split()
+	#print("command_character={0} arguments={1}".format(command_character, command_arguments))
+
+	# If *delay* is not set to greater than zero, the robot is not moved:
+	delay = 0.0
+
+	# Dispatch on *command_character*:
+	if command_character == "g":
+            # Goto X Y:
+
+	    # Extract the target X/Y/Angle from *command_arguments*:
+	    try:
+		x = float(command_arguments[0])
+		y = float(command_arguments[1])
+            except:
+		print("Please specify X and Y")
+		continue
+
+	    # Extract Angle from *command_arguments*:
+	    try:
+		angle = float(command_arguments[2]) * pi / 180.0
+	    except:
+		#print("No angle specified")
+		angle = 0.0
+	    if angle > pi:
+		angle -= 2.0 * pi
+	    elif angle < pi:
+		angle += 2.0 * pi
+	    #print("x={0} y={1} angle={2}".format(new_x, new_y, new_angle * 180.0 / pi))
+
+	    # Create a *goal* to go to (*x*, *y*, *angle*):
+	    goal = MoveBaseGoal()
+	    goal.target_pose.header.frame_id = "map"
+	    goal.target_pose.header.stamp = rospy.Time.now()
+	    goal.target_pose.pose = Pose(
+	      Point(x, y, 0.0), Quaternion(*quaternion_from_euler(0, 0, angle)))
+
+	    # Now move the robot to the new *goal*:
+	    move_base.send_goal(goal)
+    	    move_base.wait_for_result()
+	elif command_character == "m":
+	    # m waypoint  ; Move to waypoint
+	    if len(command_arguments) == 0:
+		print("Please specify a waypoint")
+	    else:
+		name = command_arguments[0]
+		if name in waypoints:
+		    # *name* is a valid *waypoint*:
+		    waypoint = waypoints[name]
+
+
+		    # Extract the X/Y and orientation:
+		    x = waypoint[0]
+		    y = waypoint[1]
+		    angle = waypoint[2]
+
+		    # Create a *goal* to go to (*x*, *y*, *angle*):
+		    goal = MoveBaseGoal()
+		    goal.target_pose.header.frame_id = "map"
+		    goal.target_pose.header.stamp = rospy.Time.now()
+		    goal.target_pose.pose = Pose(
+		      Point(x, y, 0.0), Quaternion(*quaternion_from_euler(0, 0, angle)))
+
+		    # Now move the robot to the new *goal*:
+		    move_base.send_goal(goal)
+		    move_base.wait_for_result()
+		else:
+		    # No such waypoint *name*:
+		    print("Waypoint '{0}' does not exist".format(name))
+	elif command_character == "q":
+	    # Quit:
+	    break
+	elif command_character == "w":
+	    # w waypoint ; Remember current location and orientation as waypoint:
+	    if len(command_arguments) == 0:
+		print("Please specify a waypoint")
+	    else:
+		# Record *waypoint* into *waypoints*:
+		name = command_arguments[0]
+		if name in waypoints:
+		    print("Replacing existing waypoint '{0}' with ({1}, {2}, {3})".
+		      format(name, x, y, angle * 180.0 / pi))
+		else:
+		    print("Setting new waypoint '{0}' to ({1}, {2}, {3})".
+		      format(name, x, y, angle * 180.0 / pi))
+		waypoints[name] = (x, y, angle)
+	elif command_character == "?":
+	    # Help:
+	    print(
+	      "Commands are:\n" +
+	      "  g x y [angle] - Go to (x, y) with an final orientation of angle"
+	      "  m waypoint - move to waypoint"
+	      "  r waypoint - remember waypoint" +
+	      "  ? - This help message\n")
+	else:
+	    # Let user now *command* is not recognized:
+	    print("Unrecognized command: '{0}'".format(command))

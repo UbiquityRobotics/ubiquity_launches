@@ -1,0 +1,46 @@
+<launch>
+  <!--Summary: Start keyboard navigation node (currently broken.) -->
+  <!--Overview: The launch file for this directory starts a
+      keyboard interface to the ROS
+      [`move_base`](http://wiki.ros.org/map_server) node.  This
+      code is still under development.  (Code is currently broken.)-->
+
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="viewer"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="nkn" value="n_keyboard_navigate" />
+  <arg name="dlp"
+   value="$(optenv LEV_KEYBOARD_NAVIGATE_PREFIX xterm -fn 9x15bold -e python -m pudb.run)" />
+  
+  <!-- Optional arguments: -->
+  <arg name="node_name" value="$(arg nkn)" />
+  <!-- LEV stand for Launch Enviroment Variable.  `lp` stands for launch prefixe.
+       If the `LEV_KEYBOARD_NAVIGATE_DEBUG` env. var is empty, we define the `lp`
+       argument contain `dlp` (debug launch prefix) convenience variable, and `lp1'
+       to be empty.  If the `LEV_KEYBOARD_NAVIGATE_DEBUG` is `1`, we define `lp1`
+       to contain the `dlp` variable and `lp11` to be empty.  Since the <node ... />
+       tag only access `lp1`, we will get either a launch prefix or an empty string. -->
+  <arg name="lp$(optenv LEV_KEYBOARD_NAVIGATE_DEBUG)" value="$(arg dlp)" />
+  <arg name="lp$(optenv LEV_KEYBOARD_NAVIGATE_DEBUG)1" value="" />
+
+
+  <!-- This node can be run on viewer and robot, but is generally on viewer -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <node name="$(arg node_name)" machine="$(arg machine_name)"
+   pkg="ubiquity_launches" type="$(arg nkn)" output="screen"
+   launch-prefix="$(arg lp1)" respawn="true" />
+
+</launch>

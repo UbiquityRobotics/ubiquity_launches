@@ -1,0 +1,33 @@
+<launch>
+  <!--Summary: Launches the ROS `teleop_twist_joy/teleop_node` node. -->
+  <!--Overview: This launch file directory will fire up a ROS node that
+      will talk to either a PS3 or XBox game controller module. -->
+
+  <!-- Requrired arguments: -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="machine_name" default="viewer"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
+  <!-- Convenience arguments -->
+  <arg name="ttk" value="teleop_twist_keyboard" />
+
+  <!-- Optional arguments: -->
+  <arg name="node_name" default="teleop" />
+    <!--node_name: The name to assigne to this node. -->
+
+  <!-- This node can be run on viewer and robot, but is generally on viewer -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen"/>
+
+</launch>

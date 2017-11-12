@@ -1,0 +1,128 @@
+#!/bin/bash
+
+##Summary: Helper program to launch ROS launch files.
+##Overview:
+##  This program is typically embedded in a short shell script that looks as follows:
+##
+##        \#!/bin/bash
+##        
+##        rosrun ubiquity_launches roslauncher XXX.launch.xml
+##
+## where `XXX.launch.xml` is a launch file in the ubiquity_launches package to
+## be launched.
+##
+## `roslauncher` does the following:
+##
+## * It uses the `ROS_MASTER_URI` enviroment variable to determine
+##   the DNS host name for the robot.
+##
+## * It determins the kind of robot platform that the robot is.
+##   For example, `loki`, `sim` (for simulator), `botvac`,
+##   `magni`, etc.
+##
+## * It sets up X11 forwarding between the current computer (which
+##   usually has a display) and the robot (which usually does not.)
+##   X11 forwarding always the robot to remotely open windows on
+##   the current computer.
+##
+## * It starts the top level launch file (e.g. `XXX.launch.xml`
+##   in the example above.
+
+# set -e
+# set -x
+
+# Extract robot URL from ROS_MASTER_URI environment varaible:
+VIEWER_HOST=$ROS_HOSTNAME
+VIEWER_USER=`whoami`
+ROBOT_HOST=`echo $ROS_MASTER_URI | sed -e s,http://,, | sed -e s,:11311,,`
+ROBOT_USER=ubuntu
+echo VIEWER_USER=$VIEWER_USER VIEWER_HOST=$VIEWER_HOST ROBOT_USER=$ROBOT_USER ROBOT_HOST=$ROBOT_HOST
+
+#ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test whoami' || \
+#  ROBOT_USER='ubuntu'; ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test ubuntu'
+#
+# rc=$?
+# if [[$rc != '0']]
+# 	then ROBOT_USER=ubuntu
+# 	ssh -o PasswordAuthentication=no $ROBOT_USER@$ROBOT_HOST echo 'test ubuntu'
+# 	rc=$?; if [[$rc != '0']]; then exit $rc; fi
+# fi
+
+# Figure out where the robot configuration stuff is:
+if [ "$ROBOT_HOST" = "$ROS_HOSTNAME" ] ; then
+    # We are on the same compute so we going to run the simulator:
+    ROBOT_DIR=`rospack find ubiquity_launches`/simulator
+    ROBOT_HOST=$VIEWER_HOST
+    ROBOT_USER=$VIEWER_USER
+else
+    # We have a remote robot, so we need to get the remote the robot directory:
+    FILE_NAME=/home/$ROBOT_USER/.ros/ubiquity/robot_dir_name.txt
+    echo "( scp -q $ROBOT_USER@$ROBOT_HOST:$FILE_NAME /tmp 2>/dev/null )"
+    if ( scp -q $ROBOT_USER@$ROBOT_HOST:$FILE_NAME /tmp 2>/dev/null ) ; then
+	# We have a robot directory, be sure to convert `~` into `/home/$VIEWER_USER`:
+	ROBOT_DIR=`cat /tmp/robot_dir_name.txt | sed "s,~,/home/$VIEWER_USER,"`
+    else
+	# We do not have a robot directory:
+	echo "The robot at $ROBOT_USER@$ROBOT_HOST does not have a $FILE_NAME file."
+	exit 1
+    fi
+fi
+echo ROBOT_DIR=$ROBOT_DIR
+
+
+# This chunk of code probes the ROBOT_HOST to find out about its
+# platform.  This is done copying short script over to
+# ROBOT_HOST:/tmp/platform.sh, setting the execute bit for it, and
+# using `ssh` to remotely execute it:
+#cat >/tmp/platform.sh<<EOF
+##!/bin/bash
+#source /home/`whoami`/.profile
+#echo \$ROS_PACKAGE_PATH > /tmp/ros_package_path
+#rosrun ubiquity_launches platform_probe
+#EOF
+#scp -q /tmp/platform.sh $ROBOT_USER@$ROBOT_HOST:/tmp
+#ssh $ROBOT_HOST chmod +x /tmp/platform.sh
+#ROBOT_PLATFORM=`ssh $ROBOT_HOST /tmp/platform.sh`
+#echo ROBOT_PLATFORM=$ROBOT_PLATFORM
+
+# Clear out file we use to indicate when the X11 channel is up:
+rm -f /tmp/x11_up
+
+# When we background the process, we want to be sure it gets killed 
+# off when we type control-C.  The following two trap commands do this:
+trap "exit" INT TERM
+trap "kill 0" EXIT
+
+# Now open the X11 channel using '&' to put it into the background.
+# The last command will sleep for a million seconds to keep the channel
+# open for a while:
+(ssh -Y $ROBOT_USER@$ROBOT_HOST \
+  'echo $DISPLAY > /tmp/display ; echo $DISPLAY; sleep 1000000' \
+  1>&2) 2>/tmp/x11up &
+
+# Now we wait for something to be written into `/tmp/x11up` before
+# firing off the roslaunch:
+while [ ! -s /tmp/x11up ] ;	\
+    do sleep 1; 		\
+    done
+
+# FIXME: We should use `$ROBOT_DIR/env_loader.sh` instead!!!
+# Lastly, we need to create an executable file called /tmp/env_loader.sh
+# over on ROBOT_HOST.  This file slurps in the ROS environment variables
+# from `~/.profile` and sets the `DISPLAY` environment variable:
+cat >/tmp/env_loader.sh<<EOF
+#!/bin/bash
+source ~/.bashrc
+export DISPLAY=\`cat /tmp/display\`
+exec "\$@"
+EOF
+scp -q /tmp/env_loader.sh $ROBOT_USER@$ROBOT_HOST:/tmp
+ssh $ROBOT_USER@$ROBOT_HOST 'chmod +x /tmp/env_loader.sh'
+
+# Now we can run the roslaunch with the appropriate arguments set:
+echo roslaunch ubiquity_launches "$@" viewer_host:=$VIEWER_HOST viewer_user:=$VIEWER_USER \
+    robot_platform:=none robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER robot_dir:=$ROBOT_DIR
+roslaunch      ubiquity_launches "$@" viewer_host:=$VIEWER_HOST viewer_user:=$VIEWER_USER \
+    robot_platform:=none robot_host:=$ROBOT_HOST robot_user:=$ROBOT_USER robot_dir:=$ROBOT_DIR
+
+

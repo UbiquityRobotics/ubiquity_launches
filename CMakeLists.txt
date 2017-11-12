@@ -16,17 +16,21 @@ catkin_package()
 ## Install ##
 #############
 install(PROGRAMS
-  bin/loki_base
-  bin/loki_view_camera
+  bin/devel_install.sh
+  bin/keyboard_drive
+  bin/keyboard_navigate
   bin/loki_joystick_teleop
-  bin/loki_view_raspicam
-  bin/loki_raspicam
-  bin/loki_rviz_local_costmap
-  bin/magni_base
-  bin/loki_raspicam90
   bin/loki_local_costmap
-  bin/loki_camera
+  bin/loki_raspicam90
+  bin/loki_rviz_local_costmap
   bin/loki_rviz_sonar
+  bin/platform_probe
+  bin/raspicam
+  bin/raspicam_view
+  bin/robot_base
+  bin/roslauncher
+  bin/yaml2launch.py
+
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -39,16 +43,36 @@ install(DIRECTORY m_joystick_teleop/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_joystick_teleop
   PATTERN ".svn" EXCLUDE)
 
-install(DIRECTORY m_loki_base/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_loki_base
+install(DIRECTORY m_keyboard_drive/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_keyboard_drive
   PATTERN ".svn" EXCLUDE)
 
-install(DIRECTORY m_magni_base/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_magni_base
+install(DIRECTORY m_keyboard_navigate/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_keyboard_navigate
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY m_move_base/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_move_base
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY m_move_base_view/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_move_base_view
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY m_raspicam_raw/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_raspicam_raw
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY m_raspicam_view/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_raspicam_view
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY m_robot_base/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/m_robot_base
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY n_amcl/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_amcl
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_bus_server/
@@ -57,6 +81,10 @@ install(DIRECTORY n_bus_server/
 
 install(DIRECTORY n_camera/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_camera
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY n_cmd_vel_mux/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_cmd_vel_mux
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_fiducial_detect/
@@ -71,12 +99,20 @@ install(DIRECTORY n_image_uncompress/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_image_uncompress
   PATTERN ".svn" EXCLUDE)
 
+install(DIRECTORY n_joint_state_publisher/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_joint_state_publisher
+  PATTERN ".svn" EXCLUDE)
+
 install(DIRECTORY n_joy/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_joy
   PATTERN ".svn" EXCLUDE)
 
-install(DIRECTORY n_loki_serial_master/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_loki_serial_master
+install(DIRECTORY n_keyboard_navigate/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_keyboard_navigate
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY n_kobuki_safety_controller/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_kobuki_safety_controller
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY n_map_server/
@@ -91,6 +127,10 @@ install(DIRECTORY n_move_base/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_move_base
   PATTERN ".svn" EXCLUDE)
 
+install(DIRECTORY n_navigation_velocity_smoother/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_navigation_velocity_smoother
+  PATTERN ".svn" EXCLUDE)
+
 install(DIRECTORY n_raspicam/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_raspicam
   PATTERN ".svn" EXCLUDE)
@@ -103,12 +143,32 @@ install(DIRECTORY n_robot_state_publisher/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_robot_state_publisher
   PATTERN ".svn" EXCLUDE)
 
+install(DIRECTORY n_rqt_image_view/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_rqt_image_view
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY n_rviz/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_rviz
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY n_sleep_forever/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_sleep_forever
+  PATTERN ".svn" EXCLUDE)
+
 install(DIRECTORY n_spawner/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_spawner
   PATTERN ".svn" EXCLUDE)
 
+install(DIRECTORY n_stage_ros/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_stage_ros
+  PATTERN ".svn" EXCLUDE)
+
 install(DIRECTORY n_teleop_twist_joy/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_teleop_twist_joy
+  PATTERN ".svn" EXCLUDE)
+
+install(DIRECTORY n_teleop_twist_keyboard/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/n_teleop_twist_keyboard
   PATTERN ".svn" EXCLUDE)
 
 install(DIRECTORY rviz_local_costmap/
@@ -118,3 +178,4 @@ install(DIRECTORY rviz_local_costmap/
 install(DIRECTORY rviz_sonar/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz_sonar
   PATTERN ".svn" EXCLUDE)
+

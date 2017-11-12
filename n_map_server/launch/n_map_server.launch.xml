@@ -4,11 +4,40 @@
   <!--Overview: The launch file for this directory starts the ROS
       [`map_server`](http://wiki.ros.org/map_server) node. -->
 
+  <!-- Required Arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="robot"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
   <!-- Convenience arguments: -->
-  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="ul" value="$(find ubiquity_launches)" />
   <arg name="node" value="map_server" />
 
-  <node pkg="$(arg node)" type="$(arg node)"
-   name="$(arg node)" output="screen"
-   args="$(arg root)/n_$(arg node)/params/map.yaml" />
+  <!-- Optional arguments: -->
+  <arg name="map_file"
+   default="$(arg ul)/n_$(arg node)/params/$(arg robot_platform).yaml"/>
+    <!--map_file: The `.yaml` map file to use for the map server.  This also
+        assumes that there is a matching `.png` file of the same name. -->
+  <arg name="node_name" default="n_$(arg node)" />
+    <!--node_name: The ROS node name. -->    
+
+  <!-- Remote robot machine -->
+  <machine name="$(arg machine_name)"
+   address="$(arg machine_host)" user="$(arg machine_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="$(arg node)" type="$(arg node)" args="$(arg map_file)"
+   output="screen">
+    <!--Wayne: This param needs some work!!! -->
+    <param name="frame_id" value="/map"/>
+  </node>
+
 </launch>

@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-## Summary: Start the camera on Loki.
-## Overview:
-##  This program will start the camera on a Loki with the appropriate
-##  Loki camera calibration information.
-roslaunch ubiquity_launches n_camera.launch robot_base:=loki
-

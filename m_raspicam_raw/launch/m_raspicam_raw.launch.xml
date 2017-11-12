@@ -5,21 +5,39 @@
   comes out of the Raspberry Pi GPU (Graphical Processing Unit.) -->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: The robot base to use (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
+  <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
+  <arg name="viewer_host" default="localhost"/>
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
+  <arg name="viewer_user" default=""/>
+    <!--viewer_user: The user account on the display computer to use. -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="node" value="raspicam" />
 
   <!-- Start n_raspicam node: -->
-  <include file="$(arg root)/n_$(arg node)/launch/n_$(arg node).launch">
-    <arg name="robot_base" value="$(arg robot_base)" />
+  <include file="$(arg root)/n_$(arg node)/launch/n_$(arg node).launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="machine_name" value="robot"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
   </include>
   
   <!-- Start n_image_uncompress node: -->
   <include file="$(arg root)/n_image_uncompress/launch/n_image_uncompress.launch.xml">
-     <arg name="camera_name" value="$(arg node)/camera" />
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="machine_name" value="robot"/>
+    <arg name="machine_host" value="$(arg robot_host)"/>
+    <arg name="machine_user" value="$(arg robot_user)"/>
+
+    <arg name="camera_name" value="$(arg node)/camera" />
   </include>
 
 </launch>

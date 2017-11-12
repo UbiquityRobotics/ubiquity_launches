@@ -1,0 +1,50 @@
+<launch>
+  <!--Summary: Start all the nodes to view output of Raspberry Pi camera. -->
+  <!--Overview: Start the Raspberry Pi camera and enough other nodes to
+   view the output of the camera. -->
+
+  <!-- Required arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="robot_host" />
+    <!--robot_host: The DNS address for the robot. -->
+  <arg name="robot_user" />
+    <!--robot_user: The user account on the robot to use. -->
+  <arg name="viewer_host" default="localhost" />
+    <!--viewer_host: The DNS address for the viewer machine with a display. -->
+  <arg name="viewer_user" default="" />
+    <!--viewer_user: The user account on the display computer to use. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="root" value="$(find ubiquity_launches)" />
+  <arg name="node" value="raspicam_view" />
+
+  <!-- Remote robot machine -->
+  <machine name="robot"
+   address="$(arg robot_host)" user="$(arg robot_user)"
+   env-loader="/tmp/env_loader.sh" />
+
+  <!-- Start m_raspicam_raw node: -->
+  <include
+   file="$(arg root)/m_raspicam_raw/launch/m_raspicam_raw.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="robot_host" value="$(arg robot_host)" />
+    <arg name="robot_user" value="$(arg robot_user)" />
+    <arg name="viewer_host" value="$(arg viewer_host)" />
+    <arg name="viewer_user" value="$(arg viewer_user)" />
+  </include>
+  
+  <!-- Start n_rqt_image_view node: -->
+  <include
+   file="$(arg root)/n_rqt_image_view/launch/n_rqt_image_view.launch.xml">
+    <arg name="robot_platform" value="$(arg robot_platform)" />
+    <arg name="machine_name" value="viewer" />
+    <arg name="machine_host" value="$(arg viewer_host)" />
+    <arg name="machine_user" value="$(arg viewer_user)" />
+
+    <arg name="image" value="raspicam/camera" />
+  </include>
+
+</launch>

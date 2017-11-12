@@ -4,13 +4,13 @@
       in a mode that shows a local costmap.  -->
 
   <!-- Required arguments: -->
-  <arg name="robot_base" />
-    <!--robot_base: The name of the robot base (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
 
   <!-- Convenience arguments: -->
   <arg name="root" value="$(find ubiquity_launches)" />
   <arg name="node" value="rviz_local_costmap" />
 
   <node name="rviz" pkg="rviz" type="rviz"
-   args="-d $(arg root)/$(arg node)/rviz/$(arg robot_base).rviz"/>
+   args="-d $(arg root)/$(arg node)/rviz/$(arg robot_platform).rviz"/>
 </launch>

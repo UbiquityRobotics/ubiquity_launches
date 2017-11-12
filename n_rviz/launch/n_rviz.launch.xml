@@ -1,0 +1,37 @@
+<launch>
+  <!--Summary: Start `rviz` with an optional `.rviz` file. -->
+  <!--Overview: Runs the `rviz` robot visualization tool with an an
+      optional argument that specifies a `.rviz` file. -->
+
+  <!-- Requrired arguments: -->
+  <arg name="robot_platform" />
+    <!--robot_platform: The robot platform (e.g. "magni", "loki", etc.) -->
+  <arg name="robot_dir" />
+    <!--robot_dir: The robot launch files and parameters directory. -->
+  <arg name="machine_name" default="viewer"/>
+    <!--machine_name: The machine name (i.e. "robot" or "viewer") -->
+  <arg name="machine_host" />
+    <!--machine_host: The DNS machine name (e.g. "ubuntu.local") -->
+  <arg name="machine_user" />
+    <!--machine_user: The user account on the machine. -->
+
+  <!-- Convenience arguments: -->
+  <arg name="ul" value="$(find ubiquity_launches)" />
+
+  <!-- Optional arguments: -->
+  <arg name="node_name" default="rviz" />
+    <!--node_name: The name to assigne to this node. -->
+  <arg name="rviz_file" default="$(arg ul)/n_rviz/rviz/robot_navigation.rviz"/>
+    <!--rviz_file: A file that preconfigures rviz to show navigation
+        information.-->
+
+  <!-- This node is almost always run on viewer -->
+  <machine name="$(arg machine_name)"
+    address="$(arg machine_host)" user="$(arg machine_user)"
+    env-loader="/tmp/env_loader.sh" />
+  
+  <!-- Launch rviz -->
+  <node machine="$(arg machine_name)" name="$(arg node_name)"
+   pkg="rviz" type="rviz" args="-d $(arg rviz_file)"/>
+
+</launch>
