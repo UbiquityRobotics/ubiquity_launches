@@ -1,159 +1,276 @@
 <?xml version="1.0"?>
 <robot name="loki">
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
   <link name="base_link">
   </link>
 
-  <link name="camera_pose">
+  <link name="raspicam">
   </link>
 
-  <joint name="base_camera_pose" type="fixed">
+  <joint name="base_raspicam" type="fixed">
     <parent link="base_link"/>
-    <child link="camera_pose"/>
-    <origin rpy="0 0 -1.57" xyz="-0.140 0 0"/>
+    <child link="raspicam"/>
+    <origin rpy="0 0 -1.57" xyz="-0.15125 0.007 0"/>
   </joint>
 
   <link name="sonar_0">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_0" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_0"/>
-    <origin rpy="0 0 -1.57" xyz="-0.117 -0.055 0"/>
+    <origin rpy="3.1416 0 -1.5708" xyz="-0.126 -0.0545 -0.015"/>
   </joint>
 
   <link name="sonar_1">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_1" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_1"/>
-    <origin rpy="0 0 -1.17" xyz="0.0540476 -0.0508134 0"/>
+    <origin rpy="0 0 -1.1781" xyz="0.04161 -0.044415 0.015"/>
   </joint>
 
   <link name="sonar_2">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_2" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_2"/>
-    <origin rpy="0 0 -0.79" xyz="0.0718909 -0.0388909 0"/>
+    <origin rpy="3.1416 0 -0.7854" xyz="0.06253732 -0.03853732 -0.015"/>
   </joint>
 
   <link name="sonar_3">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_3" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_3"/>
-    <origin rpy="0 0 -0.39" xyz="0.0838134 -0.0210476 0"/>
+    <origin rpy="0 0 -0.3927" xyz="0.074351435 -0.020856247 0.015"/>
   </joint>
 
   <link name="sonar_4">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_4" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_4"/>
-    <origin rpy="0 0 0" xyz="0.088 0 0"/>
+    <origin rpy="3.1416 0 0" xyz="0.0785 0 -0.015"/>
   </joint>
 
   <link name="sonar_5">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_5" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_5"/>
-    <origin rpy="0 0 0.39" xyz="0.0838134 0.0210476 0"/>
+    <origin rpy="0 0 0.3927" xyz="0.074351435 0.020856247 0.015"/>
   </joint>
 
   <link name="sonar_6">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_6" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_6"/>
-    <origin rpy="0 0 0.79" xyz="0.0718909 0.0388909 0"/>
+    <origin rpy="3.1416 0 0.7854" xyz="0.06253732 0.03853732 -0.015"/>
   </joint>
 
   <link name="sonar_7">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_7" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_7"/>
-    <origin rpy="0 0 1.17" xyz="0.0540476 0.0508134 0"/>
+    <origin rpy="0 0 1.1781" xyz="0.04131 0.044785 0.015"/>
   </joint>
 
   <link name="sonar_8">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_8" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_8"/>
-    <origin rpy="0 0 1.57" xyz="-0.117 0.055 0"/>
+    <origin rpy="3.1416 0 1.5708" xyz="-0.126 0.0545 -0.015"/>
   </joint>
 
   <link name="sonar_9">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_9" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_9"/>
-    <origin rpy="0 0 1.96349541" xyz="-0.138047589 0.050813374 0"/>
+    <origin rpy="0 0 1.9635" xyz="-0.146856247 0.050351435 0.015"/>
   </joint>
 
   <link name="sonar_10">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_10" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_10"/>
-    <origin rpy="0 0 2.35619449" xyz="-0.155890873 0.038890873 0"/>
+    <origin rpy="3.1416 0 2.3562" xyz="-0.16453732 0.03853732 -0.015"/>
   </joint>
 
   <link name="sonar_11">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_11" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_11"/>
-    <origin rpy="0 0 2.74889357" xyz="-0.167813374 0.021047589 0"/>
+    <origin rpy="0 0 2.7489" xyz="-0.176351435 0.020856247 0.015"/>
   </joint>
 
   <link name="sonar_12">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_12" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_12"/>
-    <origin rpy="0 0 3.14159265" xyz="-0.172 0 0"/>
+    <origin rpy="3.1416 0 3.1416" xyz="-0.1805 0 -0.015"/>
   </joint>
 
   <link name="sonar_13">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_13" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_13"/>
-    <origin rpy="0 0 -2.74889357" xyz="-0.167813374 -0.021047589 0"/>
+    <origin rpy="0 0 -2.7489" xyz="-0.176351435 -0.020856247 0.015"/>
   </joint>
 
   <link name="sonar_14">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_14" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_14"/>
-    <origin rpy="0 0 -2.35619449" xyz="-0.155890873 -0.038890873 0"/>
+    <origin rpy="3.1416 0 -2.3562" xyz="-0.16453732 -0.03853732 -0.015"/>
   </joint>
 
   <link name="sonar_15">
+    <visual>
+      <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+      </geometry>
+      <material name="white"/>
+    </visual>
   </link>
 
   <joint name="base_sonar_15" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_15"/>
-    <origin rpy="0 0 -1.96349541" xyz="-0.138047589 -0.050813374 0"/>
+    <origin rpy="0 0 -1.9635" xyz="-0.146856247 -0.050351435 0.015"/>
   </joint>
 
 </robot>
+
