@@ -20,7 +20,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -37,7 +37,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -54,7 +54,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -71,7 +71,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -88,7 +88,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -105,7 +105,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -122,7 +122,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -139,7 +139,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -156,7 +156,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -173,7 +173,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -190,7 +190,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -207,7 +207,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -224,7 +224,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -241,7 +241,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -258,7 +258,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
@@ -275,7 +275,7 @@
     <visual>
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="file:///home/rohan/build/HCSR04.stl"/> -->
+        <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
       </geometry>
       <material name="white"/>
     </visual>
