@@ -13,11 +13,13 @@
   <joint name="base_raspicam" type="fixed">
     <parent link="base_link"/>
     <child link="raspicam"/>
-    <origin rpy="0 0 -1.57" xyz="-0.15125 0.007 0"/>
+    <origin rpy="0 0 -1.5708" xyz="-0.15125 0.007 0"/>
   </joint>
 
   <link name="sonar_0">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -29,12 +31,15 @@
   <joint name="base_sonar_0" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_0"/>
-    <!-- Bottom Mounted -->
+    <!-- Bottom Mounted so rotated 180 degrees around X axis -->
+    <!-- Z rotation: -90 degrees -->
     <origin rpy="3.1416 0 -1.5708" xyz="-0.126 -0.0545 -0.015"/>
   </joint>
 
   <link name="sonar_1">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -47,11 +52,14 @@
     <parent link="base_link"/>
     <child link="sonar_1"/>
     <!-- Top Mounted -->
+    <!-- Z rotation: -67.5 degrees -->
     <origin rpy="0 0 -1.1781" xyz="0.04161 -0.044415 0.015"/>
   </joint>
 
   <link name="sonar_2">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -63,12 +71,15 @@
   <joint name="base_sonar_2" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_2"/>
-    <!-- Bottom Mounted -->
+    <!-- Bottom Mounted so rotated 180 degrees around X axis-->
+    <!-- Z rotation: -45 degrees -->
     <origin rpy="3.1416 0 -0.7854" xyz="0.06253732 -0.03853732 -0.015"/>
   </joint>
 
   <link name="sonar_3">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -81,11 +92,14 @@
     <parent link="base_link"/>
     <child link="sonar_3"/>
     <!-- Top Mounted -->
+    <!-- Z rotation: -22.5 degrees -->
     <origin rpy="0 0 -0.3927" xyz="0.074351435 -0.020856247 0.015"/>
   </joint>
 
   <link name="sonar_4">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -97,12 +111,15 @@
   <joint name="base_sonar_4" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_4"/>
-    <!-- Bottom Mounted -->
+    <!-- Bottom Mounted so rotated 180 degrees around X axis-->
+    <!-- Z rotation: 0 degrees -->
     <origin rpy="3.1416 0 0" xyz="0.0785 0 -0.015"/>
   </joint>
 
   <link name="sonar_5">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -115,11 +132,14 @@
     <parent link="base_link"/>
     <child link="sonar_5"/>
     <!-- Top Mounted -->
+    <!-- Z rotation: 22.5 degrees -->
     <origin rpy="0 0 0.3927" xyz="0.074351435 0.020856247 0.015"/>
   </joint>
 
   <link name="sonar_6">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -131,12 +151,15 @@
   <joint name="base_sonar_6" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_6"/>
-    <!-- Bottom Mounted -->
+    <!-- Bottom Mounted so rotated 180 degrees around X axis-->
+    <!-- Z rotation: 45 degrees -->
     <origin rpy="3.1416 0 0.7854" xyz="0.06253732 0.03853732 -0.015"/>
   </joint>
 
   <link name="sonar_7">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -149,11 +172,14 @@
     <parent link="base_link"/>
     <child link="sonar_7"/>
     <!-- Top Mounted -->
+    <!-- Z rotation: 67.5 degrees -->
     <origin rpy="0 0 1.1781" xyz="0.04131 0.044785 0.015"/>
   </joint>
 
   <link name="sonar_8">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -165,12 +191,15 @@
   <joint name="base_sonar_8" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_8"/>
-    <!-- Bottom Mounted -->
+    <!-- Bottom Mounted so rotated 180 degrees around X axis-->
+    <!-- Z rotation: 90 degrees -->
     <origin rpy="3.1416 0 1.5708" xyz="-0.126 0.0545 -0.015"/>
   </joint>
 
   <link name="sonar_9">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -183,11 +212,14 @@
     <parent link="base_link"/>
     <child link="sonar_9"/>
     <!-- Top Mounted -->
+    <!-- Z rotation: 112.5 degrees -->
     <origin rpy="0 0 1.9635" xyz="-0.146856247 0.050351435 0.015"/>
   </joint>
 
   <link name="sonar_10">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -199,12 +231,15 @@
   <joint name="base_sonar_10" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_10"/>
-    <!-- Bottom Mounted -->
+    <!-- Bottom Mounted so rotated 180 degrees around X axis-->
+    <!-- Z rotation: 135 degrees -->
     <origin rpy="3.1416 0 2.3562" xyz="-0.16453732 0.03853732 -0.015"/>
   </joint>
 
   <link name="sonar_11">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -217,11 +252,14 @@
     <parent link="base_link"/>
     <child link="sonar_11"/>
     <!-- Top Mounted -->
+    <!-- Z rotation: 157.5 degrees -->
     <origin rpy="0 0 2.7489" xyz="-0.176351435 0.020856247 0.015"/>
   </joint>
 
   <link name="sonar_12">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -233,12 +271,15 @@
   <joint name="base_sonar_12" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_12"/>
-    <!-- Bottom Mounted -->
+    <!-- Bottom Mounted so rotated 180 degrees around X axis-->
+    <!-- Z rotation: 180 degrees -->
     <origin rpy="3.1416 0 3.1416" xyz="-0.1805 0 -0.015"/>
   </joint>
 
   <link name="sonar_13">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -251,11 +292,14 @@
     <parent link="base_link"/>
     <child link="sonar_13"/>
     <!-- Top Mounted -->
+    <!-- Z rotation: -157.5 degrees -->
     <origin rpy="0 0 -2.7489" xyz="-0.176351435 -0.020856247 0.015"/>
   </joint>
 
   <link name="sonar_14">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -267,12 +311,15 @@
   <joint name="base_sonar_14" type="fixed">
     <parent link="base_link"/>
     <child link="sonar_14"/>
-    <!-- Bottom Mounted -->
+    <!-- Bottom Mounted so rotated 180 degrees around X axis-->
+    <!-- Z rotation: -135 degrees -->
     <origin rpy="3.1416 0 -2.3562" xyz="-0.16453732 -0.03853732 -0.015"/>
   </joint>
 
   <link name="sonar_15">
     <visual>
+      <!-- Sonar STL oriented facing Z, and top towards X+ -->
+      <!-- Rotated here to make it face on the X axis and the top towards Z+ -->
       <origin rpy="1.5707 0 1.5707" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://ubiquity_launches/n_robot_state_publisher/meshes/HCSR04.stl"/>
@@ -285,6 +332,7 @@
     <parent link="base_link"/>
     <child link="sonar_15"/>
     <!-- Top Mounted -->
+    <!-- Z rotation: -112.5 degrees -->
     <origin rpy="0 0 -1.9635" xyz="-0.146856247 -0.050351435 0.015"/>
   </joint>
 
