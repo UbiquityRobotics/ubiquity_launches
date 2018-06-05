@@ -5,4 +5,5 @@
 ##  summary here
 
 # Use `rosrun` to find `roslauncher` which does all the heavy lifting:
-rosrun ubiquity_launches roslauncher m_keyboard_navigate.launch.xml
+#rosrun ubiquity_launches roslauncher m_keyboard_navigate.launch.xml
+rosrun ubiquity_launches rlauncher m_keyboard_navigate.launch.xml

@@ -55,6 +55,8 @@ if [ "$ROBOT_HOST" = "$ROS_HOSTNAME" ] ; then
     ROBOT_HOST=$VIEWER_HOST
     ROBOT_USER=$VIEWER_USER
 else
+    echo "Non local launch"
+    false
     # We have a remote robot, so we need to get the remote the robot directory:
     FILE_NAME=/home/$ROBOT_USER/.ros/ubiquity/robot_dir_name.txt
     echo "( scp -q $ROBOT_USER@$ROBOT_HOST:$FILE_NAME /tmp 2>/dev/null )"
@@ -96,15 +98,15 @@ trap "kill 0" EXIT
 # Now open the X11 channel using '&' to put it into the background.
 # The last command will sleep for a million seconds to keep the channel
 # open for a while:
-(ssh -Y $ROBOT_USER@$ROBOT_HOST \
-  'echo $DISPLAY > /tmp/display ; echo $DISPLAY; sleep 1000000' \
-  1>&2) 2>/tmp/x11up &
+#(ssh -Y $ROBOT_USER@$ROBOT_HOST \
+#  'echo $DISPLAY > /tmp/display ; echo $DISPLAY; sleep 1000000' \
+#  1>&2) 2>/tmp/x11up &
 
 # Now we wait for something to be written into `/tmp/x11up` before
 # firing off the roslaunch:
-while [ ! -s /tmp/x11up ] ;	\
-    do sleep 1; 		\
-    done
+#while [ ! -s /tmp/x11up ] ;	\
+#    do sleep 1; 		\
+#    done
 
 # FIXME: We should use `$ROBOT_DIR/env_loader.sh` instead!!!
 # Lastly, we need to create an executable file called /tmp/env_loader.sh
@@ -116,8 +118,8 @@ source ~/.bashrc
 export DISPLAY=\`cat /tmp/display\`
 exec "\$@"
 EOF
-scp -q /tmp/env_loader.sh $ROBOT_USER@$ROBOT_HOST:/tmp
-ssh $ROBOT_USER@$ROBOT_HOST 'chmod +x /tmp/env_loader.sh'
+#scp -q /tmp/env_loader.sh $ROBOT_USER@$ROBOT_HOST:/tmp
+#ssh $ROBOT_USER@$ROBOT_HOST 'chmod +x /tmp/env_loader.sh'
 
 # Now we can run the roslaunch with the appropriate arguments set:
 echo roslaunch ubiquity_launches "$@" viewer_host:=$VIEWER_HOST viewer_user:=$VIEWER_USER \
