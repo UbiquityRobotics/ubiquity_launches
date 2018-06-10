@@ -32,7 +32,7 @@
   env-loader="/tmp/env_loader.sh" />
 
  <node machine="$(arg machine_name)" name="$(arg node_name)"
-  pkg="joint_states_publisher" type="joint_states_publisher" args="" >
+  pkg="joint_state_publisher" type="joint_state_publisher" args="" >
   <remap from="joint_states" to="$(arg joint_states_ptopic)" />
   <param name="rate" value="$(arg rate)" />
   <param name="use_gui" value="$(arg use_gui)" />
